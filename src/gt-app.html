@@ -75,9 +75,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <app-drawer>
         <app-toolbar>Menu</app-toolbar>
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-          <a name="view1" href="/view1">View One</a>
-          <a name="view2" href="/view2">View Two</a>
-          <a name="view3" href="/view3">View Three</a>
+          <a name="home" href="/home">Home</a>
+          <a name="classes" href="/classes">Classes</a>
+          <a name="bookings" href="/bookings">Bookings</a>
+          <a name="faq" href="/faq">FAQ</a>
+          <a name="about-us" href="/about-us">About Us</a>
         </iron-selector>
       </app-drawer>
 
@@ -92,9 +94,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </app-header>
 
         <iron-pages role="main" selected="[[page]]" attr-for-selected="name">
-          <my-view1 name="view1"></my-view1>
-          <my-view2 name="view2"></my-view2>
-          <my-view3 name="view3"></my-view3>
+          <gt-page-home name="home"></gt-page-home>
+          <gt-page-classes name="classes"></gt-page-classes>
+          <gt-page-bookings name="bookings"></gt-page-bookings>
+          <gt-page-faq name="faq"></gt-page-faq>
+          <gt-page-about-us name="about-us"></gt-page-about-us>
         </iron-pages>
 
       </app-header-layout>
@@ -124,13 +128,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       ],
 
       _routePageChanged: function(page) {
-        this.page = page || 'view1';
+        this.page = page || 'home';
       },
 
       _pageChanged: function(page) {
         // load page import on demand.
         this.importHref(
-          this.resolveUrl('pages/my-' + page + '.html'), null, null, true);
+          this.resolveUrl('pages/gt-page-' + page + '.html'), null, null, true);
       }
 
     });
