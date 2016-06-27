@@ -1,9 +1,11 @@
 {
   "entrypoint": "index.html",
-  "shell": "src/my-app.html",
+  "shell": "src/gt-app.html",
   "fragments": [
-    "src/my-view1.html",
-    "src/my-view2.html",
-    "src/my-view3.html"
+    "src/pages/gt-pages-home.html",
+    "src/pages/gt-pages-classes.html",
+    "src/pages/gt-pages-bookings.html",
+    "src/pages/gt-pages-faq.html",
+    "src/pages/gt-pages-about-us.html"
   ]
 }
