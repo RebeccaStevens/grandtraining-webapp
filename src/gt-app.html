@@ -19,6 +19,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="gt-icons.html">
 
 <dom-module id="gt-app">
@@ -39,6 +40,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
       app-header paper-icon-button {
         --paper-icon-button-ink-color: white;
+      }
+
+      #main-toolbar {
+        --app-toolbar-font-size: 28px;
+      }
+
+      #main-toolbar [title] {
+        text-align: center;
+        margin-left: -40px;
       }
 
       .drawer-list {
@@ -87,7 +97,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <app-header-layout has-scrolling-region>
 
         <app-header condenses reveals effects="waterfall">
-          <app-toolbar>
+          <app-toolbar id="main-toolbar">
             <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
             <div title>Grand Training</div>
           </app-toolbar>
