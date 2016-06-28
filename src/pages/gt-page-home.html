@@ -2,6 +2,7 @@
 <link rel="import" href="../../bower_components/neon-slideshow/neon-carousel-pages.html">
 <link rel="import" href="../../bower_components/iron-image/iron-image.html">
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 
 <dom-module id="gt-page-home">
@@ -51,6 +52,17 @@
       }
       paper-card p:last-of-type {
         margin-bottom: 0;
+      }
+      a {
+        text-decoration: none;
+      }
+      paper-card .card-actions paper-button,
+      paper-card .card-actions a:visited paper-button {
+        text-transform: capitalize;
+        color: var(--app-secondary-color);
+        border: solid 1px var(--app-primary-color);
+        background-color: var(--app-primary-color-light);
+        --paper-button-ink-color: var(--app-primary-color);
       }
       .quote {
         font-style: italic;
@@ -103,6 +115,9 @@
         <div class="card-content">
           <p>Gift your child with an educational experience like no other these school holiday's. Craft immersive 3D games, design websites, learn to code with Python and Java, or learn physics with Minecraft.</p>
           <p>Design your ideal computer class with Grand Training today!</p>
+        </div>
+        <div class="card-actions">
+          <a name="classes" href="/classes" tabindex="-1"><paper-button raised>Book Now</paper-button></a>
         </div>
       </paper-card>
     </div>
