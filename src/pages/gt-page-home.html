@@ -1,10 +1,12 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/neon-slideshow/neon-carousel-pages.html">
 <link rel="import" href="../../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 
 <dom-module id="gt-page-home">
   <template>
-    <style>
+    <style include="iron-flex iron-flex-alignment">
       :host {
         display: block;
       }
@@ -27,6 +29,29 @@
         margin-bottom: 0.4em;
         line-height: 1.33;
       }
+      paper-card {
+        border-radius: 0.5em;
+        margin: 0.75em;
+        min-width: 300px;
+        max-width: 500px;
+        --paper-card-header-text: {
+          color: var(--app-primary-color);
+          font-size: 18pt;
+          padding-bottom: 0;
+        };
+      }
+      paper-card:not(:last-of-type) {
+        margin-bottom: 0;
+      }
+      paper-card p:first-of-type {
+        margin-top: 0;
+      }
+      paper-card p:last-of-type {
+        margin-bottom: 0;
+      }
+      .quote {
+        font-style: italic;
+      }
       @media (min-width: 1280px) {
         #title {
           font-size: 28pt;
@@ -45,6 +70,28 @@
 
     <h1 id="title">[[title]]</h1>
     <h2 id="subtitle">[[subTitle]]</h2>
+
+    <div class="layout horizontal wrap center-justified">
+      <paper-card heading="Our Philosophy" class="flex">
+        <div class="card-content">
+          <p>Grand Training provides a unique school holiday experience. Students aged 5 to 15+ work together in small groups to solve challenges set by our experienced tutors.</p>
+          <p>Tailored to your child's experience and ability, our classes are built around making a sound computer education as accessible as possible.</p>
+        </div>
+      </paper-card>
+
+      <paper-card heading="Our Testimonials" class="flex">
+        <div class="card-content">
+          <p class="quote">"They enjoyed a relaxed learning experience and were keen to show their school friends what they had discovered at the computer class."</p>
+        </div>
+      </paper-card>
+
+      <paper-card heading="Our Computer Classes" class="flex">
+        <div class="card-content">
+          <p>Gift your child with an educational experience like no other these school holiday's. Craft immersive 3D games, design websites, learn to code with Python and Java, or learn physics with Minecraft.</p>
+          <p>Design your ideal computer class with Grand Training today!</p>
+        </div>
+      </paper-card>
+    </div>
   </template>
 
   <script>
