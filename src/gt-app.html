@@ -63,6 +63,14 @@
         padding-left: 32px;
       }
 
+      .bottom-rule {
+        width: calc(100% - 3em);
+        border: inset 1px white;
+      }
+
+      footer {
+        margin: 0.25em 2em;
+      }
     </style>
 
     <app-location route="{{route}}"></app-location>
@@ -103,6 +111,12 @@
           <gt-page-faq name="faq"></gt-page-faq>
           <gt-page-about-us name="about-us"></gt-page-about-us>
         </iron-pages>
+
+        <hr class="bottom-rule">
+
+        <footer>
+          Copyright &copy; Grand Training 2016
+        </footer>
 
       </app-header-layout>
 
