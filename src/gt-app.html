@@ -127,11 +127,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       properties: {
 
+        /**
+         * The name of the page the app is on.
+         */
         page: {
           type: String,
           reflectToAttribute: true,
           observer: '_pageChanged'
         },
+
+        /**
+         * The app's route.
+         */
+        route: Object,
+
+        /**
+         * The data contained in the route.
+         */
+        routeData: Object,
+
+        /**
+         * The subroute the app is on.
+         */
+        subroute: Object
 
       },
 
@@ -139,17 +157,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         '_routePageChanged(routeData.page)'
       ],
 
+      /**
+       * Called when the route data's page is changed.
+       */
       _routePageChanged: function(page) {
-        this.page = page || 'home';
-        if (this.$['drawer-layout'].narrow) {
-          this.$['drawer-layout'].drawer.close();
+        this.page = page || 'home';                   // change the page
+        if (this.$['drawer-layout'].narrow) {         // if the drawer layout is narrow
+          this.$['drawer-layout'].drawer.close();     // close the drawer
         }
       },
 
+      /**
+       * Called when the page is changed.
+       */
       _pageChanged: function(page) {
         // load page import on demand.
-        this.importHref(
-          this.resolveUrl('pages/gt-page-' + page + '.html'), null, null, true);
+        this.importHref(this.resolveUrl('pages/gt-page-' + page + '.html'), null, null, true);
       }
 
     });
