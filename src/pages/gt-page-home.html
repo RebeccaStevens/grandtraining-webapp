@@ -12,6 +12,29 @@
         position: relative;
         height: 50vh;
       }
+      h1, h2 {
+        color: var(--app-primary-color);
+        text-align: center;
+      }
+      #title {
+        font-size: 22pt;
+        margin-top: 0.4em;
+        margin-bottom: 0.25em;
+      }
+      #subtitle {
+        font-size: 17pt;
+        margin-top: 0;
+        margin-bottom: 0.4em;
+        line-height: 1.33;
+      }
+      @media (min-width: 1280px) {
+        #title {
+          font-size: 28pt;
+        }
+        #subtitle {
+          font-size: 22pt;
+        }
+      }
     </style>
 
     <neon-carousel-pages playing delay="6000">
@@ -19,6 +42,9 @@
         <iron-image sizing="cover" src="[[img.src]]" preload fade placeholder="[[img.placeholder]]"></iron-image>
     </template>
     </neon-carousel-pages>
+
+    <h1 id="title">[[title]]</h1>
+    <h2 id="subtitle">[[subTitle]]</h2>
   </template>
 
   <script>
@@ -26,6 +52,22 @@
       is: 'gt-page-home',
 
       properties: {
+
+        /**
+         * The title to be display on the page.
+         */
+        title: {
+          type: String,
+          value: 'Welcome to Grand Training'
+        },
+
+        /**
+         * The sub title to be display on the page under the main title.
+         */
+        subTitle: {
+          type: String,
+          value: 'Your home for school holiday computer classes'
+        },
 
         /**
          * The images used in the carousel display at the top of the page.
