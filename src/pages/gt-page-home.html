@@ -3,6 +3,7 @@
 <link rel="import" href="../../bower_components/iron-image/iron-image.html">
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 
 <dom-module id="gt-page-home">
   <template>
@@ -28,6 +29,11 @@
         margin-top: 0;
         margin-bottom: 0.4em;
         line-height: 1.33;
+      }
+      .cards {
+        @apply(--layout-horizontal);
+        @apply(--layout-wrap);
+        @apply(--layout-center-justified);
       }
       paper-card {
         border-radius: 0.5em;
@@ -82,7 +88,7 @@
     <h1 id="title">[[title]]</h1>
     <h2 id="subtitle">[[subTitle]]</h2>
 
-    <div class="layout horizontal wrap center-justified">
+    <div class="cards">
       <paper-card heading="Our Philosophy" class="flex">
         <div class="card-content">
           <p>Grand Training provides a unique school holiday experience. Students aged 5 to 15+ work together in small groups to solve challenges set by our experienced tutors.</p>
