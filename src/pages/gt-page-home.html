@@ -126,6 +126,14 @@
     Polymer({
       is: 'gt-page-home',
 
+      properties: {
+
+        /**
+         * The data the page will use.
+         */
+        pageData: Object,
+      },
+
       behaviors: [GT.PageBehavior],
 
       /**
