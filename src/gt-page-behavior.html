@@ -8,7 +8,12 @@
       /**
        * A referenceto the main app element.
        */
-      app: Object,
+      app: {
+        type: Object,
+        value: function() {
+          return GT.app;
+        }
+      },
 
       /**
        * The data the page will use.

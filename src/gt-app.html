@@ -117,11 +117,11 @@
         </app-header>
 
         <iron-pages role="main" selected="[[page]]" attr-for-selected="name">
-          <gt-page-home name="home" app="[[app]]"></gt-page-home>
-          <gt-page-classes name="classes" app="[[app]]"></gt-page-classes>
-          <gt-page-bookings name="bookings" app="[[app]]"></gt-page-bookings>
-          <gt-page-faq name="faq" app="[[app]]"></gt-page-faq>
-          <gt-page-about-us name="about-us" app="[[app]]"></gt-page-about-us>
+          <gt-page-home name="home"></gt-page-home>
+          <gt-page-classes name="classes"></gt-page-classes>
+          <gt-page-bookings name="bookings"></gt-page-bookings>
+          <gt-page-faq name="faq"></gt-page-faq>
+          <gt-page-about-us name="about-us"></gt-page-about-us>
         </iron-pages>
 
         <hr class="bottom-rule">
@@ -143,16 +143,6 @@
       is: 'gt-app',
 
       properties: {
-
-        /**
-         * A reference to this app.
-         */
-        app: {
-          type: Object,
-          value: function() {
-            return this;
-          }
-        },
 
         /**
          * The name of the page the app is on.
@@ -229,6 +219,13 @@
        */
       _handleAjaxError: function() {
         console.error('ajax error');
+      },
+
+      /**
+       * Called when this element is created.
+       */
+      created: function() {
+        GT.app = this;
       }
 
     });
