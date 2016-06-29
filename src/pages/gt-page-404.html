@@ -1,0 +1,28 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../gt-page-behavior.html">
+
+<dom-module id="gt-page-404">
+  <template>
+    <style>
+      :host {
+        display: block;
+        padding: 10px;
+      }
+    </style>
+
+    <h1>404 Page</h1>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'gt-page-404',
+
+      behaviors: [GT.PageBehavior],
+
+      ready: function() {
+        this.pageReady();
+      }
+    });
+  </script>
+</dom-module>

@@ -132,12 +132,19 @@
           </app-toolbar>
         </app-header>
 
-        <iron-pages id="pages" role="main" selected="[[page]]" attr-for-selected="name" hidden$="[[pageLoading]]" on-page-loaded="_pageLoaded">
+        <iron-pages id="pages"
+          role="main"
+          selected="[[page]]"
+          attr-for-selected="name"
+          fallback-selection="404"
+          hidden$="[[pageLoading]]"
+          on-page-loaded="_pageLoaded">
           <gt-page-home name="home"></gt-page-home>
           <gt-page-classes name="classes"></gt-page-classes>
           <gt-page-bookings name="bookings"></gt-page-bookings>
           <gt-page-faq name="faq"></gt-page-faq>
           <gt-page-about-us name="about-us"></gt-page-about-us>
+          <gt-page-404 id="page404" name="404"></gt-page-404>
         </iron-pages>
 
         <div id="pageLoadingOverlay" hidden$="[[!pageLoading]]">
@@ -240,8 +247,14 @@
       _pageChanged: function(pageName) {
         var pageEl = Polymer.dom(this.$.pages).querySelector('[name="' + pageName + '"]');
 
+        // if the page element doesn't exist, the page doesn't exist
+        if (pageEl === null) {
+          pageEl = this.$.page404;
+          pageName = 404;
+        }
+
         // load page import if it hasn't alreeady been imported.
-        if (pageEl !== null && !Polymer.isInstance(pageEl)) {
+        if (!Polymer.isInstance(pageEl)) {
           this.pageLoading = true;
           this.importHref(this.resolveUrl('pages/gt-page-' + pageName + '.html'), null, null, true);
         } else {
