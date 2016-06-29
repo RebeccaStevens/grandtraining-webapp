@@ -11,6 +11,7 @@
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="gt-icons.html">
 
 <dom-module id="gt-app">
@@ -73,6 +74,7 @@
       }
     </style>
 
+    <!-- Routing -->
     <app-location route="{{route}}"></app-location>
     <app-route
         route="{{route}}"
@@ -80,17 +82,26 @@
         data="{{routeData}}"
         tail="{{subroute}}"></app-route>
 
+    <!-- Download data -->
+    <iron-ajax
+      auto
+      url="[[dataPath]]data.json"
+      handle-as="json"
+      last-response="{{data}}"
+      on-error="_handleAjaxError"></iron-ajax>
+
+    <!-- Layout -->
     <app-drawer-layout id="drawer-layout" fullbleed>
 
       <!-- Drawer content -->
       <app-drawer>
         <app-toolbar>Menu</app-toolbar>
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-          <a name="home" href="/">Home</a>
-          <a name="classes" href="/classes">Classes</a>
-          <a name="bookings" href="/bookings">Bookings</a>
-          <a name="faq" href="/faq">FAQ</a>
-          <a name="about-us" href="/about-us">About Us</a>
+          <a name="home" href$="[[data.pages.home.url]]">[[data.pages.home.menuTitle]]</a>
+          <a name="classes" href$="[[data.pages.classes.url]]">[[data.pages.classes.menuTitle]]</a>
+          <a name="bookings" href$="[[data.pages.bookings.url]]">[[data.pages.bookings.menuTitle]]</a>
+          <a name="faq" href$="[[data.pages.faq.url]]">[[data.pages.faq.menuTitle]]</a>
+          <a name="about-us" href$="[[data.pages.about-us.url]]">[[data.pages.about-us.menuTitle]]</a>
         </iron-selector>
       </app-drawer>
 
@@ -100,22 +111,22 @@
         <app-header condenses reveals effects="waterfall">
           <app-toolbar id="main-toolbar">
             <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
-            <div title>Grand Training</div>
+            <div title>[[data.company.name]]</div>
           </app-toolbar>
         </app-header>
 
         <iron-pages role="main" selected="[[page]]" attr-for-selected="name">
-          <gt-page-home name="home"></gt-page-home>
-          <gt-page-classes name="classes"></gt-page-classes>
-          <gt-page-bookings name="bookings"></gt-page-bookings>
-          <gt-page-faq name="faq"></gt-page-faq>
-          <gt-page-about-us name="about-us"></gt-page-about-us>
+          <gt-page-home name="home" app="[[app]]"></gt-page-home>
+          <gt-page-classes name="classes" app="[[app]]"></gt-page-classes>
+          <gt-page-bookings name="bookings" app="[[app]]"></gt-page-bookings>
+          <gt-page-faq name="faq" app="[[app]]"></gt-page-faq>
+          <gt-page-about-us name="about-us" app="[[app]]"></gt-page-about-us>
         </iron-pages>
 
         <hr class="bottom-rule">
 
         <footer>
-          Copyright &copy; Grand Training 2016
+          Copyright &copy; [[data.company.name]] [[_currentYear]]
         </footer>
 
       </app-header-layout>
@@ -131,6 +142,16 @@
       is: 'gt-app',
 
       properties: {
+
+        /**
+         * A reference to this app.
+         */
+        app: {
+          type: Object,
+          value: function() {
+            return this;
+          }
+        },
 
         /**
          * The name of the page the app is on.
@@ -154,7 +175,29 @@
         /**
          * The subroute the app is on.
          */
-        subroute: Object
+        subroute: Object,
+
+        /**
+         * The path where this app should download data from.
+         * This path should alwasy end with a slash ('/').
+         */
+        dataPath: {
+          type: String,
+          value: '/'
+        },
+
+        /**
+         * The data this app will use.
+         */
+        data: Object,
+
+        /**
+         * The current year.
+         */
+        _currentYear: {
+          type: Number,
+          value: new Date().getFullYear()
+        }
 
       },
 
@@ -178,6 +221,13 @@
       _pageChanged: function(page) {
         // load page import on demand.
         this.importHref(this.resolveUrl('pages/gt-page-' + page + '.html'), null, null, true);
+      },
+
+      /**
+       * Called when an error occurs during the ajax request.
+       */
+      _handleAjaxError: function() {
+        console.error('ajax error');
       }
 
     });

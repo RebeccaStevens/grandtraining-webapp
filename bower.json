@@ -9,7 +9,8 @@
     "iron-elements": "polymerelements/iron-elements#^1.0.10",
     "paper-elements": "polymerelements/paper-elements#^1.0.7",
     "polymer": "polymer/polymer#^1.5.0",
-    "neon-slideshow": "^1.0.0-alpha.6"
+    "neon-slideshow": "^1.0.0-alpha.6",
+    "html-echo": "^1.0.1"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"

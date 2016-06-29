@@ -1,0 +1,33 @@
+{
+  "company": {
+    "name": "Grand Training",
+    "slogan": "Your home for school holiday computer classes"
+  },
+  "pages": {
+    "home": {
+      "title": "Home",
+      "menuTitle": "Home",
+      "url": "/"
+    },
+    "classes": {
+      "title": "Classes",
+      "menuTitle": "Classes",
+      "url": "/classes"
+    },
+    "bookings": {
+      "title": "Bookings",
+      "menuTitle": "Bookings",
+      "url": "/bookings"
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "menuTitle": "FAQ",
+      "url": "/faq"
+    },
+    "about-us": {
+      "title": "About Us",
+      "menuTitle": "About Us",
+      "url": "/about-us"
+    }
+  }
+}
