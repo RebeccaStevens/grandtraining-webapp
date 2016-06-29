@@ -14,6 +14,17 @@
           return GT.app;
         }
       }
+    },
+
+    /**
+     * This method must be called once the page has finished loading.
+     *
+     * If the page does not need any extra data (i.e. it doesn't need to make any ajax requests)
+     * This method should be called from the page's ready funcion. Otherwise this method should
+     * be called once the ajax request has finished.
+     */
+    pageReady: function() {
+      this.fire('page-loaded');
     }
   };
 </script>

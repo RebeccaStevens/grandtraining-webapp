@@ -98,6 +98,7 @@
       url="[[app.dataPath]]home.json"
       handle-as="json"
       last-response="{{pageData}}"
+      on-response="_handleAjaxResponse"
       on-error="_handleAjaxError"></iron-ajax>
 
     <!-- Layout -->
@@ -144,7 +145,21 @@
        */
       _hasKeyValue: function(obj, key) {
         return obj.hasOwnProperty(key) && obj[key];
-      }
+      },
+
+      /**
+       * Called when the page data loads.
+       */
+      _handleAjaxResponse: function() {
+        this.pageReady();
+      },
+
+      /**
+       * Called when an error occurs during the ajax request.
+       */
+      _handleAjaxError: function() {
+        console.error('ajax error');
+      },
     });
   </script>
 </dom-module>

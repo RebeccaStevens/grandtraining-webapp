@@ -18,7 +18,11 @@
     Polymer({
       is: 'gt-page-faq',
 
-      behaviors: [GT.PageBehavior]
+      behaviors: [GT.PageBehavior],
+
+      ready: function() {
+        this.pageReady();
+      }
     });
   </script>
 </dom-module>

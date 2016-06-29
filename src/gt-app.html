@@ -8,6 +8,7 @@
 <link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
 <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
@@ -69,6 +70,21 @@
         border: inset 1px white;
       }
 
+      #pageLoadingOverlay {
+        background: #ffffff;
+        @apply(--layout-fit);
+        @apply(--layout-horizontal);
+        @apply(--layout-center-center);
+      }
+      #pageLoadingOverlay[hidden] {
+        display: none;
+      }
+      #pageLoadingOverlay paper-spinner {
+        width: 48px;
+        height: 48px;
+        --paper-spinner-stroke-width: 5px;
+      }
+
       footer {
         margin: 0.25em 2em;
         text-align: center;
@@ -116,13 +132,17 @@
           </app-toolbar>
         </app-header>
 
-        <iron-pages id="pages" role="main" selected="[[page]]" attr-for-selected="name">
+        <iron-pages id="pages" role="main" selected="[[page]]" attr-for-selected="name" hidden$="[[pageLoading]]" on-page-loaded="_pageLoaded">
           <gt-page-home name="home"></gt-page-home>
           <gt-page-classes name="classes"></gt-page-classes>
           <gt-page-bookings name="bookings"></gt-page-bookings>
           <gt-page-faq name="faq"></gt-page-faq>
           <gt-page-about-us name="about-us"></gt-page-about-us>
         </iron-pages>
+
+        <div id="pageLoadingOverlay" hidden$="[[!pageLoading]]">
+          <paper-spinner active$="[[pageLoading]]"></paper-spinner>
+        </div>
 
         <hr class="bottom-rule">
 
@@ -183,6 +203,14 @@
         data: Object,
 
         /**
+         * Whether or not a page is currently loading.
+         */
+        pageLoading: {
+          type: Boolean,
+          value: true
+        },
+
+        /**
          * The current year.
          */
         _currentYear: {
@@ -214,8 +242,18 @@
 
         // load page import if it hasn't alreeady been imported.
         if (pageEl !== null && !Polymer.isInstance(pageEl)) {
+          this.pageLoading = true;
           this.importHref(this.resolveUrl('pages/gt-page-' + pageName + '.html'), null, null, true);
+        } else {
+          this.pageLoading = false;
         }
+      },
+
+      /**
+       * Called when a page has loaded.
+       */
+      _pageLoaded: function() {
+        this.pageLoading = false;
       },
 
       /**
