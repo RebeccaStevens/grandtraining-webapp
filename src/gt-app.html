@@ -116,7 +116,7 @@
           </app-toolbar>
         </app-header>
 
-        <iron-pages role="main" selected="[[page]]" attr-for-selected="name">
+        <iron-pages id="pages" role="main" selected="[[page]]" attr-for-selected="name">
           <gt-page-home name="home"></gt-page-home>
           <gt-page-classes name="classes"></gt-page-classes>
           <gt-page-bookings name="bookings"></gt-page-bookings>
@@ -199,8 +199,8 @@
       /**
        * Called when the route data's page is changed.
        */
-      _routePageChanged: function(page) {
-        this.page = page || 'home';                   // change the page
+      _routePageChanged: function(pageName) {
+        this.page = pageName || 'home';               // change the page
         if (this.$['drawer-layout'].narrow) {         // if the drawer layout is narrow
           this.$['drawer-layout'].drawer.close();     // close the drawer
         }
@@ -209,9 +209,13 @@
       /**
        * Called when the page is changed.
        */
-      _pageChanged: function(page) {
-        // load page import on demand.
-        this.importHref(this.resolveUrl('pages/gt-page-' + page + '.html'), null, null, true);
+      _pageChanged: function(pageName) {
+        var pageEl = Polymer.dom(this.$.pages).querySelector('[name="' + pageName + '"]');
+
+        // load page import if it hasn't alreeady been imported.
+        if (pageEl !== null && !Polymer.isInstance(pageEl)) {
+          this.importHref(this.resolveUrl('pages/gt-page-' + pageName + '.html'), null, null, true);
+        }
       },
 
       /**
