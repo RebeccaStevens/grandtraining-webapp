@@ -36,15 +36,36 @@
       .cards {
         @apply(--layout-horizontal);
         @apply(--layout-wrap);
+        @apply(--layout-start);
         @apply(--layout-center-justified);
         margin-bottom: 0.75em;
       }
-      .quote {
-        font-style: italic;
+      .cards > paper-card {
+        @apply(--layout-flex);
       }
       paper-card {
         min-width: 300px;
         max-width: 500px;
+      }
+      .testimonial {
+        margin: 1em 0;
+      }
+      .testimonial:first-of-type {
+        margin-top: 0;
+      }
+      .testimonial:last-of-type {
+        margin-bottom: 0;
+      }
+      .testimonial .content {
+        font-style: italic;
+      }
+      .testimonial .by {
+        font-size: 10pt;
+        text-align: right;
+        margin-top: 0.25em;
+      }
+      .testimonial .by .name {
+        font-weight: bold;
       }
       @media (min-width: 1280px) {
         #title {
@@ -87,14 +108,29 @@
     <h2 id="subtitle">[[app.data.company.slogan]]</h2>
 
     <div class="cards">
-      <template is="dom-repeat" items="[[pageData.cards]]" as="card">
-        <paper-card heading="[[card.heading]]" class="flex">
-          <div class="card-content"><html-echo html="[[card.content]]"></html-echo></div>
-          <template is="dom-if" if="[[_hasKeyValue(card, 'actions')]]">
-            <div class="card-actions"><html-echo html="[[card.actions]]"><html-echo></div>
+
+      <paper-card heading="[[pageData.philosophy.heading]]" class="flex">
+        <div class="card-content"><html-echo html="[[pageData.philosophy.content]]"></html-echo></div>
+      </paper-card>
+
+      <paper-card heading="[[pageData.testimonials.heading]]" class="flex">
+        <div class="card-content">
+          <template is="dom-repeat" items="[[pageData.testimonials.list]]" as="testimonial">
+            <div class="testimonial">
+              <html-echo class="content" html="[[testimonial.content]]"></html-echo>
+              <div class="by"><span class="name">[[testimonial.by]]</span>, <span class="date">[[testimonial.date]]</span></div>
+            </div>
           </template>
-        </paper-card>
-      </template>
+        </div>
+      </paper-card>
+
+      <paper-card heading="[[pageData.classes.heading]]" class="flex">
+        <div class="card-content"><html-echo html="[[pageData.classes.content]]"></html-echo></div>
+        <div class="card-actions">
+          <a name="classes" href$="[[app.data.pages.classes.url]]" tabindex="-1"><paper-button raised>Book Now</paper-button></a>
+        </div>
+      </paper-card>
+
     </div>
   </template>
 
