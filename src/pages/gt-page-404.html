@@ -1,4 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-styles/color.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 
 <link rel="import" href="../../styles/gt-styles.html">
 <link rel="import" href="../gt-page-behavior.html">
@@ -8,11 +11,54 @@
     <style include="gt-styles">
       :host {
         display: block;
-        padding: 10px;
+        padding: 1em 1.5em 0 1.5em;
+      }
+      h1 {
+        font-size: 40pt;
+        color: var(--paper-red-600);
+        margin: 0;
+      }
+      h2 {
+        font-size: 20pt;
+        color: #333;
+        text-transform: uppercase;
+        margin: 0;
+      }
+      .info {
+        margin-top: 0.67em;
+        font-size: 9pt;
+        color: #999;
+        text-transform: uppercase;
+      }
+      #buttons {
+        margin-top: 2em;
+        @apply(--layout-horizontal);
+        @apply(--layout-center-center);
+      }
+      @media (min-width: 1280px) {
+        :host {
+          display: block;
+          padding: 2em 3em 0 3em;
+        }
+        h1 {
+          font-size: 72pt;
+        }
+        h2 {
+          font-size: 38pt;
+        }
+        .info {
+          font-size: 13pt;
+        }
       }
     </style>
 
-    <h1>404 Page</h1>
+    <h1>404</h1>
+    <h2>Page not found</h2>
+    <div class="info">The page you are looking for doesn't seem to exist.<br>
+      It may have been moved, deleted, or may never have existed.</div>
+    <div id="buttons">
+      <a name="classes" href$="[[app.data.pages.home.url]]" tabindex="-1"><paper-button>Back to Home Page</paper-button></a>
+    </div>
   </template>
 
   <script>
