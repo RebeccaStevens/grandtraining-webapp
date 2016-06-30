@@ -60,11 +60,6 @@
         padding-left: 32px;
       }
 
-      .bottom-rule {
-        width: calc(100% - 3em);
-        border: inset 1px white;
-      }
-
       #pageLoadingOverlay {
         background: #ffffff;
         @apply(--layout-fit);
@@ -80,8 +75,14 @@
         --paper-spinner-stroke-width: 5px;
       }
 
+      .bottom-rule {
+        margin-top: 2em;
+        width: calc(100% - 3em);
+        border: inset 1px rgba(255, 255, 255, 0.40);
+      }
+
       footer {
-        margin: 0.25em 2em;
+        margin: 0.75em 2em 0.6em 2em;
         text-align: center;
       }
     </style>
