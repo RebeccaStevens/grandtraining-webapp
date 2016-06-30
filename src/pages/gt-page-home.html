@@ -109,18 +109,18 @@
 
     <div class="cards">
 
-      <paper-card heading="[[pageData.philosophy.heading]]" class="flex">
+      <paper-card heading="[[pageData.philosophy.heading]]">
         <div class="card-content"><html-echo html="[[pageData.philosophy.content]]"></html-echo></div>
       </paper-card>
 
-      <paper-card heading="[[pageData.classes.heading]]" class="flex">
+      <paper-card heading="[[pageData.classes.heading]]">
         <div class="card-content"><html-echo html="[[pageData.classes.content]]"></html-echo></div>
         <div class="card-actions">
           <a name="classes" href$="[[app.data.pages.classes.url]]" tabindex="-1"><paper-button>Book Now</paper-button></a>
         </div>
       </paper-card>
 
-      <paper-card heading="[[pageData.testimonials.heading]]" class="flex">
+      <paper-card heading="[[pageData.testimonials.heading]]">
         <div class="card-content">
           <template is="dom-repeat" items="[[pageData.testimonials.list]]" as="testimonial">
             <div class="testimonial">
