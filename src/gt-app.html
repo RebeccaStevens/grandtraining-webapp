@@ -13,21 +13,16 @@
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../styles/gt-styles.html">
 <link rel="import" href="gt-icons.html">
 
 <dom-module id="gt-app">
 
   <template>
-
-    <style>
+    <style include="gt-styles">
 
       :host {
         display: block;
-        --app-primary-color: #3a87ad;
-        --app-secondary-color: #000000;
-        --app-primary-color-light: #cee6f2;
-        --app-primary-header-color: #04519b;
-        --app-secondary-header-color: var(--app-primary-color);
       }
 
       app-header {

@@ -1,0 +1,48 @@
+<!-- gt-styles, these styles are applide to all gt elements -->
+<dom-module id="gt-styles"><template><style>
+
+:root {
+  --app-primary-color: #3a87ad;
+  --app-primary-color-light: #cee6f2;
+  --app-secondary-color: #000000;
+  --app-secondary-color-light: #404040;
+
+  --app-primary-header-color: #04519b;
+  --app-secondary-header-color: var(--app-primary-color);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--app-primary-header-color);
+}
+
+a {
+  text-decoration: none;
+}
+
+paper-card {
+  border-radius: 0.5em;
+  margin: 0.75em 0.75em 0 0.75em;
+  min-width: 300px;
+  max-width: 500px;
+  --paper-card-header-text: {
+    color: var(--app-secondary-header-color);
+    font-size: 18pt;
+    padding-bottom: 0;
+  };
+}
+paper-card *:first-child {
+  margin-top: 0;
+}
+paper-card *:last-child {
+  margin-bottom: 0;
+}
+
+paper-button {
+  text-transform: capitalize;
+  color: var(--app-secondary-color);
+  border: solid 1px var(--app-primary-color);
+  background-color: var(--app-primary-color-light);
+  --paper-button-ink-color: var(--app-primary-color);
+}
+
+</style></template></dom-module>

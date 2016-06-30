@@ -7,11 +7,12 @@
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/html-echo/html-echo.html">
 
+<link rel="import" href="../../styles/gt-styles.html">
 <link rel="import" href="../gt-page-behavior.html">
 
 <dom-module id="gt-page-home">
   <template>
-    <style>
+    <style include="gt-styles">
       :host {
         display: block;
       }
@@ -19,16 +20,14 @@
         position: relative;
         height: 50vh;
       }
-      h1, h2 {
-        color: var(--app-primary-header-color);
-        text-align: center;
-      }
       #title {
+        text-align: center;
         font-size: 22pt;
         margin-top: 0.4em;
         margin-bottom: 0.25em;
       }
       #subtitle {
+        text-align: center;
         font-size: 17pt;
         margin-top: 0;
         margin-bottom: 0.4em;
@@ -39,34 +38,6 @@
         @apply(--layout-wrap);
         @apply(--layout-center-justified);
         margin-bottom: 0.75em;
-      }
-      paper-card {
-        border-radius: 0.5em;
-        margin: 0.75em 0.75em 0 0.75em;
-        min-width: 300px;
-        max-width: 500px;
-        --paper-card-header-text: {
-          color: var(--app-secondary-header-color);
-          font-size: 18pt;
-          padding-bottom: 0;
-        };
-      }
-      paper-card p:first-of-type {
-        margin-top: 0;
-      }
-      paper-card p:last-of-type {
-        margin-bottom: 0;
-      }
-      a {
-        text-decoration: none;
-      }
-      paper-card .card-actions paper-button,
-      paper-card .card-actions a:visited paper-button {
-        text-transform: capitalize;
-        color: var(--app-secondary-color);
-        border: solid 1px var(--app-primary-color);
-        background-color: var(--app-primary-color-light);
-        --paper-button-ink-color: var(--app-primary-color);
       }
       .quote {
         font-style: italic;

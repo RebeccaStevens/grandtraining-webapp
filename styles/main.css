@@ -1,0 +1,8 @@
+body {
+  margin: 0;
+  font-family: 'Roboto', 'Noto', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  line-height: 1.5;
+  min-height: 100vh;
+  background-color: #ebebeb;
+  color: #333;
+}
