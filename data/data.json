@@ -29,5 +29,31 @@
       "menuTitle": "About Us",
       "url": "/about-us"
     }
-  }
+  },
+  "cities": [
+    "Auckland",
+    "Wellington"
+  ],
+  "locations": [
+    {
+      "id": 1,
+      "city": "Wellington",
+      "name": "Wellington CBD"
+    },
+    {
+      "id": 2,
+      "city": "Auckland",
+      "name": "Auckland CBD"
+    },
+    {
+      "id": 3,
+      "city": "Auckland",
+      "name": "Henderson"
+    },
+    {
+      "id": 4,
+      "city": "Auckland",
+      "name": "North Shore"
+    }
+  ]
 }
