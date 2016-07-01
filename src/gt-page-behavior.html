@@ -14,6 +14,16 @@
         value: function() {
           return GT.app;
         }
+      },
+
+      /**
+       * State's whether or not this page has been succesfully initialised.
+       */
+      isInitialised: {
+        type: Boolean,
+        value: false,
+        notify: true,
+        readOnly: true
       }
     },
 
@@ -25,6 +35,7 @@
      * be called once the ajax request has finished.
      */
     pageReady: function() {
+      this._setIsInitialised(true);
       this.fire('page-loaded');
     },
 
@@ -32,6 +43,7 @@
      * This method should be called if an error occurs while initialising the page.
      */
     pageError: function() {
+      this._setIsInitialised(false);
       this.fire('page-error');
     }
   };
