@@ -454,15 +454,15 @@
        */
       _locationIDchanged: function() {
         this._saveLocationID();
-        this._setLocation();
+        this._setLocationFromSavedID();
       },
 
       /**
        * Set the value of `location` based of `_locationID`.
        */
-      _setLocation: function() {
+      _setLocationFromSavedID: function() {
         for (var city in this.data.cities) {
-          this.setLocation(this.data.cities[city][this._locationID]);
+          this._setLocation(this.data.cities[city][this._locationID]);
           break;
         }
       },
@@ -472,7 +472,7 @@
        */
       _readLocationID: function() {
         this._locationID = Number.parseInt(this.$['locationID-cookie'].readCookie(), 10);
-        this._setLocation();
+        this._setLocationFromSavedID();
       },
 
       /**
