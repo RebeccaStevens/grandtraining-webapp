@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <title>kart-home</title>
+
+  <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../bower_components/web-component-tester/browser.js"></script>
+
+  <!-- Import the element to test -->
+  <link rel="import" href="../src/pages/gt-page-home.html">
+
+</head>
+<body>
+
+  <test-fixture id="page">
+    <template>
+       <gt-page-home></gt-page-home>
+    </template>
+  </test-fixture>
+
+  <script>
+    suite('gt-page-home tests', function() {
+      var page;                 // a reference to the page
+      var timeoutTime = 1000;   // the amount of time to wait for an async tests
+
+      setup(function() {
+        page = fixture('page');
+      });
+
+      test('Page fires "page-loaded" event when ready', function(done) {
+        this.timeout(timeoutTime);
+        page.addEventListener('page-loaded',  function(e) {
+          done();
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>
