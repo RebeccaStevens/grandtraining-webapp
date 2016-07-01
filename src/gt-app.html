@@ -462,8 +462,10 @@
        */
       _setLocationFromSavedID: function() {
         for (var city in this.data.cities) {
-          this._setLocation(this.data.cities[city][this._locationID]);
-          break;
+          if (this.data.cities[city][this._locationID] !== undefined) {
+            this._setLocation(this.data.cities[city][this._locationID]);
+            break;
+          }
         }
       },
 
