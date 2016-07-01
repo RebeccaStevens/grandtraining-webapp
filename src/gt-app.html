@@ -130,7 +130,7 @@
     <iron-ajax id="shellDataLoader"
       url="[[dataPath]]data.json"
       handle-as="json"
-      last-response="{{_data}}"
+      last-response="{{data}}"
       on-response="_handleAjaxResponse"
       on-error="_handleAjaxError"></iron-ajax>
 
@@ -141,11 +141,11 @@
       <app-drawer>
         <app-toolbar>Menu</app-toolbar>
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-          <a name="home" href$="[[_data.pages.home.url]]">[[_data.pages.home.menuTitle]]</a>
-          <a name="classes" href$="[[_data.pages.classes.url]]">[[_data.pages.classes.menuTitle]]</a>
-          <a name="bookings" href$="[[_data.pages.bookings.url]]">[[_data.pages.bookings.menuTitle]]</a>
-          <a name="faq" href$="[[_data.pages.faq.url]]">[[_data.pages.faq.menuTitle]]</a>
-          <a name="about-us" href$="[[_data.pages.about-us.url]]">[[_data.pages.about-us.menuTitle]]</a>
+          <a name="home" href$="[[data.pages.home.url]]">[[data.pages.home.menuTitle]]</a>
+          <a name="classes" href$="[[data.pages.classes.url]]">[[data.pages.classes.menuTitle]]</a>
+          <a name="bookings" href$="[[data.pages.bookings.url]]">[[data.pages.bookings.menuTitle]]</a>
+          <a name="faq" href$="[[data.pages.faq.url]]">[[data.pages.faq.menuTitle]]</a>
+          <a name="about-us" href$="[[data.pages.about-us.url]]">[[data.pages.about-us.menuTitle]]</a>
         </iron-selector>
       </app-drawer>
 
@@ -155,7 +155,7 @@
         <app-header condenses reveals effects="waterfall">
           <app-toolbar id="main-toolbar">
             <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
-            <div title>[[_data.company.name]]</div>
+            <div title>[[data.company.name]]</div>
           </app-toolbar>
         </app-header>
 
@@ -190,7 +190,7 @@
         <hr class="bottom-rule">
 
         <footer>
-          Copyright &copy; [[_data.company.name]] [[_currentYear]]
+          Copyright &copy; [[data.company.name]] [[_currentYear]]
         </footer>
 
       </app-header-layout>
@@ -226,6 +226,11 @@
         },
 
         /**
+         * The data this app will use.
+         */
+        data: Object,
+
+        /**
          * The app's route.
          */
         _route: Object,
@@ -239,11 +244,6 @@
          * The subroute the app is on.
          */
         _subroute: Object,
-
-        /**
-         * The data this app will use.
-         */
-        _data: Object,
 
         /**
          * Whether or not a page is currently loading.
