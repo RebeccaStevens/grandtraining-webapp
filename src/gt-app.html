@@ -72,34 +72,33 @@
         @apply(--layout-fit);
       }
 
-      #pageLoadingOverlay {
+      #loadingOverlay {
+        z-index: 2;
         @apply(--layout-vertical);
         @apply(--layout-center-center);
       }
-      #pageLoadingOverlay paper-spinner {
+      #loadingOverlay paper-spinner {
         width: 48px;
         height: 48px;
         --paper-spinner-stroke-width: 5px;
       }
 
-      #pageErrorOverlay {
+      #errorOverlay {
+        z-index: 1;
         @apply(--layout-vertical);
         @apply(--layout-center-center);
       }
-      #pageErrorOverlay[hidden] {
-        display: none;
-      }
-      #pageErrorOverlay .notice h1 {
+      #errorOverlay .notice h1 {
         font-size: 26pt;
         color: var(--paper-red-600);
         margin: 0.20em 0;
       }
-      #pageErrorOverlay .notice span {
+      #errorOverlay .notice span {
         font-size: 9pt;
         color: #999;
         text-transform: uppercase;
       }
-      #pageErrorOverlay .retry {
+      #errorOverlay .retry {
         margin: 1em;
       }
       .bottom-rule {
@@ -114,10 +113,10 @@
       }
 
       @media (min-width: 1280px) {
-        #pageErrorOverlay .notice h1 {
+        #errorOverlay .notice h1 {
           font-size: 38pt;
         }
-        #pageErrorOverlay .notice span {
+        #errorOverlay .notice span {
           font-size: 13pt;
         }
       }
@@ -132,11 +131,11 @@
         tail="{{subroute}}"></app-route>
 
     <!-- Download data -->
-    <iron-ajax
-      auto
+    <iron-ajax id="shellDataLoader"
       url="[[dataPath]]data.json"
       handle-as="json"
       last-response="{{data}}"
+      on-response="_handleAjaxResponse"
       on-error="_handleAjaxError"></iron-ajax>
 
     <!-- Layout -->
@@ -180,14 +179,14 @@
           <gt-page-404 id="page404" name="404"></gt-page-404>
         </iron-pages>
 
-        <div id="pageLoadingOverlay" class="overlay" hidden$="[[!pageLoading]]">
-          <paper-spinner active$="[[pageLoading]]"></paper-spinner>
+        <div id="loadingOverlay" class="overlay" hidden$="[[hideLoadingOverlay]]">
+          <paper-spinner active$="[[!hideLoadingOverlay]]"></paper-spinner>
         </div>
 
-        <div id="pageErrorOverlay" class="overlay" hidden$="[[!pageError]]">
+        <div id="errorOverlay" class="overlay" hidden$="[[hideErrorOverlay]]">
           <div class="notice">
             <h1>Unable to load page.</h1>
-            <span>Unfortunatly, an error occured while trying to load the requested page.</span>
+            <span>Unfortunately, an error occurred while trying to load the requested page.</span>
           </div>
           <paper-button class="retry" on-tap="_reinitPage">Try again.</paper-button>
         </div>
@@ -259,9 +258,25 @@
         },
 
         /**
+         * Whether or not the shell is currently loading.
+         */
+        shellLoading: {
+          type: Boolean,
+          value: true
+        },
+
+        /**
          * Whether or not a page loading error has occured.
          */
         pageError: {
+          type: Boolean,
+          value: false
+        },
+
+        /**
+         * Whether or not a shell loading error has occured.
+         */
+        shellError: {
           type: Boolean,
           value: false
         },
@@ -271,7 +286,23 @@
          */
         _hidePages: {
           type: Boolean,
-          computed: '_computeHidePages(pageLoading, pageError)'
+          computed: '_computeHidePages(hideLoadingOverlay, hideErrorOverlay)'
+        },
+
+        /**
+         * States whether the page error overlay should be hidden.
+         */
+        hideLoadingOverlay: {
+          type: Boolean,
+          computed: '_computeHideLoadingOverlay(pageLoading, shellLoading)'
+        },
+
+        /**
+         * States whether the page error overlay should be hidden.
+         */
+        hideErrorOverlay: {
+          type: Boolean,
+          computed: '_computeHideErrorOverlay(shellError, pageError)'
         },
 
         /**
@@ -333,13 +364,28 @@
        */
       _pageError: function() {
         this.pageError = true;
+        this.pageLoading = false;
       },
 
       /**
        * Compute the value of `_hidePages`.
        */
-      _computeHidePages: function(pageLoading, pageError) {
-        return pageLoading || pageError;
+      _computeHidePages: function(hideLoadingOverlay, hideErrorOverlay) {
+        return !hideLoadingOverlay || !hideErrorOverlay;
+      },
+
+      /**
+       * Compute the value of `hideLoadingOverlay`.
+       */
+      _computeHideLoadingOverlay: function(pageLoading, shellLoading) {
+        return !(pageLoading || shellLoading);
+      },
+
+      /**
+       * Compute the value of `hideErrorOverlay`.
+       */
+      _computeHideErrorOverlay: function(shellError, pageError) {
+        return !(shellError || pageError);
       },
 
       /**
@@ -347,26 +393,49 @@
        */
       _reinitPage: function() {
         var pageEl = Polymer.dom(this.$.pages).querySelector('[name="' + this.page + '"]');
-        
-        this.pageError = false;   // turn off the page error message
 
-        // if the page has an init function, call it.
-        if (pageEl !== null && pageEl.init instanceof Function) {
-          pageEl.init();
+        if (this.shellError) {
+          this.shellLoading = true;  // turn the loading overlay on
+          this.init();
         }
-        // otherwise, wait a bit and turn the page error back on
-        else {
-          this.async(function() {
-            this.pageError = true;
-          }, 500);
+
+        if (this.pageError) {
+          this.pageLoading = true;  // turn the loading overlay on
+
+          // if the page has an init function, call it.
+          if (pageEl !== null && pageEl.init instanceof Function) {
+            pageEl.init();
+          }
+          // otherwise, wait a bit and turn the loading overlay off
+          else {
+            this.async(function() {
+              this.pageLoading = false;
+            }, 500);
+          }
         }
+      },
+
+      /**
+       * Called when the page data loads.
+       */
+      _handleAjaxResponse: function() {
+        this.shellError = false;
+        this.shellLoading = false;
       },
 
       /**
        * Called when an error occurs during the ajax request.
        */
       _handleAjaxError: function() {
-        console.error('ajax error');
+        this.shellError = true;
+        this.shellLoading = false;
+      },
+
+      /**
+       * Initialise the shell.
+       */
+      init: function() {
+        this.$.shellDataLoader.generateRequest();
       },
 
       /**
@@ -374,6 +443,10 @@
        */
       created: function() {
         GT.app = this;
+      },
+
+      ready: function() {
+        this.init();
       }
 
     });
