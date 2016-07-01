@@ -22,7 +22,7 @@
       </paper-listbox>
     </paper-dropdown-menu>
 
-    <paper-dropdown-menu id="locationSelector" label="Location">
+    <paper-dropdown-menu id="locationSelector" label="Location" disabled$="[[_disableLocationSelector]]">
       <paper-listbox class="dropdown-content" on-iron-select="_locationSelected">
         <template is="dom-repeat" items="[[_locations]]" as="location">
           <paper-item location-id="[[location.id]]">[[location.name]]</paper-item>
@@ -82,6 +82,14 @@
           value: function() {
             return [];
           }
+        },
+
+        /**
+         * States whether or not he LocationSelector should be disabled.
+         */
+        _disableLocationSelector: {
+          type: Boolean,
+          value: true
         }
       },
 
@@ -122,6 +130,8 @@
           name: cityName,
           locations: locations
         });
+
+        this._disableLocationSelector = false;
       },
 
       /**
