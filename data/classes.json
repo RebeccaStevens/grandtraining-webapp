@@ -1,0 +1,34 @@
+{
+  "class-categories": [
+    {
+      "name": "Mincraft",
+      "url": "/minecraft",
+      "teaser": "<p>Learn Minecraft</p>",
+      "description": "<p>Discover Minecraft stuff</p>"
+    },
+    {
+      "name": "Programming",
+      "url": "/programming",
+      "teaser": "<p>Learn Programming</p>",
+      "description": "<p>Discover Programming stuff</p>"
+    },
+    {
+      "name": "Game Development",
+      "url": "/game-development",
+      "teaser": "<p>Learn Game Development</p>",
+      "description": "<p>Discover Game Development stuff</p>"
+    },
+    {
+      "name": "Web Development",
+      "url": "/web-development",
+      "teaser": "<p>Learn Web Development</p>",
+      "description": "<p>Discover Web Development stuff</p>"
+    },
+    {
+      "name": "Other Classes",
+      "url": "/other-classes",
+      "teaser": "<p>Other Classes we offer</p>",
+      "description": "<p>Here are all the other classes we offer.</p>"
+    }
+  ]
+}
