@@ -20,18 +20,72 @@
   </test-fixture>
 
   <script>
+    /* * * * * * * * * */
     suite('gt-page-home tests', function() {
       var page;                 // a reference to the page
-      var timeoutTime = 1000;   // the amount of time to wait for an async tests
+      this.timeout(1000);       // how long to wait before timing out a test
 
       setup(function() {
         page = fixture('page');
       });
 
-      test('Page fires "page-loaded" event when ready', function(done) {
-        this.timeout(timeoutTime);
-        page.addEventListener('page-loaded',  function(e) {
-          done();
+      /* * * * * * * * * */
+      suite('server', function() {
+
+        var ironAjax;             // a reference to the iron-ajax element in the page
+        var server;
+        var responseHeaders = {
+          json: { 'Content-Type': 'application/json' }
+        };
+
+        setup(function() {
+          server = sinon.fakeServer.create();
+
+          ironAjax = Polymer.dom(page.root).querySelector('iron-ajax');
+
+          ironAjax.addEventListener('request', function() {
+            server.respond();
+          });
+        });
+
+        teardown(function() {
+          server.restore();
+        });
+
+        /* * * * * * * * * */
+        suite('positive responses', function() {
+
+          setup(function() {
+            server.respondWith(
+              'GET',
+              /home.json/,
+              [ 200, responseHeaders.json, '{}' ] // the content that is received is not important for these test. It should be tested server side.
+            );
+          });
+
+          test('Page fires "page-loaded" event when ready', function(done) {
+            page.addEventListener('page-loaded',  function(e) {
+              done();
+            });
+          });
+        });
+
+        /* * * * * * * * * */
+        suite('negitive responses', function() {
+
+          setup(function() {
+            server.respondWith(
+              'GET',
+              /home.json/,
+              [ 404, {}, '' ]
+            );
+          });
+
+          test('Page fires "page-error" event if ajax fails', function(done) {
+            page.addEventListener('page-error',  function(e) {
+              done();
+            });
+          });
         });
       });
     });
