@@ -114,6 +114,7 @@
        */
       _cityChanged: function(city) {
         this._locations = city.locations;
+        Polymer.dom(this.$.locationSelector).querySelector('paper-listbox').selected = -1;
       },
 
       /**
