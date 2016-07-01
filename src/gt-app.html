@@ -345,6 +345,11 @@
         if (!Polymer.isInstance(pageEl)) {
           this._pageLoading = true;
           this.importHref(this.resolveUrl('pages/gt-page-' + pageName + '.html'), null, null, true);
+        }
+        // if the page is not initialised.
+        else if(!pageEl.isInitialised) {
+          this._pageError = true;
+          this._reinitPage();
         } else {
           this._pageLoading = false;
         }
