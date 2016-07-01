@@ -347,16 +347,11 @@
        */
       _reinitPage: function() {
         var pageEl = Polymer.dom(this.$.pages).querySelector('[name="' + this.page + '"]');
-
-        // if the page element doesn't exist, the page doesn't exist and we can't do anything
-        if (pageEl === null) {
-          return;
-        }
-
+        
         this.pageError = false;   // turn off the page error message
 
         // if the page has an init function, call it.
-        if (pageEl.hasOwnProperty('init') && pageEl.init instanceof Function) {
+        if (pageEl !== null && pageEl.init instanceof Function) {
           pageEl.init();
         }
         // otherwise, wait a bit and turn the page error back on
