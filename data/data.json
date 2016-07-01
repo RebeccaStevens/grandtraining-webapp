@@ -30,30 +30,30 @@
       "url": "/about-us"
     }
   },
-  "cities": [
-    "Auckland",
-    "Wellington"
-  ],
-  "locations": [
-    {
-      "id": 1,
-      "city": "Wellington",
-      "name": "Wellington CBD"
+  "cities": {
+    "Auckland": {
+      "2": {
+        "id": 2,
+        "city": "Auckland",
+        "name": "Auckland CBD"
+      },
+      "3": {
+        "id": 3,
+        "city": "Auckland",
+        "name": "Henderson"
+      },
+      "4": {
+        "id": 4,
+        "city": "Auckland",
+        "name": "North Shore"
+      }
     },
-    {
-      "id": 2,
-      "city": "Auckland",
-      "name": "Auckland CBD"
-    },
-    {
-      "id": 3,
-      "city": "Auckland",
-      "name": "Henderson"
-    },
-    {
-      "id": 4,
-      "city": "Auckland",
-      "name": "North Shore"
+    "Wellington": {
+      "1": {
+        "id": 1,
+        "city": "Wellington",
+        "name": "Wellington CBD"
+      }
     }
-  ]
+  }
 }
