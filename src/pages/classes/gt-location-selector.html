@@ -14,7 +14,7 @@
       }
     </style>
 
-    <paper-dropdown-menu id="citySelector">
+    <paper-dropdown-menu id="citySelector" label="City">
       <paper-listbox class="dropdown-content" on-iron-select="_citySelected">
         <template is="dom-repeat" items="[[_cities]]" as="city">
           <paper-item city-name="[[city.name]]">[[city.name]]</paper-item>
@@ -22,7 +22,7 @@
       </paper-listbox>
     </paper-dropdown-menu>
 
-    <paper-dropdown-menu id="locationSelector">
+    <paper-dropdown-menu id="locationSelector" label="Location">
       <paper-listbox class="dropdown-content" on-iron-select="_locationSelected">
         <template is="dom-repeat" items="[[_locations]]" as="location">
           <paper-item location-id="[[location.id]]">[[location.name]]</paper-item>
