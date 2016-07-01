@@ -90,7 +90,7 @@
 
     <!-- Download data -->
     <iron-ajax
-      auto
+      id="pageDataLoader"
       url="[[app.dataPath]]home.json"
       handle-as="json"
       last-response="{{pageData}}"
@@ -149,6 +149,13 @@
       behaviors: [GT.PageBehavior],
 
       /**
+       * Initialise the page.
+       */
+      init: function() {
+        this.$.pageDataLoader.generateRequest();
+      },
+
+      /**
        * Returns whether or not the given object has the given key and the key's value is truthy.
        *
        * {Object} obj
@@ -171,6 +178,10 @@
       _handleAjaxError: function() {
         this.pageError();
       },
+
+      ready: function() {
+        this.init();
+      }
     });
   </script>
 </dom-module>
