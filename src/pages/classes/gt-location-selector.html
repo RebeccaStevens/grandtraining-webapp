@@ -1,0 +1,135 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../../bower_components/paper-item/paper-item.html">
+
+<link rel="import" href="../../../styles/gt-styles.html">
+
+<dom-module id="gt-location-selector">
+  <template>
+    <style include="gt-styles">
+      :host {
+        display: block;
+        padding: 10px;
+      }
+    </style>
+
+    <paper-dropdown-menu id="citySelector">
+      <paper-listbox class="dropdown-content" on-iron-select="_citySelected">
+        <template is="dom-repeat" items="[[_cities]]" as="city">
+          <paper-item city-name="[[city.name]]">[[city.name]]</paper-item>
+        </template>
+      </paper-listbox>
+    </paper-dropdown-menu>
+
+    <paper-dropdown-menu id="locationSelector">
+      <paper-listbox class="dropdown-content" on-iron-select="_locationSelected">
+        <template is="dom-repeat" items="[[_locations]]" as="location">
+          <paper-item location-id="[[location.id]]">[[location.name]]</paper-item>
+        </template>
+      </paper-listbox>
+    </paper-dropdown-menu>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'gt-location-selector',
+
+      properties: {
+
+        /**
+         * The gloabel cities object
+         */
+        globalCities: {
+          type: Object,
+          observer: '_gloabelCitiesChanged'
+        },
+
+        /**
+         * The selected city.
+         */
+        city: {
+          type: Object,
+          notify: true,
+          readOnly: true,
+          observer: '_cityChanged'
+        },
+
+        /**
+         * The selected location.
+         */
+        location: {
+          type: Object,
+          readOnly: true,
+          notify: true
+        },
+
+        /**
+         * A list of the cities the user can choose from.
+         */
+        _cities: {
+          type: Array,
+          value: function() {
+            return [];
+          }
+        },
+
+        /**
+         * A list of the cities the user can choose from.
+         */
+        _locations: {
+          type: Array,
+          value: function() {
+            return [];
+          }
+        }
+      },
+
+      /**
+       * Called when `app.data.cities` changes.
+       */
+      _gloabelCitiesChanged: function(cities) {
+        var cityArray = [];
+        for (var key in cities) {
+          var city = {
+            name: key,
+            locations: cities[key]
+          };
+
+          cityArray.push(city);
+        }
+        this.set('_cities', cityArray);
+      },
+
+      /**
+       * Called when `city` changes.
+       */
+      _cityChanged: function(city) {
+        this._locations = city.locations;
+      },
+
+      /**
+       * Called when a city is selected.
+       */
+      _citySelected: function(e) {
+        var cityName = e.detail.item.cityName;
+        var locations = [];
+        for(var key in this.globalCities[cityName]) {
+          locations.push(this.globalCities[cityName][key]);
+        }
+
+        this._setCity({
+          name: cityName,
+          locations: locations
+        });
+      },
+
+      /**
+       * Called when a location is selected.
+       */
+      _locationSelected: function(e) {
+        this._setLocation(this.globalCities[this.city.name][e.detail.item.locationId]);
+      }
+    });
+  </script>
+</dom-module>

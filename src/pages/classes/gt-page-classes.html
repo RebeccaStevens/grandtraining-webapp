@@ -2,6 +2,7 @@
 
 <link rel="import" href="../../../styles/gt-styles.html">
 <link rel="import" href="../gt-page-behavior.html">
+<link rel="import" href="gt-location-selector.html">
 
 <dom-module id="gt-page-classes">
   <template>
@@ -13,13 +14,32 @@
     </style>
 
     <h1>Classes Page</h1>
+    <gt-location-selector global-cities="[[app.data.cities]]" location="{{location}}"></gt-location-selector>
   </template>
 
   <script>
     Polymer({
       is: 'gt-page-classes',
 
+      properties: {
+
+        /**
+         * The selected location.
+         */
+        location: {
+          type: Object,
+          observer: '_locationChanged'
+        }
+      },
+
       behaviors: [GT.PageBehavior],
+
+      /**
+       * Called when the location changes.
+       */
+      _locationChanged: function(location) {
+        this.app.setLocationByID(location.id);
+      },
 
       ready: function() {
         this.pageReady();
