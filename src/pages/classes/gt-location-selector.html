@@ -2,6 +2,8 @@
 <link rel="import" href="../../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../../../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
 
 <link rel="import" href="../../../styles/gt-styles.html">
 
@@ -10,25 +12,46 @@
     <style include="gt-styles">
       :host {
         display: block;
-        padding: 10px;
+      }
+      #location {
+        --paper-card-content: {
+          padding-top: 0;
+        };
+      }
+      #location .card-content {
+        @apply(--layout-horizontal);
+      }
+      #location .card-content paper-dropdown-menu {
+        margin: 0 0.5em;
+        @apply(--layout-flex);
+      }
+      #location .card-content paper-dropdown-menu:first-child {
+        margin-left: 0;
+      }
+      #location .card-content paper-dropdown-menu:last-child {
+        margin-right: 0;
       }
     </style>
 
-    <paper-dropdown-menu id="citySelector" label="City">
-      <paper-listbox class="dropdown-content" on-iron-select="_citySelected">
-        <template is="dom-repeat" items="[[_cities]]" as="city">
-          <paper-item city-name="[[city.name]]">[[city.name]]</paper-item>
-        </template>
-      </paper-listbox>
-    </paper-dropdown-menu>
+    <paper-card id="location" heading="Your Location" class="fit-width">
+      <div class="card-content">
+        <paper-dropdown-menu id="citySelector" label="City">
+          <paper-listbox class="dropdown-content" on-iron-select="_citySelected">
+            <template is="dom-repeat" items="[[_cities]]" as="city">
+              <paper-item city-name="[[city.name]]">[[city.name]]</paper-item>
+            </template>
+          </paper-listbox>
+        </paper-dropdown-menu>
 
-    <paper-dropdown-menu id="locationSelector" label="Location" disabled$="[[_disableLocationSelector]]">
-      <paper-listbox class="dropdown-content" on-iron-select="_locationSelected">
-        <template is="dom-repeat" items="[[_locations]]" as="location">
-          <paper-item location-id="[[location.id]]">[[location.name]]</paper-item>
-        </template>
-      </paper-listbox>
-    </paper-dropdown-menu>
+        <paper-dropdown-menu id="locationSelector" label="Area" disabled$="[[_disableLocationSelector]]">
+          <paper-listbox class="dropdown-content" on-iron-select="_locationSelected">
+            <template is="dom-repeat" items="[[_locations]]" as="location">
+              <paper-item location-id="[[location.id]]">[[location.name]]</paper-item>
+            </template>
+          </paper-listbox>
+        </paper-dropdown-menu>
+      </div>
+    </paper-card>
   </template>
 
   <script>
