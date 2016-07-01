@@ -98,7 +98,7 @@
       on-error="_handleAjaxError"></iron-ajax>
 
     <!-- Layout -->
-    <neon-carousel-pages playing delay="6000">
+    <neon-carousel-pages id="carouselPages" playing delay="6000">
       <template is="dom-repeat" items="[[pageData.carouselImages]]" as="img">
         <iron-image sizing="cover" src="[[img.src]]" preload fade placeholder="[[img.placeholder]]"></iron-image>
       </template>
@@ -148,6 +148,10 @@
 
       behaviors: [GT.PageBehavior],
 
+      observers: [
+        '_carouselImagesChanged(pageData.carouselImages)'
+      ],
+
       /**
        * Initialise the page.
        */
@@ -163,6 +167,27 @@
        */
       _hasKeyValue: function(obj, key) {
         return obj.hasOwnProperty(key) && obj[key];
+      },
+
+      /**
+       * Called when the carousel images are changed.
+       */
+      _carouselImagesChanged: function(images) {
+        // add or remove a placeholder child so that the neon-carousel-pages element
+        // never has no displayable children
+
+        var dom = Polymer.dom(this.$.carouselPages);
+
+        if (images && images.length > 0) {
+          var placeholder = dom.querySelector('.placeholder');
+          if (placeholder) {
+            dom.removeChild(placeholder);
+          }
+        } else {
+          var placeholder = document.createElement('div');
+          placeholder.setAttribute('class', 'placeholder');
+          dom.insertBefore(placeholder, dom.firstChild);
+        }
       },
 
       /**
