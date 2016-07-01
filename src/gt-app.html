@@ -252,7 +252,8 @@
          */
         _pageTitle: {
           type: String,
-          computed: '_computePageTitle(page, data.company.name)'
+          computed: '_computePageTitle(page, data.company.name)',
+          observer: '_pageTitleChanged'
         },
 
         /**
@@ -500,6 +501,41 @@
        */
       _saveLocationID: function() {
         this.$['locationID-cookie'].createCookie();
+      },
+
+      /**
+       * Compute the width of the given text of given font in pixels.
+       *
+       * @param {String} text The text to be rendered.
+       * @param {String} font The css font descriptor that text is to be rendered with (e.g. "bold 14px verdana").
+       * @returns {Number}
+       *
+       * @see http://stackoverflow.com/questions/118241/calculate-text-width-with-javascript/21015393#21015393
+       */
+      _getTextWidth: function(text, font) {
+          // re-use canvas object for better performance
+          var canvas = this._getTextWidthCanvas || (this._getTextWidthCanvas = document.createElement("canvas"));
+          var context = canvas.getContext("2d");
+          context.font = font;
+          var metrics = context.measureText(text);
+          return metrics.width;
+      },
+
+      /**
+       * Called when the page title changes.
+       */
+      _pageTitleChanged: function(title) {
+        var computedStyle = getComputedStyle(this.$['main-toolbar']);
+        var textWidth = this._getTextWidth(title, computedStyle.font);
+        var toolbarTextWidth = this.$['main-toolbar'].clientWidth - 2 * 68;
+
+        // scale the text to fit in the toolbar.
+        if (textWidth > toolbarTextWidth) {
+          this.$['main-toolbar'].style.fontSize = (Number.parseInt(computedStyle.fontSize, 10) * toolbarTextWidth / textWidth) + 'px';
+        }
+        else {
+          this.$['main-toolbar'].style.fontSize = '';
+        }
       },
 
       /**
