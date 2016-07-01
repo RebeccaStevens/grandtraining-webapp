@@ -13,6 +13,7 @@
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-styles/color.html">
 <link rel="import" href="../styles/gt-styles.html">
 <link rel="import" href="../imports/gt.html">
 <link rel="import" href="gt-icons.html">
@@ -24,6 +25,10 @@
 
       :host {
         display: block;
+      }
+
+      [hidden] {
+        display: none !important;
       }
 
       app-header {
@@ -61,14 +66,15 @@
         padding-left: 32px;
       }
 
-      #pageLoadingOverlay {
+      .overlay {
         background: #ffffff;
+        padding: 1em 1.5em;
         @apply(--layout-fit);
-        @apply(--layout-horizontal);
-        @apply(--layout-center-center);
       }
-      #pageLoadingOverlay[hidden] {
-        display: none;
+
+      #pageLoadingOverlay {
+        @apply(--layout-vertical);
+        @apply(--layout-center-center);
       }
       #pageLoadingOverlay paper-spinner {
         width: 48px;
@@ -76,6 +82,26 @@
         --paper-spinner-stroke-width: 5px;
       }
 
+      #pageErrorOverlay {
+        @apply(--layout-vertical);
+        @apply(--layout-center-center);
+      }
+      #pageErrorOverlay[hidden] {
+        display: none;
+      }
+      #pageErrorOverlay .notice h1 {
+        font-size: 26pt;
+        color: var(--paper-red-600);
+        margin: 0.20em 0;
+      }
+      #pageErrorOverlay .notice span {
+        font-size: 9pt;
+        color: #999;
+        text-transform: uppercase;
+      }
+      #pageErrorOverlay .retry {
+        margin: 1em;
+      }
       .bottom-rule {
         margin-top: 2em;
         width: calc(100% - 3em);
@@ -85,6 +111,15 @@
       footer {
         margin: 0.75em 2em 0.6em 2em;
         text-align: center;
+      }
+
+      @media (min-width: 1280px) {
+        #pageErrorOverlay .notice h1 {
+          font-size: 38pt;
+        }
+        #pageErrorOverlay .notice span {
+          font-size: 13pt;
+        }
       }
     </style>
 
@@ -134,8 +169,9 @@
           selected="[[page]]"
           attr-for-selected="name"
           fallback-selection="404"
-          hidden$="[[pageLoading]]"
-          on-page-loaded="_pageLoaded">
+          hidden$="[[_hidePages]]"
+          on-page-loaded="_pageLoaded"
+          on-page-error="_pageError">
           <gt-page-home name="home"></gt-page-home>
           <gt-page-classes name="classes"></gt-page-classes>
           <gt-page-bookings name="bookings"></gt-page-bookings>
@@ -144,8 +180,16 @@
           <gt-page-404 id="page404" name="404"></gt-page-404>
         </iron-pages>
 
-        <div id="pageLoadingOverlay" hidden$="[[!pageLoading]]">
+        <div id="pageLoadingOverlay" class="overlay" hidden$="[[!pageLoading]]">
           <paper-spinner active$="[[pageLoading]]"></paper-spinner>
+        </div>
+
+        <div id="pageErrorOverlay" class="overlay" hidden$="[[!pageError]]">
+          <div class="notice">
+            <h1>Unable to load page.</h1>
+            <span>Unfortunatly, an error occured while trying to load the requested page.</span>
+          </div>
+          <paper-button class="retry" on-tap="_reinitPage">Try again.</paper-button>
         </div>
 
         <hr class="bottom-rule">
@@ -215,6 +259,22 @@
         },
 
         /**
+         * Whether or not a page loading error has occured.
+         */
+        pageError: {
+          type: Boolean,
+          value: false
+        },
+
+        /**
+         * States whether the pages should be hidden.
+         */
+        _hidePages: {
+          type: Boolean,
+          computed: '_computeHidePages(pageLoading, pageError)'
+        },
+
+        /**
          * The current year.
          */
         _currentYear: {
@@ -257,6 +317,8 @@
         } else {
           this.pageLoading = false;
         }
+
+        this.pageError = false;
       },
 
       /**
@@ -264,6 +326,45 @@
        */
       _pageLoaded: function() {
         this.pageLoading = false;
+      },
+
+      /**
+       * Called when a page loading error occurs.
+       */
+      _pageError: function() {
+        this.pageError = true;
+      },
+
+      /**
+       * Compute the value of `_hidePages`.
+       */
+      _computeHidePages: function(pageLoading, pageError) {
+        return pageLoading || pageError;
+      },
+
+      /**
+       * reinitialise the current page.
+       */
+      _reinitPage: function() {
+        var pageEl = Polymer.dom(this.$.pages).querySelector('[name="' + this.page + '"]');
+
+        // if the page element doesn't exist, the page doesn't exist and we can't do anything
+        if (pageEl === null) {
+          return;
+        }
+
+        this.pageError = false;   // turn off the page error message
+
+        // if the page has an init function, call it.
+        if (pageEl.hasOwnProperty('init') && pageEl.init instanceof Function) {
+          pageEl.init();
+        }
+        // otherwise, wait a bit and turn the page error back on
+        else {
+          this.async(function() {
+            this.pageError = true;
+          }, 500);
+        }
       },
 
       /**
