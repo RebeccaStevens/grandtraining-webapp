@@ -2,11 +2,11 @@
   "entrypoint": "index.html",
   "shell": "src/gt-app.html",
   "fragments": [
-    "src/pages/gt-pages-home.html",
-    "src/pages/gt-pages-classes.html",
-    "src/pages/gt-pages-bookings.html",
-    "src/pages/gt-pages-faq.html",
-    "src/pages/gt-pages-about-us.html",
-    "src/pages/gt-pages-404.html"
+    "src/pages/home/gt-pages-home.html",
+    "src/pages/classes/gt-pages-classes.html",
+    "src/pages/bookings/gt-pages-bookings.html",
+    "src/pages/faq/gt-pages-faq.html",
+    "src/pages/about-us/gt-pages-about-us.html",
+    "src/pages/404/gt-pages-404.html"
   ]
 }

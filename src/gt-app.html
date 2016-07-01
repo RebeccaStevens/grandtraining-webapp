@@ -340,7 +340,7 @@
         // load page import if it hasn't alreeady been imported.
         if (!Polymer.isInstance(pageEl)) {
           this._pageLoading = true;
-          this.importHref(this.resolveUrl('pages/gt-page-' + pageName + '.html'), null, null, true);
+          this.importHref(this.resolveUrl('pages/' + pageName + '/gt-page-' + pageName + '.html'), null, null, true);
         }
         // if the page is not initialised.
         else if(!pageEl.isInitialised) {
