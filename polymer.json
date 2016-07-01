@@ -6,6 +6,7 @@
     "src/pages/gt-pages-classes.html",
     "src/pages/gt-pages-bookings.html",
     "src/pages/gt-pages-faq.html",
-    "src/pages/gt-pages-about-us.html"
+    "src/pages/gt-pages-about-us.html",
+    "src/pages/gt-pages-404.html"
   ]
 }
