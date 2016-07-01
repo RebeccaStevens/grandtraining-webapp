@@ -114,7 +114,14 @@
        */
       _cityChanged: function(city) {
         this._locations = city.locations;
+
         Polymer.dom(this.$.locationSelector).querySelector('paper-listbox').selected = -1;
+
+        if (city.locations.length === 1) {
+          this.async(function() {
+            Polymer.dom(this.$.locationSelector).querySelector('paper-listbox').selected = 0;
+          }, 0);
+        }
       },
 
       /**
