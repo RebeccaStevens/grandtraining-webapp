@@ -40,12 +40,9 @@
 
         setup(function() {
           server = sinon.fakeServer.create();
+          server.respondImmediately = true;
 
           ironAjax = Polymer.dom(page.root).querySelector('iron-ajax');
-
-          ironAjax.addEventListener('request', function() {
-            server.respond();
-          });
         });
 
         teardown(function() {
