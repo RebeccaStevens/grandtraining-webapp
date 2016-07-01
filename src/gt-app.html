@@ -164,7 +164,7 @@
         <app-header condenses reveals effects="waterfall">
           <app-toolbar id="main-toolbar">
             <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
-            <div title>[[data.company.name]]</div>
+            <div title>[[_pageTitle]]</div>
           </app-toolbar>
         </app-header>
 
@@ -245,6 +245,14 @@
         location: {
           type: Object,
           readOnly: true
+        },
+
+        /**
+         * The title to display at the top of the page
+         */
+        _pageTitle: {
+          type: String,
+          computed: '_computePageTitle(page, data.company.name)'
         },
 
         /**
@@ -420,6 +428,16 @@
        */
       _computeHideErrorOverlay: function(shellError, pageError) {
         return !(shellError || pageError);
+      },
+
+      /**
+       * Compute the value of `_pageTitle`.
+       */
+      _computePageTitle: function(page, companyName) {
+        if (page === 'home') {
+          return companyName;
+        }
+        return this.data.pages[page].title;
       },
 
       /**
