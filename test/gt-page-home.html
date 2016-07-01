@@ -65,6 +65,8 @@
 
           test('Page fires "page-loaded" event when ready', function(done) {
             page.addEventListener('page-loaded',  function(e) {
+              expect(page.isInitialised).to.exist;
+              expect(page.isInitialised).to.be.equal(true);
               done();
             });
           });
@@ -83,6 +85,8 @@
 
           test('Page fires "page-error" event if ajax fails', function(done) {
             page.addEventListener('page-error',  function(e) {
+              expect(page.isInitialised).to.exist;
+              expect(page.isInitialised).to.be.equal(false);
               done();
             });
           });
