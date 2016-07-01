@@ -123,18 +123,18 @@
     </style>
 
     <!-- Routing -->
-    <app-location route="{{route}}"></app-location>
+    <app-location route="{{_route}}"></app-location>
     <app-route
-        route="{{route}}"
+        route="{{_route}}"
         pattern="/:page"
-        data="{{routeData}}"
-        tail="{{subroute}}"></app-route>
+        data="{{_routeData}}"
+        tail="{{_subroute}}"></app-route>
 
     <!-- Download data -->
     <iron-ajax id="shellDataLoader"
       url="[[dataPath]]data.json"
       handle-as="json"
-      last-response="{{data}}"
+      last-response="{{_data}}"
       on-response="_handleAjaxResponse"
       on-error="_handleAjaxError"></iron-ajax>
 
@@ -145,11 +145,11 @@
       <app-drawer>
         <app-toolbar>Menu</app-toolbar>
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-          <a name="home" href$="[[data.pages.home.url]]">[[data.pages.home.menuTitle]]</a>
-          <a name="classes" href$="[[data.pages.classes.url]]">[[data.pages.classes.menuTitle]]</a>
-          <a name="bookings" href$="[[data.pages.bookings.url]]">[[data.pages.bookings.menuTitle]]</a>
-          <a name="faq" href$="[[data.pages.faq.url]]">[[data.pages.faq.menuTitle]]</a>
-          <a name="about-us" href$="[[data.pages.about-us.url]]">[[data.pages.about-us.menuTitle]]</a>
+          <a name="home" href$="[[_data.pages.home.url]]">[[_data.pages.home.menuTitle]]</a>
+          <a name="classes" href$="[[_data.pages.classes.url]]">[[_data.pages.classes.menuTitle]]</a>
+          <a name="bookings" href$="[[_data.pages.bookings.url]]">[[_data.pages.bookings.menuTitle]]</a>
+          <a name="faq" href$="[[_data.pages.faq.url]]">[[_data.pages.faq.menuTitle]]</a>
+          <a name="about-us" href$="[[_data.pages.about-us.url]]">[[_data.pages.about-us.menuTitle]]</a>
         </iron-selector>
       </app-drawer>
 
@@ -159,7 +159,7 @@
         <app-header condenses reveals effects="waterfall">
           <app-toolbar id="main-toolbar">
             <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
-            <div title>[[data.company.name]]</div>
+            <div title>[[_data.company.name]]</div>
           </app-toolbar>
         </app-header>
 
@@ -170,7 +170,7 @@
           fallback-selection="404"
           hidden$="[[_hidePages]]"
           on-page-loaded="_pageLoaded"
-          on-page-error="_pageError">
+          on-page-error="_pageErrorOccurred">
           <gt-page-home name="home"></gt-page-home>
           <gt-page-classes name="classes"></gt-page-classes>
           <gt-page-bookings name="bookings"></gt-page-bookings>
@@ -179,11 +179,11 @@
           <gt-page-404 id="page404" name="404"></gt-page-404>
         </iron-pages>
 
-        <div id="loadingOverlay" class="overlay" hidden$="[[hideLoadingOverlay]]">
-          <paper-spinner active$="[[!hideLoadingOverlay]]"></paper-spinner>
+        <div id="loadingOverlay" class="overlay" hidden$="[[_hideLoadingOverlay]]">
+          <paper-spinner active$="[[!_hideLoadingOverlay]]"></paper-spinner>
         </div>
 
-        <div id="errorOverlay" class="overlay" hidden$="[[hideErrorOverlay]]">
+        <div id="errorOverlay" class="overlay" hidden$="[[_hideErrorOverlay]]">
           <div class="notice">
             <h1>Unable to load page.</h1>
             <span>Unfortunately, an error occurred while trying to load the requested page.</span>
@@ -194,7 +194,7 @@
         <hr class="bottom-rule">
 
         <footer>
-          Copyright &copy; [[data.company.name]] [[_currentYear]]
+          Copyright &copy; [[_data.company.name]] [[_currentYear]]
         </footer>
 
       </app-header-layout>
@@ -221,21 +221,6 @@
         },
 
         /**
-         * The app's route.
-         */
-        route: Object,
-
-        /**
-         * The data contained in the route.
-         */
-        routeData: Object,
-
-        /**
-         * The subroute the app is on.
-         */
-        subroute: Object,
-
-        /**
          * The path where this app should download data from.
          * This path should alwasy end with a slash ('/').
          */
@@ -245,14 +230,29 @@
         },
 
         /**
+         * The app's route.
+         */
+        _route: Object,
+
+        /**
+         * The data contained in the route.
+         */
+        _routeData: Object,
+
+        /**
+         * The subroute the app is on.
+         */
+        _subroute: Object,
+
+        /**
          * The data this app will use.
          */
-        data: Object,
+        _data: Object,
 
         /**
          * Whether or not a page is currently loading.
          */
-        pageLoading: {
+        _pageLoading: {
           type: Boolean,
           value: true
         },
@@ -260,7 +260,7 @@
         /**
          * Whether or not the shell is currently loading.
          */
-        shellLoading: {
+        _shellLoading: {
           type: Boolean,
           value: true
         },
@@ -268,7 +268,7 @@
         /**
          * Whether or not a page loading error has occured.
          */
-        pageError: {
+        _pageError: {
           type: Boolean,
           value: false
         },
@@ -276,7 +276,7 @@
         /**
          * Whether or not a shell loading error has occured.
          */
-        shellError: {
+        _shellError: {
           type: Boolean,
           value: false
         },
@@ -286,23 +286,23 @@
          */
         _hidePages: {
           type: Boolean,
-          computed: '_computeHidePages(hideLoadingOverlay, hideErrorOverlay)'
+          computed: '_computeHidePages(_hideLoadingOverlay, _hideErrorOverlay)'
         },
 
         /**
          * States whether the page error overlay should be hidden.
          */
-        hideLoadingOverlay: {
+        _hideLoadingOverlay: {
           type: Boolean,
-          computed: '_computeHideLoadingOverlay(pageLoading, shellLoading)'
+          computed: '_computeHideLoadingOverlay(_pageLoading, _shellLoading)'
         },
 
         /**
          * States whether the page error overlay should be hidden.
          */
-        hideErrorOverlay: {
+        _hideErrorOverlay: {
           type: Boolean,
-          computed: '_computeHideErrorOverlay(shellError, pageError)'
+          computed: '_computeHideErrorOverlay(_shellError, _pageError)'
         },
 
         /**
@@ -316,7 +316,7 @@
       },
 
       observers: [
-        '_routePageChanged(routeData.page)'
+        '_routePageChanged(_routeData.page)'
       ],
 
       /**
@@ -343,28 +343,29 @@
 
         // load page import if it hasn't alreeady been imported.
         if (!Polymer.isInstance(pageEl)) {
-          this.pageLoading = true;
+          this._pageLoading = true;
           this.importHref(this.resolveUrl('pages/gt-page-' + pageName + '.html'), null, null, true);
         } else {
-          this.pageLoading = false;
+          this._pageLoading = false;
         }
 
-        this.pageError = false;
+        this._pageError = false;
       },
 
       /**
        * Called when a page has loaded.
        */
       _pageLoaded: function() {
-        this.pageLoading = false;
+        this._pageError = false;
+        this._pageLoading = false;
       },
 
       /**
        * Called when a page loading error occurs.
        */
-      _pageError: function() {
-        this.pageError = true;
-        this.pageLoading = false;
+      _pageErrorOccurred: function() {
+        this._pageError = true;
+        this._pageLoading = false;
       },
 
       /**
@@ -375,14 +376,14 @@
       },
 
       /**
-       * Compute the value of `hideLoadingOverlay`.
+       * Compute the value of `_hideLoadingOverlay`.
        */
       _computeHideLoadingOverlay: function(pageLoading, shellLoading) {
         return !(pageLoading || shellLoading);
       },
 
       /**
-       * Compute the value of `hideErrorOverlay`.
+       * Compute the value of `_hideErrorOverlay`.
        */
       _computeHideErrorOverlay: function(shellError, pageError) {
         return !(shellError || pageError);
@@ -394,13 +395,13 @@
       _reinitPage: function() {
         var pageEl = Polymer.dom(this.$.pages).querySelector('[name="' + this.page + '"]');
 
-        if (this.shellError) {
-          this.shellLoading = true;  // turn the loading overlay on
+        if (this._shellError) {
+          this._shellLoading = true;  // turn the loading overlay on
           this.init();
         }
 
-        if (this.pageError) {
-          this.pageLoading = true;  // turn the loading overlay on
+        if (this._pageError) {
+          this._pageLoading = true;  // turn the loading overlay on
 
           // if the page has an init function, call it.
           if (pageEl !== null && pageEl.init instanceof Function) {
@@ -409,7 +410,7 @@
           // otherwise, wait a bit and turn the loading overlay off
           else {
             this.async(function() {
-              this.pageLoading = false;
+              this._pageLoading = false;
             }, 500);
           }
         }
@@ -419,16 +420,16 @@
        * Called when the page data loads.
        */
       _handleAjaxResponse: function() {
-        this.shellError = false;
-        this.shellLoading = false;
+        this._shellError = false;
+        this._shellLoading = false;
       },
 
       /**
        * Called when an error occurs during the ajax request.
        */
       _handleAjaxError: function() {
-        this.shellError = true;
-        this.shellLoading = false;
+        this._shellError = true;
+        this._shellLoading = false;
       },
 
       /**
