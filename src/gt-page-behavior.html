@@ -26,6 +26,13 @@
      */
     pageReady: function() {
       this.fire('page-loaded');
+    },
+
+    /**
+     * This method should be if an error occurs while initialising the page.
+     */
+    pageError: function() {
+      this.fire('page-error');
     }
   };
 </script>
