@@ -15,6 +15,7 @@
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/paper-styles/color.html">
+<link rel="import" href="../bower_components/polymer-cookie/polymer-cookie.html">
 <link rel="import" href="../styles/gt-styles.html">
 <link rel="import" href="../imports/gt.html">
 <link rel="import" href="gt-icons.html">
@@ -135,6 +136,13 @@
       on-response="_handleAjaxResponse"
       on-error="_handleAjaxError"></iron-ajax>
 
+    <!-- location cookie -->
+    <polymer-cookie
+      id="locationID-cookie"
+      name="locationID"
+      value="[[_locationID]]"
+      time="-1"></polymer-cookie>
+
     <!-- Layout -->
     <app-drawer-layout id="drawer-layout" fullbleed>
 
@@ -232,6 +240,22 @@
         data: Object,
 
         /**
+         * The location the user has selected.
+         */
+        location: {
+          type: Object,
+          readOnly: true
+        },
+
+        /**
+         * The location ID the user has selected.
+         */
+        _locationID: {
+          type: Number,
+          observer: '_locationIDchanged'
+        },
+
+        /**
          * The app's route.
          */
         _route: Object,
@@ -315,6 +339,13 @@
       observers: [
         '_routePageChanged(_routeData.page)'
       ],
+
+      /**
+       * Set the location by id.
+       */
+      setLocationByID: function(id) {
+        this._locationID = id;
+      },
 
       /**
        * Called when the route data's page is changed.
@@ -419,11 +450,45 @@
       },
 
       /**
+       * Called when the `_locationID` changes.
+       */
+      _locationIDchanged: function() {
+        this._saveLocationID();
+        this._setLocation();
+      },
+
+      /**
+       * Set the value of `location` based of `_locationID`.
+       */
+      _setLocation: function() {
+        for (var city in this.data.cities) {
+          this.setLocation(this.data.cities[city][this._locationID]);
+          break;
+        }
+      },
+
+      /**
+       * Read the locationID cookie.
+       */
+      _readLocationID: function() {
+        this._locationID = Number.parseInt(this.$['locationID-cookie'].readCookie(), 10);
+        this._setLocation();
+      },
+
+      /**
+       * Write the locationID cookie.
+       */
+      _saveLocationID: function() {
+        this.$['locationID-cookie'].createCookie();
+      },
+
+      /**
        * Called when the page data loads.
        */
       _handleAjaxResponse: function() {
         this._shellError = false;
         this._shellLoading = false;
+        this._readLocationID();
       },
 
       /**
