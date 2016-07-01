@@ -5,10 +5,11 @@
 <link rel="import" href="../../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../../../bower_components/html-echo/html-echo.html">
 
 <link rel="import" href="../../../styles/gt-styles.html">
 <link rel="import" href="../gt-page-behavior.html">
+
+<link rel="import" href="gt-testimonial.html">
 
 <dom-module id="gt-page-home">
   <template>
@@ -47,25 +48,14 @@
         min-width: 300px;
         max-width: 500px;
       }
-      .testimonial {
+      gt-testimonial {
         margin: 1em 0;
       }
-      .testimonial:first-of-type {
+      gt-testimonial:first-of-type {
         margin-top: 0;
       }
-      .testimonial:last-of-type {
+      gt-testimonial:last-of-type {
         margin-bottom: 0;
-      }
-      .testimonial .content {
-        font-style: italic;
-      }
-      .testimonial .by {
-        font-size: 10pt;
-        text-align: right;
-        margin-top: 0.25em;
-      }
-      .testimonial .by .name {
-        font-weight: bold;
       }
       @media (min-width: 1280px) {
         #title {
@@ -123,10 +113,7 @@
       <paper-card heading="[[pageData.testimonials.heading]]">
         <div class="card-content">
           <template is="dom-repeat" items="[[pageData.testimonials.list]]" as="testimonial">
-            <div class="testimonial">
-              <html-echo class="content" html="[[testimonial.content]]"></html-echo>
-              <div class="by"><span class="name">[[testimonial.by]]</span>, <span class="date">[[testimonial.date]]</span></div>
-            </div>
+            <gt-testimonial content="[[testimonial.content]]" by="[[testimonial.by]]" date="[[testimonial.date]]"></gt-testimonial>
           </template>
         </div>
       </paper-card>

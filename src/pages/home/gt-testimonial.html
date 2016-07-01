@@ -1,0 +1,58 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/html-echo/html-echo.html">
+
+<link rel="import" href="../../../styles/gt-styles.html">
+
+<dom-module id="gt-testimonial">
+  <template>
+    <style include="gt-styles">
+      :host {
+        display: block;
+      }
+      .content {
+        font-style: italic;
+      }
+      .by {
+        font-size: 10pt;
+        text-align: right;
+        margin-top: 0.25em;
+      }
+      .by .name {
+        font-weight: bold;
+      }
+      p:first-child {
+        margin-top: 0;
+      }
+      p:last-child {
+        margin-bottom: 0;
+      }
+    </style>
+
+    <html-echo class="content" html="[[content]]"></html-echo>
+    <div class="by"><span class="name">[[by]]</span>, <span class="date">[[date]]</span></div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'gt-testimonial',
+
+      properties: {
+
+        /**
+         * The testimonial's content as html.
+         */
+        content: String,
+
+        /**
+         * The name of the person who wrote the testimonial.
+         */
+        by: String,
+
+        /**
+         * The date the testimonial was written.
+         */
+        date: String
+      }
+    });
+  </script>
+</dom-module>
