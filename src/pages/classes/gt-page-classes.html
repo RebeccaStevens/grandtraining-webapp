@@ -5,6 +5,7 @@
 <link rel="import" href="../../../styles/gt-styles.html">
 <link rel="import" href="../gt-page-behavior.html">
 <link rel="import" href="gt-location-selector.html">
+<link rel="import" href="gt-class-category.html">
 
 <dom-module id="gt-page-classes">
   <template>
@@ -17,6 +18,23 @@
       gt-location-selector {
         max-width: 500px;
         margin: 1em 0.75em;
+      }
+      #class-categories {
+        margin: 0.75em;
+        @apply(--layout-horizontal);
+        @apply(--layout-around-justified);
+        @apply(--layout-wrap);
+      }
+      #class-categories gt-class-category {
+        min-width: 100%;
+        min-height: 250px;
+        margin: 0.50em;
+        @apply(--layout-flex);
+      }
+      @media (min-width: 1024px) {
+        #class-categories gt-class-category {
+          min-width: 400px;
+        }
       }
     </style>
 
@@ -31,6 +49,17 @@
 
     <!-- Layout -->
     <gt-location-selector global-cities="[[app.data.cities]]" location="{{location}}"></gt-location-selector>
+
+    <div id="class-categories">
+      <template is="dom-repeat" items="[[pageData.class-categories]]" as="cc">
+        <gt-class-category
+          name="[[cc.name]]"
+          href="[[app.data.pages.classes.url]][[cc.url]]"
+          teaser="[[cc.teaser]]"
+          image-src="[[cc.image.src]]"
+          image-placeholder="[[cc.image.placeholder]]"></gt-class-category>
+      </template>
+    </div>
   </template>
 
   <script>
