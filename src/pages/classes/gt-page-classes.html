@@ -1,4 +1,5 @@
 <link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/iron-ajax/iron-ajax.html">
 
 <link rel="import" href="../../../styles/gt-styles.html">
 <link rel="import" href="../gt-page-behavior.html">
@@ -17,6 +18,16 @@
       }
     </style>
 
+    <!-- Download data -->
+    <iron-ajax
+      id="pageDataLoader"
+      url="[[app.dataPath]]classes.json"
+      handle-as="json"
+      last-response="{{pageData}}"
+      on-response="_handleAjaxResponse"
+      on-error="_handleAjaxError"></iron-ajax>
+
+    <!-- Layout -->
     <gt-location-selector global-cities="[[app.data.cities]]" location="{{location}}"></gt-location-selector>
   </template>
 
@@ -44,8 +55,29 @@
         this.app.setLocationByID(location.id);
       },
 
-      ready: function() {
+      /**
+       * Called when the page data loads.
+       */
+      _handleAjaxResponse: function() {
         this.pageReady();
+      },
+
+      /**
+       * Called when an error occurs during the ajax request.
+       */
+      _handleAjaxError: function() {
+        this.pageError();
+      },
+
+      /**
+       * Initialise the page.
+       */
+      init: function() {
+        this.$.pageDataLoader.generateRequest();
+      },
+
+      ready: function() {
+        this.init();
       }
     });
   </script>
