@@ -32,8 +32,12 @@ paper-card {
     padding-bottom: 0;
   };
 }
-paper-card.fit-width {
-  width: calc(100% - 1.5em);
+paper-card .card-actions {
+  overflow: auto;
+}
+paper-card .card-actions paper-button {
+  float: right;
+  margin-right: 0;
 }
 
 p:first-child {
@@ -46,7 +50,9 @@ p:last-child {
 paper-button {
   text-transform: none;
   color: var(--app-secondary-color);
-  border: solid 1px var(--app-primary-color);
+}
+paper-button[raised] {
+  border: solid 1px #9cc3d6;
   background-color: var(--app-primary-color-light);
   --paper-button-ink-color: var(--app-primary-color);
 }
