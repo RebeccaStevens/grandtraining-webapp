@@ -231,6 +231,7 @@
       _locationSelected: function(e) {
         this._preventNextLocationChangedEvent = true;
         this.location = this.globalCities[this._city.name][e.detail.item.locationId];
+        this.fire('location-set');
       },
 
       ready: function() {
