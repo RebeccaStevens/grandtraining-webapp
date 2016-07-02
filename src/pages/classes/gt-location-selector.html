@@ -113,6 +113,22 @@
         _disableLocationSelector: {
           type: Boolean,
           value: true
+        },
+
+        /**
+         * If true, the next time `_city` is changed, `$.locationSelector` will not deselect its current item.
+         */
+        _preventNextLocationSelectorDeselect: {
+          type: Boolean,
+          value: false
+        },
+
+        /**
+         * If true, the next time `location` is changed, `_locationChanged` won't do anything.
+         */
+        _preventNextLocationChangedEvent: {
+          type: Boolean,
+          value: false
         }
       },
 
@@ -138,12 +154,17 @@
       _cityChanged: function(city) {
         this._locations = city.locations;
 
-        Polymer.dom(this.$.locationSelector).querySelector('paper-listbox').selected = -1;
+        if (this._preventNextLocationSelectorDeselect) {
+          this._preventNextLocationSelectorDeselect = false;
+        }
+        else {
+          Polymer.dom(this.$.locationSelector).querySelector('paper-listbox').selected = -1;
 
-        if (city.locations.length === 1) {
-          this.async(function() {
-            Polymer.dom(this.$.locationSelector).querySelector('paper-listbox').selected = 0;
-          }, 0);
+          if (city.locations.length === 1) {
+            this.async(function() {
+              Polymer.dom(this.$.locationSelector).querySelector('paper-listbox').selected = 0;
+            }, 0);
+          }
         }
       },
 
@@ -151,21 +172,39 @@
        * Called when `location` changes.
        */
       _locationChanged: function(location) {
-        var cities = this._cities;
-        for (var city in cities) {
-          if (cities[city].name === location.city) {
-            Polymer.dom(this.$.citySelector).querySelector('paper-listbox').selected = city;
-            break;
-          }
+        // prevent this method from being called from stuff done in this element
+        if (this._preventNextLocationChangedEvent) {
+          this._preventNextLocationChangedEvent = false;
+          return;
         }
 
-        var areas = this._locations;
-        for (var area in areas) {
-          if (areas[area].id === location.id) {
-            Polymer.dom(this.$.locationSelector).querySelector('paper-listbox').selected = area;
+        var cities = this._cities;
+
+        if (cities.length === 0) {
+          return;
+        }
+
+        var city;
+        var i = 0;
+        for (city in cities) {
+          if (cities[city].name === location.city) {
+            Polymer.dom(this.$.citySelector).querySelector('paper-listbox').selected = i;
             break;
           }
+          i++;
         }
+
+        var areas = cities[city].locations;
+        var j = 0;
+        for (var area in areas) {
+          if (areas[area].id === location.id) {
+            Polymer.dom(this.$.locationSelector).querySelector('paper-listbox').selected = j;
+            break;
+          }
+          j++;
+        }
+
+        this._preventNextLocationSelectorDeselect = true;
       },
 
       /**
@@ -190,7 +229,14 @@
        * Called when a location is selected.
        */
       _locationSelected: function(e) {
+        this._preventNextLocationChangedEvent = true;
         this.location = this.globalCities[this._city.name][e.detail.item.locationId];
+      },
+
+      ready: function() {
+        if (this.location !== undefined) {
+          this._locationChanged(this.location);
+        }
       }
     });
   </script>

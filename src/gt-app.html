@@ -140,7 +140,7 @@
     <polymer-cookie
       id="locationID-cookie"
       name="locationID"
-      value="[[_locationID]]"
+      value="[[location.id]]"
       time="-1"></polymer-cookie>
 
     <!-- Layout -->
@@ -244,7 +244,7 @@
          */
         location: {
           type: Object,
-          readOnly: true
+          observer: '_locationChanged'
         },
 
         /**
@@ -254,14 +254,6 @@
           type: String,
           computed: '_computePageTitle(page, data.company.name)',
           observer: '_pageTitleChanged'
-        },
-
-        /**
-         * The location ID the user has selected.
-         */
-        _locationID: {
-          type: Number,
-          observer: '_locationIDchanged'
         },
 
         /**
@@ -348,13 +340,6 @@
       observers: [
         '_routePageChanged(_routeData.page)'
       ],
-
-      /**
-       * Set the location by id.
-       */
-      setLocationByID: function(id) {
-        this._locationID = id;
-      },
 
       /**
        * Called when the route data's page is changed.
@@ -469,31 +454,31 @@
       },
 
       /**
-       * Called when the `_locationID` changes.
+       * Called when the `location` changes.
        */
-      _locationIDchanged: function() {
+      _locationChanged: function() {
         this._saveLocationID();
-        this._setLocationFromSavedID();
       },
 
       /**
-       * Set the value of `location` based of `_locationID`.
+       * Set the location by id.
        */
-      _setLocationFromSavedID: function() {
-        for (var city in this.data.cities) {
-          if (this.data.cities[city][this._locationID] !== undefined) {
-            this._setLocation(this.data.cities[city][this._locationID]);
-            break;
-          }
-        }
+      setLocationByID: function(id) {
+        this._locationID = id;
       },
 
       /**
        * Read the locationID cookie.
        */
       _readLocationID: function() {
-        this._locationID = Number.parseInt(this.$['locationID-cookie'].readCookie(), 10);
-        this._setLocationFromSavedID();
+        var locationID = Number.parseInt(this.$['locationID-cookie'].readCookie(), 10);
+
+        for (var city in this.data.cities) {
+          if (this.data.cities[city][locationID] !== undefined) {
+            this.location = this.data.cities[city][locationID];
+            break;
+          }
+        }
       },
 
       /**

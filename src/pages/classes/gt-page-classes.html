@@ -47,7 +47,7 @@
       on-error="_handleAjaxError"></iron-ajax>
 
     <!-- Layout -->
-    <gt-location-selector global-cities="[[app.data.cities]]" location="{{location}}"></gt-location-selector>
+    <gt-location-selector global-cities="[[app.data.cities]]" location="{{app.location}}"></gt-location-selector>
 
     <div id="class-categories">
       <template is="dom-repeat" items="[[pageData.class-categories]]" as="cc">
@@ -67,29 +67,15 @@
 
       properties: {
 
-        /**
-         * The selected location.
-         */
-        location: {
-          type: Object,
-          observer: '_locationChanged'
         }
       },
 
       behaviors: [GT.PageBehavior],
 
       /**
-       * Called when the location changes.
-       */
-      _locationChanged: function(location) {
-        this.app.setLocationByID(location.id);
-      },
-
-      /**
        * Called when the page data loads.
        */
       _handleAjaxResponse: function() {
-        this.location = this.app.location;
         this.pageReady();
       },
 
