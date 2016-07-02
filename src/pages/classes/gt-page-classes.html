@@ -1,5 +1,6 @@
 <link rel="import" href="../../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
 
 <link rel="import" href="../../../styles/gt-styles.html">
 <link rel="import" href="../gt-page-behavior.html">
@@ -10,11 +11,12 @@
     <style include="gt-styles">
       :host {
         display: block;
+        @apply(--layout-vertical);
+        @apply(--layout-center);
       }
       gt-location-selector {
-        width: 100%;
         max-width: 500px;
-        margin: 1em auto;
+        margin: 1em 0.75em;
       }
     </style>
 

@@ -13,27 +13,28 @@
       :host {
         display: block;
       }
-      #location {
+      #card {
+        width: 100%;
         --paper-card-content: {
           padding-top: 0;
         };
       }
-      #location .card-content {
+      #card .card-content {
         @apply(--layout-horizontal);
       }
-      #location .card-content paper-dropdown-menu {
+      #card .card-content paper-dropdown-menu {
         margin: 0 0.5em;
         @apply(--layout-flex);
       }
-      #location .card-content paper-dropdown-menu:first-child {
+      #card .card-content paper-dropdown-menu:first-child {
         margin-left: 0;
       }
-      #location .card-content paper-dropdown-menu:last-child {
+      #card .card-content paper-dropdown-menu:last-child {
         margin-right: 0;
       }
     </style>
 
-    <paper-card id="location" heading="Your Location" class="fit-width">
+    <paper-card id="card" heading="Your Location">
       <div class="card-content">
         <paper-dropdown-menu id="citySelector" label="City">
           <paper-listbox class="dropdown-content" on-iron-select="_citySelected">
