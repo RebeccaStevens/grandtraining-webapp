@@ -70,22 +70,21 @@
         },
 
         /**
-         * The selected city.
-         */
-        city: {
-          type: Object,
-          notify: true,
-          readOnly: true,
-          observer: '_cityChanged'
-        },
-
-        /**
          * The selected location.
          */
         location: {
           type: Object,
-          readOnly: true,
-          notify: true
+          notify: true,
+          observer: '_locationChanged'
+        },
+
+        /**
+         * The selected city.
+         */
+        _city: {
+          type: Object,
+          notify: true,
+          observer: '_cityChanged'
         },
 
         /**
@@ -134,7 +133,7 @@
       },
 
       /**
-       * Called when `city` changes.
+       * Called when `_city` changes.
        */
       _cityChanged: function(city) {
         this._locations = city.locations;
@@ -149,6 +148,27 @@
       },
 
       /**
+       * Called when `location` changes.
+       */
+      _locationChanged: function(location) {
+        var cities = this._cities;
+        for (var city in cities) {
+          if (cities[city].name === location.city) {
+            Polymer.dom(this.$.citySelector).querySelector('paper-listbox').selected = city;
+            break;
+          }
+        }
+
+        var areas = this._locations;
+        for (var area in areas) {
+          if (areas[area].id === location.id) {
+            Polymer.dom(this.$.locationSelector).querySelector('paper-listbox').selected = area;
+            break;
+          }
+        }
+      },
+
+      /**
        * Called when a city is selected.
        */
       _citySelected: function(e) {
@@ -158,10 +178,10 @@
           locations.push(this.globalCities[cityName][key]);
         }
 
-        this._setCity({
+        this._city = {
           name: cityName,
           locations: locations
-        });
+        };
 
         this._disableLocationSelector = false;
       },
@@ -170,7 +190,7 @@
        * Called when a location is selected.
        */
       _locationSelected: function(e) {
-        this._setLocation(this.globalCities[this.city.name][e.detail.item.locationId]);
+        this.location = this.globalCities[this._city.name][e.detail.item.locationId];
       }
     });
   </script>
