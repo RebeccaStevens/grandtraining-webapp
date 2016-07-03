@@ -375,6 +375,10 @@
         }
         // else the page is loaded and read to be display
         else {
+          // if the page has an `onSwitchBackTo` function, call it.
+          if (pageEl.onSwitchBackTo instanceof Function) {
+            pageEl.onSwitchBackTo();
+          }
           this._pageLoading = false;
         }
 

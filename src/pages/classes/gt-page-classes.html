@@ -129,6 +129,13 @@
         this.$.pageDataLoader.generateRequest();
       },
 
+      /**
+       * Called when the page is switched back to.
+       */
+      onSwitchBackTo: function() {
+        this._showClassCategories();
+      },
+
       ready: function() {
         this.init();
       }
