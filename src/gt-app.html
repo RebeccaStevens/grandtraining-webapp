@@ -372,7 +372,9 @@
         else if(!pageEl.isInitialised) {
           this._pageError = true;
           this._reinitPage();
-        } else {
+        }
+        // else the page is loaded and read to be display
+        else {
           this._pageLoading = false;
         }
 
