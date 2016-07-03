@@ -101,6 +101,11 @@
        * Show all the gt-class-category elements.
        */
       _showClassCategories: function() {
+        // don't play the animation if the class categories are hidden
+        if (this._hideClassCategories) {
+          return;
+        }
+
         // get all the gt-class-category elements
         var ccs = Polymer.dom(this.$['class-categories']).querySelectorAll('gt-class-category');
         var timingOffset = 150;   // the timing offset between each call to make the element visible
