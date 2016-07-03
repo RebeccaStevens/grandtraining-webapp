@@ -3,6 +3,11 @@
 <link rel="import" href="../../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../../../bower_components/neon-animation/animations/scale-up-animation.html">
+<link rel="import" href="../../../bower_components/neon-animation/animations/scale-down-animation.html">
+<link rel="import" href="../../../bower_components/neon-animation/animations/fade-in-animation.html">
+<link rel="import" href="../../../bower_components/neon-animation/animations/fade-out-animation.html">
+<link rel="import" href="../../../bower_components/neon-animation/neon-animation-runner-behavior.html">
 <link rel="import" href="../../../bower_components/html-echo/html-echo.html">
 
 <link rel="import" href="../../../styles/gt-styles.html">
@@ -89,6 +94,124 @@
          */
         imagePlaceholder: {
           type: String
+        },
+
+        /**
+         * States whether or not this element is shown.
+         */
+        shown: {
+          type: Boolean,
+          value: false,
+          notify: true,
+          reflectToAttribute: true,
+          observer: '_shownChanged'
+        },
+
+        /**
+         * The animations this element has.
+         */
+        animationConfig: {
+          value: function() {
+            return {
+              entry: [
+                {
+                  name: 'scale-up-animation',
+                  node: this,
+                  timing: {
+                    delay: 0,
+                    duration: 1000
+                  }
+                },
+                {
+                  name: 'fade-in-animation',
+                  node: this,
+                  timing: {
+                    delay: 0,
+                    duration: 1000
+                  }
+                }
+              ],
+              exit: [
+                {
+                  name: 'scale-down-animation',
+                  node: this,
+                  timing: {
+                    delay: 0,
+                    duration: 500
+                  }
+                },
+                {
+                  name: 'fade-out-animation',
+                  node: this,
+                  timing: {
+                    delay: 0,
+                    duration: 500
+                  }
+                }
+              ],
+            };
+          }
+        }
+      },
+
+      behaviors: [Polymer.NeonAnimationRunnerBehavior],
+
+      listeners: {
+        'neon-animation-finish': '_onNeonAnimationFinish'
+      },
+
+      /**
+       * Show this element.
+       */
+      _show: function() {
+        this._makeVisible();
+        this.cancelAnimation();
+        this.playAnimation('entry');
+      },
+
+      /**
+       * Hide this element.
+       */
+      _hide: function() {
+        this.cancelAnimation();
+        this.playAnimation('exit');
+      },
+      /**
+       * Make this element visible.
+       */
+      _makeVisible: function() {
+        this.style.visibility = 'visible';
+      },
+      /**
+       * Make this element invisible.
+       */
+      _makeInvisible: function() {
+        this.style.visibility = 'hidden';
+      },
+
+      /**
+       * Called when an animation finishes playing.
+       */
+      _onNeonAnimationFinish: function() {
+        if (!this.shown) {
+          this._makeInvisible();
+        }
+      },
+
+      /**
+       * Called when `shown` changes.
+       */
+      _shownChanged: function(shown) {
+        if (shown) {
+          this._show();
+        } else {
+          this._hide();
+        }
+      },
+
+      ready: function() {
+        if (this.shown) {
+          this._show();
         }
       }
     });
