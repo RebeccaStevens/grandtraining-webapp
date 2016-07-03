@@ -4,6 +4,9 @@
 <link rel="import" href="../../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../../bower_components/neon-animation/animations/sslide-from-bottom-animation.html">
+<link rel="import" href="../../../bower_components/neon-animation/animations/slide-from-top-animation.html">
+<link rel="import" href="../../../bower_components/neon-animation/neon-animation-runner-behavior.html">
 
 <link rel="import" href="../../../styles/gt-styles.html">
 
@@ -12,6 +15,10 @@
     <style include="gt-styles">
       :host {
         display: block;
+        visibility: hidden;
+      }
+      :host([shown]) {
+        visibility: visible;
       }
       #card {
         width: 100%;
@@ -129,6 +136,74 @@
         _preventNextLocationChangedEvent: {
           type: Boolean,
           value: false
+        },
+
+        /**
+         * States whether or not this element is shown.
+         */
+        shown: {
+          type: Boolean,
+          value: false,
+          notify: true,
+          reflectToAttribute: true
+        },
+
+        /**
+         * The animations this element has.
+         */
+        animationConfig: {
+          value: function() {
+            return {
+              entry: {
+                name: 'slide-from-top-animation',
+                node: this,
+                timing: {
+                  delay: 0,
+                  duration: 1000
+                }
+              },
+              exit: {
+                name: 'slide-from-bottom-animation',
+                node: this,
+                timing: {
+                  delay: 0,
+                  duration: 500
+                }
+              },
+            };
+          }
+        }
+      },
+
+      behaviors: [Polymer.NeonAnimationRunnerBehavior],
+
+      listeners: {
+        'neon-animation-finish': '_onNeonAnimationFinish'
+      },
+
+      /**
+       * Show this element.
+       */
+      show: function() {
+        this.shown = true;
+        this.cancelAnimation();
+        this.playAnimation('entry');
+      },
+
+      /**
+       * Hide this element.
+       */
+      hide: function() {
+        this.cancelAnimation();
+        this.playAnimation('exit');
+      },
+
+      /**
+       * Called when an animation finishes playing.
+       */
+      _onNeonAnimationFinish: function() {
+        if (!this.shown) {
+          this.shown = false;
         }
       },
 
