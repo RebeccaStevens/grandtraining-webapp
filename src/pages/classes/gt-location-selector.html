@@ -149,6 +149,14 @@
         },
 
         /**
+         * True if in the process of hidden the element.
+         */
+        _hidding: {
+          type: Boolean,
+          value: false
+        },
+
+        /**
          * The animations this element has.
          */
         animationConfig: {
@@ -194,6 +202,7 @@
        * Hide this element.
        */
       hide: function() {
+        this._hidding = true;
         this.cancelAnimation();
         this.playAnimation('exit');
       },
@@ -202,7 +211,8 @@
        * Called when an animation finishes playing.
        */
       _onNeonAnimationFinish: function() {
-        if (!this.shown) {
+        if (this._hidding) {
+          this._hidding = false;
           this.shown = false;
         }
       },
