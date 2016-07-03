@@ -1,6 +1,7 @@
 <link rel="import" href="../../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../../bower_components/html-echo/html-echo.html">
 
 <link rel="import" href="../../../styles/gt-styles.html">
 <link rel="import" href="../gt-page-behavior.html">
@@ -54,9 +55,10 @@
         <gt-class-category
           name="[[cc.name]]"
           href="[[app.data.pages.classes.url]][[cc.url]]"
-          teaser="[[cc.teaser]]"
           image-src="[[cc.image.src]]"
-          image-placeholder="[[cc.image.placeholder]]"></gt-class-category>
+          image-placeholder="[[cc.image.placeholder]]">
+          <html-echo html="[[cc.teaser]]"></html-echo>
+        </gt-class-category>
       </template>
     </div>
   </template>
