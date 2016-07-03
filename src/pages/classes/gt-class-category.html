@@ -17,6 +17,10 @@
     <style include="gt-styles">
       :host {
         display: block;
+        visibility: hidden;
+      }
+      :host([shown]) {
+        visibility: visible;
       }
       #card {
         width: 100%;
@@ -103,8 +107,7 @@
           type: Boolean,
           value: false,
           notify: true,
-          reflectToAttribute: true,
-          observer: '_shownChanged'
+          reflectToAttribute: true
         },
 
         /**
@@ -163,8 +166,8 @@
       /**
        * Show this element.
        */
-      _show: function() {
-        this._makeVisible();
+      show: function() {
+        this.shown = true;
         this.cancelAnimation();
         this.playAnimation('entry');
       },
@@ -172,21 +175,9 @@
       /**
        * Hide this element.
        */
-      _hide: function() {
+      hide: function() {
         this.cancelAnimation();
         this.playAnimation('exit');
-      },
-      /**
-       * Make this element visible.
-       */
-      _makeVisible: function() {
-        this.style.visibility = 'visible';
-      },
-      /**
-       * Make this element invisible.
-       */
-      _makeInvisible: function() {
-        this.style.visibility = 'hidden';
       },
 
       /**
@@ -194,18 +185,7 @@
        */
       _onNeonAnimationFinish: function() {
         if (!this.shown) {
-          this._makeInvisible();
-        }
-      },
-
-      /**
-       * Called when `shown` changes.
-       */
-      _shownChanged: function(shown) {
-        if (shown) {
-          this._show();
-        } else {
-          this._hide();
+          this.shown = false;
         }
       },
 

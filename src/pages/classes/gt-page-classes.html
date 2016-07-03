@@ -28,7 +28,6 @@
       #class-categories gt-class-category {
         min-width: 100%;
         margin: 0.50em;
-        visibility: hidden;
         @apply(--layout-flex);
       }
       @media (min-width: 1024px) {
@@ -95,18 +94,18 @@
         // get all the gt-class-category elements
         var ccs = Polymer.dom(this.$['class-categories']).querySelectorAll('gt-class-category');
         var timingOffset = 150;   // the timing offset between each call to make the element visible
-        var count = 0;            // the number of element that haven been shown
+
+        var showCC = function(i) {
+          this.async(function() {
+            ccs[i].show()
+          }, i * timingOffset);
+        }.bind(this);
 
         // for each one
-        ccs.forEach(function(e, i) {
-          // if it's not displayed, display it
-          if (!ccs[i].shown) {
-            this.async(function() {
-              ccs[i].shown = true;
-            }, count * timingOffset);
-            count++;
-          }
-        }.bind(this));
+        for (var i in ccs) {
+          ccs[i].shown = false;
+          showCC(i);
+        }
       },
 
       /**
