@@ -1,4 +1,134 @@
 {
   "title": "Minecraft",
-  "description": "<p>learn minecraft.</p>"
+  "description": "<p>learn minecraft.</p>",
+  "classes": [
+    {
+      "title": "Wood Puncher to Architect",
+      "difficulty": "Introduction",
+      "min-age": 5,
+      "max-age": 10,
+      "description": "<p>This course introduces students to the fun and creativity of learning with Minecraft on PC.</p><ul><li>Create redstone contraptions such as clocks, doors and elevators.</li><li>Go beyond simple circuits; learn about logic gates and use this knowledge to build functioning computer parts using redstone.</li><li>Design your dream home. Will it be a little house nestled on the hillside or an impregnable fortress with a moat and drawbridge?</li><li>Learn how to move your world from computer to computer, or download and explore creations from the vast community of Minecrafters online.</li></ul>",
+      "dates": [
+        {
+          "start-date": "2016-07-12",
+          "end-date": "2016-07-15",
+          "cost": 370
+        },
+        {
+          "start-date": "2016-07-19",
+          "end-date": "2016-07-22",
+          "cost": 370
+        }
+      ]
+    },
+    {
+      "title": "Architect to World Builder",
+      "difficulty": "Advanced",
+      "min-age": 7,
+      "max-age": 17,
+      "description": "<p>Take Minecraft to the next level with some of the toughest challenges on offer.</p><ul><li>Go beyond simple circuits; learn about logic gates and use this knowledge to build functioning computer parts using redstone.</li><li>Construction mastery: go beyond basic building; learn how to create impregnable fortresses, siege warfare, and a multitude of traps.</li><li>Adventure maps: Learn how to put these skills together to make the ultimate challenge for you and your friends. Design complex parkour courses or tower defence minigames.</li><li>Advanced Commands, challenges, and map editing. This course is designed to be played again and again, different experiences guaranteed! </li></ul>",
+      "dates": [
+        {
+          "start-date": "2016-07-12",
+          "end-date": "2016-07-15",
+          "cost": 370
+        },
+        {
+          "start-date": "2016-07-19",
+          "end-date": "2016-07-22",
+          "cost": 370
+        }
+      ]
+    },
+    {
+      "title": "Build your own Modpack",
+      "difficulty": "Advanced",
+      "min-age": 8,
+      "max-age": 17,
+      "description": "<p>Discover a vast array of tools to enhance and modify the Minecraft experience in almost any way imaginable. Want to use emerald armour? Want to play Pokémon in Minecraft? Want to see Steve’s face on a cow?</p><ul><li>Use Minecraft Forge to use mods and other content created by the bustling online community</li><li>Find a collection of mods for your very own custom modpack to take home.</li><li>Make simple mods of your own.</li><li>Introduce custom launchers such as Technic, FTB and the AT Launcher to host your modpacks and find others back by the community.</li>",
+      "dates": [
+        {
+          "start-date": "2016-07-12",
+          "end-date": "2016-07-15",
+          "cost": 370
+        },
+        {
+          "start-date": "2016-07-19",
+          "end-date": "2016-07-22",
+          "cost": 370
+        }
+      ]
+    },
+    {
+      "title": "Tekkit",
+      "difficulty": "Intermediate",
+      "min-age": 6,
+      "max-age": 15,
+      "description": "<p>The sky is the limit as we take to the stars with our course built around the ever-popular Tekkit modpack.</p><ul><li>Bored of standard Minecraft? This course introduces the Technic platform, as well as the popular Hexxit and Tekkit modpacks.</li><li>Introduction to the custom launcher, Technic. Play with such popular modpacks as Hexxit and Tekkit.</li><li>Tekkit features over 60 modifications. Learn to build factories, explore new lands, and fight new creatures. Even fly to the moon!</li></ul>",
+      "dates": [
+        {
+          "start-date": "2016-07-12",
+          "end-date": "2016-07-15",
+          "cost": 370
+        },
+        {
+          "start-date": "2016-07-19",
+          "end-date": "2016-07-22",
+          "cost": 370
+        }
+      ]
+    },
+    {
+      "title": "Server Pro",
+      "difficulty": "Intermediate",
+      "min-age": 8,
+      "max-age": 17,
+      "description": "<p>Students design, create and manage their very own modded Minecraft servers to play with their friends.</p><ul><li>This course covers running servers, providing the knowledge for how to operate everything from a basic multiplayer setup, to a more complex, modified and customised Minecraft server! </li><li>This course covers: installing and configuring plugins, administration level server commands, adding custom features to your Minecraft experience, as well as simply how to enjoy all this on a multiplayer server with all your friends!</li><li>We explore real world servers, using Minecraft as a practical tool to understanding how a server would work on the internet. there’s more to a server than simply pressing a button.</li><li>Cover advanced server side topics such as permission systems, as well as configuration overlaps.</li><li>Challenging debugging exercises: students are presented with a faulty setup and are prompted to identify and fix any issues issues.</li></ul>",
+      "dates": [
+        {
+          "start-date": "2016-07-12",
+          "end-date": "2016-07-15",
+          "cost": 370
+        },
+        {
+          "start-date": "2016-07-19",
+          "end-date": "2016-07-22",
+          "cost": 370
+        }
+      ]
+    },
+    {
+      "title": "Introduction to Bukkit Servers",
+      "difficulty": "Intermediate",
+      "min-age": 8,
+      "max-age": 15,
+      "description": "<p>We cover everything you need to know to play Minecraft with your friends.</p><ul><li>For those that have no experience on large Bukkit servers.</li><li>Covers differences between unmodified and modified servers.</li><li>Covers operation of plugins from in game. Includes economy, construction, and PvP.</li><li>We use our own servers with plug-ins pre-installed. The entirety of the course content takes place in-game. </li><li>Covers differences between unmodified and modified servers. </li></ul>",
+      "dates": [
+        {
+          "start-date": "2016-07-12",
+          "end-date": "2016-07-15",
+          "cost": 370
+        },
+        {
+          "start-date": "2016-07-19",
+          "end-date": "2016-07-22",
+          "cost": 370
+        }
+      ]
+    },
+    {
+      "title": "Introduction to Java Programming",
+      "difficulty": "Introduction",
+      "min-age": 7,
+      "max-age": 17,
+      "description": "<p>We are pleased to announce this new course: Learning to Program with Minecraft.</p><p>After becoming familiar with installing and playing with the many varied modifications produced by the Minecraft community, the most common question we receive from students is how to make their own custom mods.</p><p>This is a practical course in how to program in Java to create your own plugins and modifications to Minecraft. Jump in and out of game to see how the changes we make beneath the hood effect gameplay.</p><p>All students are welcome, however a familiarity with some programming would be a strong advantage. Students are also expected to have a sufficient knowledge of manipulating Minecraft with mods and modpacks and a thirst to take things to the next level. </p><p>The programming language we use is Java: one of the industry's most in-demand and the language on which Minecraft is built.</p><p>The goal is for students to discover that coding can be creative, rewarding and most of all, fun. </p>",
+      "dates": [
+        {
+          "start-date": "2016-07-18",
+          "end-date": "2016-07-22",
+          "cost": 370
+        }
+      ]
+    }
+  ]
 }
