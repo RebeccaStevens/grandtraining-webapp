@@ -71,7 +71,7 @@
           return;
         }
 
-        var pageEl = Polymer.dom(this.$.pages).querySelector('[name="' + pageName + '"]');
+        var pageEl = this._getPageElement();
 
         // if the page element doesn't exist, the page doesn't exist
         if (pageEl === null) {
@@ -86,7 +86,7 @@
         if (!Polymer.isInstance(pageEl)) {
           this.app.pageLoading = true;
           this.importHref(this.resolveUrl('pages/' + pageEl.nodeName.toLowerCase() + '.html'), function() {
-            pageEl = Polymer.dom(this.$.pages).querySelector('[name="' + pageName + '"]');
+            pageEl = this._getPageElement();
             pageEl.init();
           }, null, true);
         }
@@ -119,7 +119,7 @@
        * Called when a page has loaded.
        */
       _pageLoaded: function(e) {
-        if (e.target === Polymer.dom(this.$.pages).querySelector('[name="' + this.page + '"]')) {
+        if (e.target === this._getPageElement()) {
           this.app.pageError = false;
           this.app.pageLoading = false;
           this.$.pages.select(this.page);
@@ -130,7 +130,7 @@
        * Called when a page loading error occurs.
        */
       _pageErrorOccurred: function(e) {
-        if (e.target === Polymer.dom(this.$.pages).querySelector('[name="' + this.page + '"]')) {
+        if (e.target === this._getPageElement()) {
           this.app.pageError = true;
           this.app.pageLoading = false;
         }
@@ -143,6 +143,13 @@
        */
       _urlToName: function(url) {
         return url.replace(/\//g, '');
+      },
+
+      /**
+       * Get the active page element.
+       */
+      _getPageElement: function() {
+        return Polymer.dom(this.$.pages).querySelector('[name="' + this.page + '"]');
       },
 
       /**
@@ -164,7 +171,7 @@
        */
       init: function() {
         if (this.isInitialised) {
-          var pageEl = Polymer.dom(this.$.pages).querySelector('[name="' + this.page + '"]');
+          var pageEl = this._getPageElement();
           pageEl.init();
         } else {
           this.$.pageDataLoader.generateRequest();
