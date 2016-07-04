@@ -6,8 +6,6 @@
 
 <link rel="import" href="../../../styles/gt-styles.html">
 <link rel="import" href="../gt-page-behavior.html">
-<link rel="import" href="gt-location-selector.html">
-<link rel="import" href="gt-class-category.html">
 
 <dom-module id="gt-page-classes">
   <template>
@@ -43,7 +41,7 @@
       on-page-error="_pageErrorOccurred">
       <gt-page-classes-home id="pageHome" name="home"></gt-page-classes-home>
       <template is="dom-repeat" items="[[pageData.class-categories]]" as="cc" on-dom-change="_pagesReady">
-        <gt-page-classes-detail name$="[[_urlToName(cc.url)]]"></gt-page-classes-detail>
+        <gt-page-classes-details name$="[[_urlToName(cc.url)]]"></gt-page-classes-details>
       </template>
       <gt-page-404 id="page404" name="404"></gt-page-404>
     </iron-pages>
@@ -85,7 +83,11 @@
         // load page import if it hasn't alreeady been imported.
         if (!Polymer.isInstance(pageEl)) {
           this.app.pageLoading = true;
-          this.importHref(this.resolveUrl('pages/' + pageEl.nodeName.toLowerCase() + '.html'), function() {
+          var shortName = 'details';
+          if (this.page === 'home') {
+            shortName = 'home'
+          }
+          this.importHref(this.resolveUrl('pages/' + shortName + '/' + pageEl.nodeName.toLowerCase() + '.html'), function() {
             pageEl = this._getPageElement();
             pageEl.init();
           }, null, true);
