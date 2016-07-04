@@ -4,6 +4,8 @@
   "fragments": [
     "src/pages/home/gt-pages-home.html",
     "src/pages/classes/gt-pages-classes.html",
+    "src/pages/classes/pages/gt-pages-classes-home.html",
+    "src/pages/classes/pages/gt-pages-classes-detail.html",
     "src/pages/bookings/gt-pages-bookings.html",
     "src/pages/faq/gt-pages-faq.html",
     "src/pages/about-us/gt-pages-about-us.html",
