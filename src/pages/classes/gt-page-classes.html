@@ -1,7 +1,8 @@
 <link rel="import" href="../../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
-<link rel="import" href="../../../bower_components/html-echo/html-echo.html">
+<link rel="import" href="../../../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../../../bower_components/app-route/app-route.html">
 
 <link rel="import" href="../../../styles/gt-styles.html">
 <link rel="import" href="../gt-page-behavior.html">
@@ -13,30 +14,15 @@
     <style include="gt-styles">
       :host {
         display: block;
-        @apply(--layout-vertical);
-        @apply(--layout-center);
-      }
-      gt-location-selector {
-        max-width: 500px;
-        margin: 1em 0.75em;
-      }
-      #class-categories {
-        margin: 0.75em;
-        @apply(--layout-horizontal);
-        @apply(--layout-around-justified);
-        @apply(--layout-wrap);
-      }
-      #class-categories gt-class-category {
-        min-width: 100%;
-        margin: 0.50em;
-        @apply(--layout-flex);
-      }
-      @media (min-width: 1024px) {
-        #class-categories gt-class-category {
-          min-width: 400px;
-        }
       }
     </style>
+
+    <!-- Routing -->
+    <app-route
+        route="{{route}}"
+        pattern="/:page"
+        data="{{routeData}}"
+        tail="{{subroute}}"></app-route>
 
     <!-- Download data -->
     <iron-ajax
@@ -48,19 +34,19 @@
       on-error="_handleAjaxError"></iron-ajax>
 
     <!-- Layout -->
-    <gt-location-selector id="location-selector" global-cities="[[app.data.cities]]" location="{{app.location}}" on-location-set="_locationSet"></gt-location-selector>
-
-    <div id="class-categories" hidden$="[[_hideClassCategories]]">
-      <template is="dom-repeat" items="[[pageData.class-categories]]" as="cc" on-dom-change="_showClassCategories">
-        <gt-class-category
-          name="[[cc.name]]"
-          href="[[app.data.pages.classes.url]][[cc.url]]"
-          image-src="[[cc.image.src]]"
-          image-placeholder="[[cc.image.placeholder]]">
-          <html-echo html="[[cc.teaser]]"></html-echo>
-        </gt-class-category>
+    <iron-pages id="pages"
+      role="main"
+      selected="[[page]]"
+      attr-for-selected="name"
+      fallback-selection="404"
+      on-page-loaded="_pageLoaded"
+      on-page-error="_pageErrorOccurred">
+      <gt-page-classes-home id="pageHome" name="home"></gt-page-classes-home>
+      <template is="dom-repeat" items="[[pageData.class-categories]]" as="cc" on-dom-change="_pagesReady">
+        <gt-page-classes-detail name$="[[_urlToName(cc.url)]]"></gt-page-classes-detail>
       </template>
-    </div>
+      <gt-page-404 id="page404" name="404"></gt-page-404>
+    </iron-pages>
   </template>
 
   <script>
@@ -69,67 +55,101 @@
 
       properties: {
 
-        /**
-         * Whether or not to hode the class categories.
-         */
-        _hideClassCategories: {
-          type: Boolean,
-          value: true
-        }
       },
 
-      behaviors: [GT.PageBehavior],
+      behaviors: [
+        GT.PageContainerBehavior,
+        GT.PageBehavior
+      ],
 
       /**
-       * Called when a location is set.
+       * Called when the page is changed.
        */
-      _locationSet: function() {
-        if (this.app.location !== undefined) {
-          this._hideClassCategories = false;
-          this._showClassCategories();
-        }
-      },
-
-      /**
-       * Show the location selector element.
-       */
-      _showLocationSelector: function() {
-        var ls = this.$['location-selector'];
-        ls.show();
-      },
-
-      /**
-       * Show all the gt-class-category elements.
-       */
-      _showClassCategories: function() {
-        // don't play the animation if the class categories are hidden
-        if (this._hideClassCategories) {
+      pageChanged: function(pageName) {
+        // if this page isn't ready, don't continue
+        if (!this.isInitialised) {
           return;
         }
 
-        // get all the gt-class-category elements
-        var ccs = Polymer.dom(this.$['class-categories']).querySelectorAll('gt-class-category');
-        var timingOffset = 150;   // the timing offset between each call to make the element visible
+        var pageEl = Polymer.dom(this.$.pages).querySelector('[name="' + pageName + '"]');
 
-        var showCC = function(i) {
-          this.async(function() {
-            ccs[i].show()
-          }, i * timingOffset);
-        }.bind(this);
-
-        // for each one
-        for (var i in ccs) {
-          ccs[i].shown = false;
-          showCC(i);
+        // if the page element doesn't exist, the page doesn't exist
+        if (pageEl === null) {
+          if (!Polymer.isInstance(this.$.page404)) {
+            this.app.pageLoading = true;
+            this.importHref(this.resolveUrl('../404/gt-page-404.html'), null, null, true);
+          }
+          return;
         }
+
+        // load page import if it hasn't alreeady been imported.
+        if (!Polymer.isInstance(pageEl)) {
+          this.app.pageLoading = true;
+          this.importHref(this.resolveUrl('pages/' + pageEl.nodeName.toLowerCase() + '.html'), function() {
+            pageEl = Polymer.dom(this.$.pages).querySelector('[name="' + pageName + '"]');
+            pageEl.init();
+          }, null, true);
+        }
+        // if the page is not initialised.
+        else if(!pageEl.isInitialised) {
+          this.app.pageLoading = true;
+          pageEl.init();
+        }
+        // else the page is loaded and read to be display
+        else {
+          // if the page has an `onSwitchBackTo` function, call it.
+          if (pageEl.onSwitchBackTo instanceof Function) {
+            pageEl.onSwitchBackTo();
+          }
+          this.app.pageLoading = false;
+        }
+
+        this.app.pageError = false;
+      },
+
+      /**
+       * Called when the detail pages are stamped out to the dom.
+       */
+      _pagesReady: function() {
+        this.pageReady();
+        this.pageChanged(this.page);  // now that this page is ready, display the child page.
+      },
+
+      /**
+       * Called when a page has loaded.
+       */
+      _pageLoaded: function(e) {
+        if (e.target === Polymer.dom(this.$.pages).querySelector('[name="' + this.page + '"]')) {
+          this.app.pageError = false;
+          this.app.pageLoading = false;
+          this.$.pages.select(this.page);
+        }
+      },
+
+      /**
+       * Called when a page loading error occurs.
+       */
+      _pageErrorOccurred: function(e) {
+        if (e.target === Polymer.dom(this.$.pages).querySelector('[name="' + this.page + '"]')) {
+          this.app.pageError = true;
+          this.app.pageLoading = false;
+        }
+      },
+
+      /**
+       * Generate a name value from a url value.
+       *
+       * This is used to create a name for the detail pages.
+       */
+      _urlToName: function(url) {
+        return url.replace(/\//g, '');
       },
 
       /**
        * Called when the page data loads.
        */
       _handleAjaxResponse: function() {
-        this._showLocationSelector();
-        this.pageReady();
+
       },
 
       /**
@@ -143,15 +163,22 @@
        * Initialise the page.
        */
       init: function() {
-        this.$.pageDataLoader.generateRequest();
+        if (this.isInitialised) {
+          var pageEl = Polymer.dom(this.$.pages).querySelector('[name="' + this.page + '"]');
+          pageEl.init();
+        } else {
+          this.$.pageDataLoader.generateRequest();
+        }
       },
 
       /**
        * Called when the page is switched back to.
        */
       onSwitchBackTo: function() {
-        this._showLocationSelector();
-        this._showClassCategories();
+        this.page = 'home';
+        if (this.$.pageHome.onSwitchBackTo instanceof Function) {
+          this.$.pageHome.onSwitchBackTo();
+        }
       },
 
       ready: function() {

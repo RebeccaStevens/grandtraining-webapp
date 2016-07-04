@@ -1,0 +1,162 @@
+<link rel="import" href="../../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../../../bower_components/html-echo/html-echo.html">
+
+<link rel="import" href="../../../../styles/gt-styles.html">
+<link rel="import" href="../../gt-page-behavior.html">
+<link rel="import" href="../gt-location-selector.html">
+<link rel="import" href="../gt-class-category.html">
+
+<dom-module id="gt-page-classes-home">
+  <template>
+    <style include="gt-styles">
+      :host {
+        display: block;
+        @apply(--layout-vertical);
+        @apply(--layout-center);
+      }
+      gt-location-selector {
+        max-width: 500px;
+        margin: 1em 0.75em;
+      }
+      #class-categories {
+        margin: 0.75em;
+        @apply(--layout-horizontal);
+        @apply(--layout-around-justified);
+        @apply(--layout-wrap);
+      }
+      #class-categories gt-class-category {
+        min-width: 100%;
+        margin: 0.50em;
+        @apply(--layout-flex);
+      }
+      @media (min-width: 1024px) {
+        #class-categories gt-class-category {
+          min-width: 400px;
+        }
+      }
+    </style>
+
+    <!-- Download data -->
+    <iron-ajax
+      id="pageDataLoader"
+      url="[[app.dataPath]]classes.json"
+      handle-as="json"
+      last-response="{{pageData}}"
+      on-response="_handleAjaxResponse"
+      on-error="_handleAjaxError"></iron-ajax>
+
+    <!-- Layout -->
+    <gt-location-selector id="location-selector" global-cities="[[app.data.cities]]" location="{{app.location}}" on-location-set="_locationSet"></gt-location-selector>
+
+    <div id="class-categories" hidden$="[[_hideClassCategories]]">
+      <template is="dom-repeat" items="[[pageData.class-categories]]" as="cc" on-dom-change="_showClassCategories">
+        <gt-class-category
+          name="[[cc.name]]"
+          href="[[app.data.pages.classes.url]][[cc.url]]"
+          image-src="[[cc.image.src]]"
+          image-placeholder="[[cc.image.placeholder]]">
+          <html-echo html="[[cc.teaser]]"></html-echo>
+        </gt-class-category>
+      </template>
+    </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'gt-page-classes-home',
+
+      properties: {
+
+        /**
+         * Whether or not to hode the class categories.
+         */
+        _hideClassCategories: {
+          type: Boolean,
+          value: true
+        }
+      },
+
+      behaviors: [GT.PageBehavior],
+
+      /**
+       * Called when a location is set.
+       */
+      _locationSet: function() {
+        if (this.app.location !== undefined) {
+          this._hideClassCategories = false;
+          this._showClassCategories();
+        }
+      },
+
+      /**
+       * Show the location selector element.
+       */
+      _showLocationSelector: function() {
+        var ls = this.$['location-selector'];
+        ls.show();
+      },
+
+      /**
+       * Show all the gt-class-category elements.
+       */
+      _showClassCategories: function() {
+        // don't play the animation if the class categories are hidden
+        if (this._hideClassCategories) {
+          return;
+        }
+
+        // get all the gt-class-category elements
+        var ccs = Polymer.dom(this.$['class-categories']).querySelectorAll('gt-class-category');
+        var timingOffset = 150;   // the timing offset between each call to make the element visible
+
+        var showCC = function(i) {
+          this.async(function() {
+            ccs[i].show()
+          }, i * timingOffset);
+        }.bind(this);
+
+        // for each one
+        for (var i in ccs) {
+          ccs[i].shown = false;
+          showCC(i);
+        }
+      },
+
+      /**
+       * Called when the page data loads.
+       */
+      _handleAjaxResponse: function() {
+        this._showLocationSelector();
+        this.pageReady();
+      },
+
+      /**
+       * Called when an error occurs during the ajax request.
+       */
+      _handleAjaxError: function() {
+        this.pageError();
+      },
+
+      /**
+       * Initialise the page.
+       */
+      init: function() {
+        this.$.pageDataLoader.generateRequest();
+      },
+
+      /**
+       * Called when the page is switched back to.
+       */
+      onSwitchBackTo: function() {
+        this._showLocationSelector();
+        this._showClassCategories();
+      },
+
+      ready: function() {
+        this.init();
+      }
+    });
+  </script>
+</dom-module>
