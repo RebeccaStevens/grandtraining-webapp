@@ -1,0 +1,161 @@
+<link rel="import" href="../../../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../../../../bower_components/paper-material/paper-material.html">
+
+<link rel="import" href="../../../../../styles/gt-styles.html">
+
+<dom-module id="gt-class">
+  <template>
+    <style include="gt-styles paper-material-shared-styles">
+      :host {
+        display: block;
+      }
+      #card {
+        display: block;
+      }
+      #card .card-content {
+        padding-top: 0.5em;
+      }
+      .details {
+        font-size: 10pt;
+        margin-bottom: 0.5em;
+        background-color: #f0f0f0;
+        border-radius: 0.5em;
+        padding: 0.5em;
+        overflow: auto;
+        float: left;
+        margin: 0 0.5em 0.5em 0;
+      }
+      #difficulty {
+
+      }
+      #age-range {
+
+      }
+      #booknow {
+        margin-bottom: 0.25em;
+      }
+      #dates {
+        border-radius: 0.5em;
+        overflow: hidden;
+      }
+      #dates table {
+        width: calc(100% + 1px);
+        border-collapse: collapse;
+        border-spacing: 0;
+      }
+      #dates table thead tr {
+        background-color: #f0f0f0;
+      }
+      #dates table thead tr th {
+        padding: 0.25em;
+      }
+      #dates table tr td {
+        padding: 0.25em;
+      }
+      #dates table tbody tr:nth-child(2n) {
+        background-color: #f0f0f0;
+      }
+      #dates table tbody tr:nth-child(2n+1) {
+        background-color: #e0e0e0;
+      }
+      #dates table thead .date {
+        text-align: center;
+      }
+      #dates table thead .duration {
+        text-align: center;
+      }
+      #dates table thead .cost {
+        text-align: center;
+      }
+      #dates table thead .booknow {
+
+      }
+      #dates table tbody .date {
+        text-align: left;
+      }
+      #dates table tbody .duration {
+        text-align: center;
+      }
+      #dates table tbody .cost {
+        text-align: center;
+      }
+      #dates table tbody .booknow {
+        width: 90px;
+      }
+      #dates table tbody .booknow paper-button {
+        font-size: 14px;
+        width: calc(100% - 0.3em);
+        margin: 0.15em;
+      }
+    </style>
+
+    <paper-card id="card" heading="[[title]]" elevation="2">
+      <div class="card-content">
+        <paper-material class="details" id="difficulty" title="This is an [[difficulty]] class">Difficulty: [[difficulty]]</paper-material>
+        <paper-material class="details" id="age-range" title="Recommended for Ages: [[minAge]]-[[maxAge]]">Ages: [[minAge]] &ndash; [[maxAge]]</paper-material>
+        <span class="clear"></span>
+        <div id="description">
+          <content></content>
+        </div>
+        <h3 id="booknow">Book Now</h3>
+        <paper-material id="dates">
+          <table>
+            <thead>
+              <tr>
+                <th class="date">Date</th>
+                <th class="duration">Duration</th>
+                <th class="cost">Cost</th>
+                <th class="booknow"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <template is="dom-repeat" items="[[dates]]" as="date">
+                <tr>
+                  <td class="date">[[date.start-date]] - [[date.end-date]]</td>
+                  <td class="duration">...</td>
+                  <td class="cost">$[[date.cost]]</td>
+                  <td class="booknow"><a name="classes" href$="#" tabindex="-1"><paper-button raised>Book Now</paper-button></a></td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+        </paper-material
+      </div>
+    </paper-card>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'gt-class',
+
+      properties: {
+
+        title: {
+          type: String
+        },
+
+        difficulty: {
+          type: String
+        },
+
+        minAge: {
+          type: Number,
+          value: 5
+        },
+
+        maxAge: {
+          type: Number,
+          value: 17
+        },
+
+        dates: {
+          type: Array,
+          value: function() {
+            return [];
+          }
+        }
+      },
+    });
+  </script>
+</dom-module>

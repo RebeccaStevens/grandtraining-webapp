@@ -6,11 +6,53 @@
 <link rel="import" href="../../../../../styles/gt-styles.html">
 <link rel="import" href="../../../gt-page-behavior.html">
 
+<link rel="import" href="gt-class.html">
+
 <dom-module id="gt-page-classes-details">
   <template>
     <style include="gt-styles">
       :host {
         display: block;
+      }
+      #card {
+        display: block;
+        margin: 0.75em;
+        --paper-card-header-text: {
+          color: var(--app-primary-header-color);
+          padding-bottom: 0;
+          font-size: 36px;
+        };
+      }
+      #classes {
+        --paper-card-background-color: var(--app-primary-color-light);
+        --paper-card-header-text: {
+          color: var(--app-primary-header-color);
+          padding: 8px 8px 0 8px;
+          font-size: 30px;
+          text-indent: 10px;
+        };
+        --paper-card-content: {
+          padding: 0 8px 8px 8px;
+        };
+      }
+      #classes .card-content {
+        @apply(--layout-horizontal);
+        @apply(--layout-around-justified);
+        @apply(--layout-wrap);
+      }
+      #classes .card-content gt-class {
+        min-width: 100%;
+        margin: 0.50em;
+        @apply(--layout-flex);
+      }
+      #description {
+        margin: 0 0.5em 1em 0.5em;
+      }
+      @media (min-width: 1024px) {
+        #classes .card-content gt-class {
+          min-width: 600px;
+          max-width: 900px;
+        }
       }
     </style>
 
@@ -24,10 +66,28 @@
       on-error="_handleAjaxError"></iron-ajax>
 
     <!-- Layout -->
-    <div>
-      <h1>[[pageData.title]]</h1>
-      <html-echo html="[[pageData.description]]"></html-echo>
-    </div>
+    <paper-card id="card" heading="[[pageData.title]]">
+      <div class="card-content">
+        <div id="description">
+          <html-echo html="[[pageData.description]]"></html-echo>
+        </div>
+
+        <paper-card id="classes" heading="Classes">
+          <div class="card-content">
+            <template is="dom-repeat" items="[[pageData.classes]]" as="class">
+              <gt-class
+                title="[[class.title]]"
+                difficulty="[[class.difficulty]]"
+                min-age="[[class.min-age]]"
+                max-age="[[class.max-age]]"
+                dates="[[class.dates]]">
+                <html-echo html="[[class.description]]"></html-echo>
+              </gt-class>
+            </template>
+          </div>
+        </paper-card>
+      </div>
+    </paper-card>
   </template>
 
   <script>
