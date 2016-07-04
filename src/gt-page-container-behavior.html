@@ -1,0 +1,45 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../imports/gt.html">
+
+<script>
+
+  GT.PageContainerBehavior = {
+    properties: {
+
+      /**
+       * The page we are on.
+       */
+      page: {
+        type: String,
+        reflectToAttribute: true,
+        observer: 'pageChanged'
+      },
+
+      /**
+       * The classes route.
+       */
+      route: Object,
+
+      /**
+       * The data contained in the route.
+       */
+      routeData: Object,
+
+      /**
+       * The subroute the app is on.
+       */
+      subroute: Object
+    },
+
+    observers: [
+      '_routePageChanged(routeData.page)'
+    ],
+
+    /**
+     * Called when the route data's page is changed.
+     */
+    _routePageChanged: function(pageName) {
+      this.page = pageName || 'home';
+    }
+  };
+</script>

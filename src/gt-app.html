@@ -18,6 +18,7 @@
 <link rel="import" href="../bower_components/polymer-cookie/polymer-cookie.html">
 <link rel="import" href="../styles/gt-styles.html">
 <link rel="import" href="../imports/gt.html">
+<link rel="import" href="gt-page-container-behavior.html">
 <link rel="import" href="gt-icons.html">
 
 <dom-module id="gt-app">
@@ -121,12 +122,12 @@
     </style>
 
     <!-- Routing -->
-    <app-location route="{{_route}}"></app-location>
+    <app-location route="{{route}}"></app-location>
     <app-route
-        route="{{_route}}"
+        route="{{route}}"
         pattern="/:page"
-        data="{{_routeData}}"
-        tail="{{_subroute}}"></app-route>
+        data="{{routeData}}"
+        tail="{{subroute}}"></app-route>
 
     <!-- Download data -->
     <iron-ajax id="shellDataLoader"
@@ -177,7 +178,7 @@
           on-page-loaded="_pageLoaded"
           on-page-error="_pageErrorOccurred">
           <gt-page-home name="home"></gt-page-home>
-          <gt-page-classes name="classes"></gt-page-classes>
+          <gt-page-classes name="classes" route="{{subroute}}"></gt-page-classes>
           <gt-page-bookings name="bookings"></gt-page-bookings>
           <gt-page-faq name="faq"></gt-page-faq>
           <gt-page-about-us name="about-us"></gt-page-about-us>
@@ -193,7 +194,7 @@
             <h1>Unable to load page.</h1>
             <span>Unfortunately, an error occurred while trying to load the requested page.</span>
           </div>
-          <paper-button class="retry" on-tap="_reinitPage">Try again.</paper-button>
+          <paper-button raised class="retry" on-tap="_reinitPage">Try again.</paper-button>
         </div>
 
         <hr class="bottom-rule">
@@ -215,15 +216,6 @@
       is: 'gt-app',
 
       properties: {
-
-        /**
-         * The name of the page the app is on.
-         */
-        page: {
-          type: String,
-          reflectToAttribute: true,
-          observer: '_pageChanged'
-        },
 
         /**
          * The path where this app should download data from.
@@ -257,29 +249,6 @@
         },
 
         /**
-         * The app's route.
-         */
-        _route: Object,
-
-        /**
-         * The data contained in the route.
-         */
-        _routeData: Object,
-
-        /**
-         * The subroute the app is on.
-         */
-        _subroute: Object,
-
-        /**
-         * Whether or not a page is currently loading.
-         */
-        _pageLoading: {
-          type: Boolean,
-          value: true
-        },
-
-        /**
          * Whether or not the shell is currently loading.
          */
         _shellLoading: {
@@ -288,17 +257,25 @@
         },
 
         /**
-         * Whether or not a page loading error has occured.
+         * Whether or not a shell loading error has occured.
          */
-        _pageError: {
+        _shellError: {
           type: Boolean,
           value: false
         },
 
         /**
-         * Whether or not a shell loading error has occured.
+         * Whether or not a page is currently loading.
          */
-        _shellError: {
+        pageLoading: {
+          type: Boolean,
+          value: true
+        },
+
+        /**
+         * Whether or not a page loading error has occured.
+         */
+        pageError: {
           type: Boolean,
           value: false
         },
@@ -316,7 +293,7 @@
          */
         _hideLoadingOverlay: {
           type: Boolean,
-          computed: '_computeHideLoadingOverlay(_pageLoading, _shellLoading)'
+          computed: '_computeHideLoadingOverlay(pageLoading, _shellLoading)'
         },
 
         /**
@@ -324,7 +301,7 @@
          */
         _hideErrorOverlay: {
           type: Boolean,
-          computed: '_computeHideErrorOverlay(_shellError, _pageError)'
+          computed: '_computeHideErrorOverlay(_shellError, pageError)'
         },
 
         /**
@@ -337,24 +314,14 @@
 
       },
 
-      observers: [
-        '_routePageChanged(_routeData.page)'
+      behaviors: [
+        GT.PageContainerBehavior
       ],
-
-      /**
-       * Called when the route data's page is changed.
-       */
-      _routePageChanged: function(pageName) {
-        this.page = pageName || 'home';               // change the page
-        if (this.$['drawer-layout'].narrow) {         // if the drawer layout is narrow
-          this.$['drawer-layout'].drawer.close();     // close the drawer
-        }
-      },
 
       /**
        * Called when the page is changed.
        */
-      _pageChanged: function(pageName) {
+      pageChanged: function(pageName) {
         var pageEl = Polymer.dom(this.$.pages).querySelector('[name="' + pageName + '"]');
 
         // if the page element doesn't exist, the page doesn't exist
@@ -365,12 +332,12 @@
 
         // load page import if it hasn't alreeady been imported.
         if (!Polymer.isInstance(pageEl)) {
-          this._pageLoading = true;
+          this.pageLoading = true;
           this.importHref(this.resolveUrl('pages/' + pageName + '/gt-page-' + pageName + '.html'), null, null, true);
         }
         // if the page is not initialised.
         else if(!pageEl.isInitialised) {
-          this._pageError = true;
+          this.pageError = true;
           this._reinitPage();
         }
         // else the page is loaded and read to be display
@@ -379,26 +346,26 @@
           if (pageEl.onSwitchBackTo instanceof Function) {
             pageEl.onSwitchBackTo();
           }
-          this._pageLoading = false;
+          this.pageLoading = false;
         }
 
-        this._pageError = false;
+        this.pageError = false;
       },
 
       /**
        * Called when a page has loaded.
        */
       _pageLoaded: function() {
-        this._pageError = false;
-        this._pageLoading = false;
+        this.pageError = false;
+        this.pageLoading = false;
       },
 
       /**
        * Called when a page loading error occurs.
        */
       _pageErrorOccurred: function() {
-        this._pageError = true;
-        this._pageLoading = false;
+        this.pageError = true;
+        this.pageLoading = false;
       },
 
       /**
@@ -443,8 +410,8 @@
           this.init();
         }
 
-        if (this._pageError) {
-          this._pageLoading = true;  // turn the loading overlay on
+        if (this.pageError) {
+          this.pageLoading = true;  // turn the loading overlay on
 
           // if the page has an init function, call it.
           if (pageEl !== null && pageEl.init instanceof Function) {
@@ -453,7 +420,7 @@
           // otherwise, wait a bit and turn the loading overlay off
           else {
             this.async(function() {
-              this._pageLoading = false;
+              this.pageLoading = false;
             }, 500);
           }
         }
