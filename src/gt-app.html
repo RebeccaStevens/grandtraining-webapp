@@ -350,6 +350,10 @@
         }
 
         this.pageError = false;
+
+        if (this.$['drawer-layout'].narrow) {         // if the drawer layout is narrow
+          this.$['drawer-layout'].drawer.close();     // close the drawer
+        }
       },
 
       /**
