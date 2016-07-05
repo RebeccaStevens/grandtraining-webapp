@@ -49,12 +49,13 @@
         width: calc(100% + 1px);
         border-collapse: collapse;
         border-spacing: 0;
+        line-height: normal;
       }
       #dates table thead tr {
         background-color: #f0f0f0;
       }
       #dates table thead tr th {
-        padding: 0.25em;
+        padding: 0.67em 0.25em;
       }
       #dates table tr td {
         padding: 0.25em;
@@ -80,6 +81,9 @@
       #dates table tbody .date {
         text-align: left;
         padding-left: 2%;
+      }
+      #dates table tbody .date .excluded-dates {
+        font-size: 8pt;
       }
       #dates table tbody .duration {
         text-align: center;
