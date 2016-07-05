@@ -99,8 +99,8 @@
 
     <paper-card id="card" heading="[[title]]" elevation="2">
       <div class="card-content">
-        <paper-material class="details" id="level" title="This is an [[level]] class">Class Level: [[level]]</paper-material>
-        <paper-material class="details" id="age-range" title="Recommended for Ages: [[minAge]]-[[maxAge]]">Ages: [[minAge]] &ndash; [[maxAge]]</paper-material>
+        <paper-material class="details" id="level" title="[[_getLevelTitle(level)]]">Class Level: [[level]]</paper-material>
+        <paper-material class="details" id="age-range" title="Recommended for ages: [[minAge]]-[[maxAge]]">Ages: [[minAge]] &ndash; [[maxAge]]</paper-material>
         <span class="clear"></span>
         <div id="description">
           <content></content>
@@ -274,6 +274,17 @@
 
       _hasBookings: function(dates) {
         return dates.length > 0;
+      },
+
+      _getLevelTitle: function(level) {
+        var lvl = level.toLowerCase();
+        var firstChar = lvl.charAt(0);
+
+        // simple check to see if 'a' or 'an' prefix should be used
+        if (firstChar === 'a' || firstChar === 'e' || firstChar === 'i' || firstChar === 'o' || firstChar === 'u') {
+          return 'This is an ' + lvl + ' class';
+        }
+        return 'This is a ' + lvl + ' class';
       },
 
       /**
