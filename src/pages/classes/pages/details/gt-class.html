@@ -112,7 +112,7 @@
             <tbody>
               <template is="dom-repeat" items="[[dates]]" as="date">
                 <tr>
-                  <td class="date">[[date.start-date]] - [[date.end-date]]</td>
+                  <td class="date">[[_getDisplayDateRange(date.start-date, date.end-date)]]</td>
                   <td class="duration">...</td>
                   <td class="cost">$[[date.cost]]</td>
                   <td class="booknow"><a name="classes" href$="#" tabindex="-1"><paper-button raised>Book Now</paper-button></a></td>
@@ -154,8 +154,104 @@
           value: function() {
             return [];
           }
+        },
+
+        /**
+         * A look up table that can be used to get day information from a day index.
+         */
+        _dayLookUp: {
+          type: Array,
+          // this is a static value, hence why it's not returned in a function.
+          value: [
+            { short: 'Sun', long: 'Sunday' },
+            { short: 'Mon', long: 'Monday' },
+            { short: 'Tue', long: 'Tuesday' },
+            { short: 'Wed', long: 'Wednesday' },
+            { short: 'Thu', long: 'Thursday' },
+            { short: 'Fri', long: 'Friday' },
+            { short: 'Sat', long: 'Saturday' }
+          ]
+        },
+
+        /**
+         * A look up table that can be used to get month information from a month index.
+         */
+        _monthLookUp: {
+          type: Array,
+          // this is a static value, hence why it's not returned in a function.
+          value: [
+            { short: 'Jan', long: 'January' },
+            { short: 'Feb', long: 'Febuary' },
+            { short: 'Mar', long: 'March' },
+            { short: 'Apr', long: 'April' },
+            { short: 'May', long: 'May' },
+            { short: 'Jun', long: 'June' },
+            { short: 'Jul', long: 'July' },
+            { short: 'Aug', long: 'August' },
+            { short: 'Sep', long: 'September' },
+            { short: 'Oct', long: 'October' },
+            { short: 'Nov', long: 'November' },
+            { short: 'Dec', long: 'December' }
+          ]
         }
       },
+
+      /**
+       * Get a date range that can be displayed on the screen.
+       *
+       * @param {String} startDate
+       * @param {String} endDate
+       * @returns {String}
+       */
+      _getDisplayDateRange: function(startDate, endDate) {
+        var start = new Date(startDate);
+        var end = new Date(endDate);
+        var dateString = '';
+
+        dateString += this._dayLookUp[start.getDay()].short;
+        dateString += ' ' + this._getOrdinalOfNumber(start.getDate()).super;
+        if (start.getMonth() !== end.getMonth()) {
+          dateString += ' ' + this._monthLookUp[start.getMonth()].long;
+        }
+        if (start.getFullYear() !== end.getFullYear()) {
+          dateString += ' ' + start.getFullYear();
+        }
+
+        dateString += ' - ';
+
+        dateString += this._dayLookUp[end.getDay()].short;
+        dateString += ' ' + this._getOrdinalOfNumber(end.getDate()).super;
+        dateString += ' ' + this._monthLookUp[end.getMonth()].long;
+        dateString += ' ' + end.getFullYear();
+
+        return dateString;
+      },
+
+      /**
+       * Get the ordinal of a number.
+       *
+       * @param {Number} number
+       * @returns {Object}
+       */
+      _getOrdinalOfNumber: function(number) {
+        var nOrds=['th', 'st', 'nd', 'rd'];
+        var sOrds=['\u1D57\u02B0', '\u02E2\u1D57', '\u207F\u1D48', '\u02B3\u1D48'];
+        var v = number % 100;
+
+        var i = ((v - 20) % 10);
+        if (i < 0 || i >= 4) {
+         if (v >= 0 && v <= 3) {
+            i = v;
+          } else {
+            i = 0;
+          }
+        }
+
+        return {
+          normal: number + nOrds[i],
+          super:  number + sOrds[i]
+        };
+      }
     });
   </script>
 </dom-module>
