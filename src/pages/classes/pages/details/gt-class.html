@@ -120,8 +120,11 @@
               <tbody>
                 <template is="dom-repeat" items="[[dates]]" as="date">
                   <tr>
-                    <td class="date">[[_getDisplayDateRange(date.start-date, date.end-date)]]</td>
-                    <td class="duration">[[_getDisplayDuration(date.start-date, date.end-date)]]</td>
+                    <td class="date">
+                      [[_getDisplayDateRange(date.start-date, date.end-date)]]<br>
+                      <span class="excluded-dates" hidden$="[[!_arrayHasValues(date.excludes)]]">[[_getDisplayExcludedDates(date.excludes)]]</span>
+                    </td>
+                    <td class="duration">[[_getDisplayDuration(date.start-date, date.end-date, date.excludes)]]</td>
                     <td class="cost">[[_getDisplayCurrency(date.cost)]]</td>
                     <td class="booknow"><a name="classes" href$="#" tabindex="-1"><paper-button raised>Book Now</paper-button></a></td>
                   </tr>
@@ -242,6 +245,25 @@
         return dateString;
       },
 
+      _getDisplayExcludedDates: function(excludes) {
+        var excludesString = '(Excludes: ';
+
+        for (var i in excludes) {
+          var date = new Date(excludes[i]);
+          excludesString += this._getOrdinalOfNumber(date.getDate()).super + ' ' + this._monthLookUp[date.getMonth()].short;
+          if (i + 2 < excludes.length) {
+            excludesString += ', ';
+          }
+          else if (i + 1 < excludes.length) {
+            excludesString += ' and ';
+          }
+        }
+
+        excludesString += ')';
+
+        return excludesString;
+      },
+
       /**
        * Format the duration of a class booking.
        *
@@ -249,12 +271,14 @@
        * @param {String} endDate
        * @returns {String}
        */
-      _getDisplayDuration: function(startDate, endDate) {
+      _getDisplayDuration: function(startDate, endDate, excludes) {
         var start = new Date(startDate);
         var end = new Date(endDate);
 
         var timeDiff = Math.abs(end.getTime() - start.getTime());
         var days = Math.ceil(timeDiff / (1000 * 3600 * 24)) + 1;
+
+        days -= excludes.length;
 
         if (days === 1) {
           return days + ' Day';
