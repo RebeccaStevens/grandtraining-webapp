@@ -212,7 +212,7 @@
         dateString += this._dayLookUp[start.getDay()].short;
         dateString += ' ' + this._getOrdinalOfNumber(start.getDate()).super;
         if (start.getMonth() !== end.getMonth()) {
-          dateString += ' ' + this._monthLookUp[start.getMonth()].long;
+          dateString += ' ' + this._monthLookUp[start.getMonth()].short;
         }
         if (start.getFullYear() !== end.getFullYear()) {
           dateString += ' ' + start.getFullYear();
@@ -222,7 +222,7 @@
 
         dateString += this._dayLookUp[end.getDay()].short;
         dateString += ' ' + this._getOrdinalOfNumber(end.getDate()).super;
-        dateString += ' ' + this._monthLookUp[end.getMonth()].long;
+        dateString += ' ' + this._monthLookUp[end.getMonth()].short;
         dateString += ' ' + end.getFullYear();
 
         return dateString;
