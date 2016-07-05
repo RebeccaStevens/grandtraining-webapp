@@ -209,16 +209,18 @@
         var end = new Date(endDate);
         var dateString = '';
 
-        dateString += this._dayLookUp[start.getDay()].short;
-        dateString += ' ' + this._getOrdinalOfNumber(start.getDate()).super;
-        if (start.getMonth() !== end.getMonth()) {
-          dateString += ' ' + this._monthLookUp[start.getMonth()].short;
-        }
-        if (start.getFullYear() !== end.getFullYear()) {
-          dateString += ' ' + start.getFullYear();
-        }
+        if (start.getTime() !== end.getTime()) {
+          dateString += this._dayLookUp[start.getDay()].short;
+          dateString += ' ' + this._getOrdinalOfNumber(start.getDate()).super;
+          if (start.getMonth() !== end.getMonth()) {
+            dateString += ' ' + this._monthLookUp[start.getMonth()].short;
+          }
+          if (start.getFullYear() !== end.getFullYear()) {
+            dateString += ' ' + start.getFullYear();
+          }
 
-        dateString += ' - ';
+          dateString += ' - ';
+        }
 
         dateString += this._dayLookUp[end.getDay()].short;
         dateString += ' ' + this._getOrdinalOfNumber(end.getDate()).super;
