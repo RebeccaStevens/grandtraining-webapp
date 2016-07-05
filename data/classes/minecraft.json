@@ -32,18 +32,7 @@
       "min-age": 7,
       "max-age": 17,
       "description": "<p>Take Minecraft to the next level with some of the toughest challenges on offer.</p><ul><li>Go beyond simple circuits; learn about logic gates and use this knowledge to build functioning computer parts using redstone.</li><li>Construction mastery: go beyond basic building; learn how to create impregnable fortresses, siege warfare, and a multitude of traps.</li><li>Adventure maps: Learn how to put these skills together to make the ultimate challenge for you and your friends. Design complex parkour courses or tower defence minigames.</li><li>Advanced Commands, challenges, and map editing. This course is designed to be played again and again, different experiences guaranteed! </li></ul>",
-      "dates": [
-        {
-          "start-date": "2016-07-12",
-          "end-date": "2016-07-15",
-          "cost": 370
-        },
-        {
-          "start-date": "2016-07-19",
-          "end-date": "2016-07-22",
-          "cost": 370
-        }
-      ]
+      "dates": []
     },
     {
       "title": "Build your own Modpack",
