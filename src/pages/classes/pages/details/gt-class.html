@@ -26,7 +26,7 @@
         float: left;
         margin: 0 0.5em 0.5em 0;
       }
-      #difficulty {
+      #level {
 
       }
       #age-range {
@@ -93,7 +93,7 @@
 
     <paper-card id="card" heading="[[title]]" elevation="2">
       <div class="card-content">
-        <paper-material class="details" id="difficulty" title="This is an [[difficulty]] class">Difficulty: [[difficulty]]</paper-material>
+        <paper-material class="details" id="level" title="This is an [[level]] class">Class Level: [[level]]</paper-material>
         <paper-material class="details" id="age-range" title="Recommended for Ages: [[minAge]]-[[maxAge]]">Ages: [[minAge]] &ndash; [[maxAge]]</paper-material>
         <span class="clear"></span>
         <div id="description">
@@ -136,7 +136,7 @@
           type: String
         },
 
-        difficulty: {
+        level: {
           type: String
         },
 
