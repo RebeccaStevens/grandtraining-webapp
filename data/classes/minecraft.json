@@ -10,13 +10,13 @@
       "description": "<p>This course introduces students to the fun and creativity of learning with Minecraft on PC.</p><ul><li>Create redstone contraptions such as clocks, doors and elevators.</li><li>Go beyond simple circuits; learn about logic gates and use this knowledge to build functioning computer parts using redstone.</li><li>Design your dream home. Will it be a little house nestled on the hillside or an impregnable fortress with a moat and drawbridge?</li><li>Learn how to move your world from computer to computer, or download and explore creations from the vast community of Minecrafters online.</li></ul>",
       "dates": [
         {
-          "start-date": "2016-07-12",
-          "end-date": "2016-07-15",
+          "start-date": "2016-06-27",
+          "end-date": "2016-07-1",
           "cost": 370
         },
         {
-          "start-date": "2016-07-19",
-          "end-date": "2016-07-22",
+          "start-date": "2019-12-30",
+          "end-date": "2020-01-3",
           "cost": 370
         }
       ]
