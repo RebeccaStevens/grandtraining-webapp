@@ -114,7 +114,7 @@
               <template is="dom-repeat" items="[[dates]]" as="date">
                 <tr>
                   <td class="date">[[_getDisplayDateRange(date.start-date, date.end-date)]]</td>
-                  <td class="duration">...</td>
+                  <td class="duration">[[_getDisplayDuration(date.start-date, date.end-date)]]</td>
                   <td class="cost">$[[date.cost]]</td>
                   <td class="booknow"><a name="classes" href$="#" tabindex="-1"><paper-button raised>Book Now</paper-button></a></td>
                 </tr>
@@ -228,6 +228,26 @@
         dateString += ' ' + end.getFullYear();
 
         return dateString;
+      },
+
+      /**
+       * Get the duration of a class.
+       *
+       * @param {String} startDate
+       * @param {String} endDate
+       * @returns {String}
+       */
+      _getDisplayDuration: function(startDate, endDate) {
+        var start = new Date(startDate);
+        var end = new Date(endDate);
+
+        var timeDiff = Math.abs(end.getTime() - start.getTime());
+        var days = Math.ceil(timeDiff / (1000 * 3600 * 24)) + 1;
+
+        if (days === 1) {
+          return days + ' Day';
+        }
+        return days + ' Days';
       },
 
       /**
