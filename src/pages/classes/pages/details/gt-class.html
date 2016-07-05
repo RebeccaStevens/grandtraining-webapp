@@ -115,7 +115,7 @@
                 <tr>
                   <td class="date">[[_getDisplayDateRange(date.start-date, date.end-date)]]</td>
                   <td class="duration">[[_getDisplayDuration(date.start-date, date.end-date)]]</td>
-                  <td class="cost">$[[date.cost]]</td>
+                  <td class="cost">[[_getDisplayCurrency(date.cost)]]</td>
                   <td class="booknow"><a name="classes" href$="#" tabindex="-1"><paper-button raised>Book Now</paper-button></a></td>
                 </tr>
               </template>
@@ -248,6 +248,16 @@
           return days + ' Day';
         }
         return days + ' Days';
+      },
+
+      /**
+       * Format the cost of a class.
+       *
+       * @param {Number} amount
+       * @returns {String}
+       */
+      _getDisplayCurrency: function(amount) {
+        return '$' + amount.toFixed(2);
       },
 
       /**
