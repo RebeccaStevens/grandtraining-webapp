@@ -12,16 +12,19 @@
         {
           "start-date": "2016-06-27",
           "end-date": "2016-07-1",
-          "cost": 370
+          "excludes": ["2016-06-28", "2016-06-29"],
+          "cost": 225
         },
         {
           "start-date": "2019-12-30",
           "end-date": "2020-01-3",
+          "excludes": [],
           "cost": 370
         },
         {
           "start-date": "2016-06-29",
           "end-date": "2016-06-29",
+          "excludes": [],
           "cost": 95
         }
       ]
@@ -44,11 +47,13 @@
         {
           "start-date": "2016-07-12",
           "end-date": "2016-07-15",
+          "excludes": [],
           "cost": 370
         },
         {
           "start-date": "2016-07-19",
           "end-date": "2016-07-22",
+          "excludes": [],
           "cost": 370
         }
       ]
@@ -63,11 +68,13 @@
         {
           "start-date": "2016-07-12",
           "end-date": "2016-07-15",
+          "excludes": [],
           "cost": 370
         },
         {
           "start-date": "2016-07-19",
           "end-date": "2016-07-22",
+          "excludes": [],
           "cost": 370
         }
       ]
@@ -82,11 +89,13 @@
         {
           "start-date": "2016-07-12",
           "end-date": "2016-07-15",
+          "excludes": [],
           "cost": 370
         },
         {
           "start-date": "2016-07-19",
           "end-date": "2016-07-22",
+          "excludes": [],
           "cost": 370
         }
       ]
@@ -101,11 +110,13 @@
         {
           "start-date": "2016-07-12",
           "end-date": "2016-07-15",
+          "excludes": [],
           "cost": 370
         },
         {
           "start-date": "2016-07-19",
           "end-date": "2016-07-22",
+          "excludes": [],
           "cost": 370
         }
       ]
@@ -120,6 +131,7 @@
         {
           "start-date": "2016-07-18",
           "end-date": "2016-07-22",
+          "excludes": [],
           "cost": 370
         }
       ]
