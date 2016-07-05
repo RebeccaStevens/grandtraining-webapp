@@ -12,9 +12,24 @@
       }
       #card {
         display: block;
+        --paper-card-header-text: {
+          color: #88b6cd;
+          font-size: 36px;
+          padding-bottom: 0;
+          font-weight: bold;
+          text-shadow:  3px  3px 0 #000,
+                       -1px -1px 0 #000,
+                        1px -1px 0 #000,
+                       -1px  1px 0 #000,
+                        1px  1px 0 #000;
+        };
+        --paper-card-header-image: {
+          padding-bottom: 20%;
+          height: 0;
+        }
       }
       #card .card-content {
-        padding-top: 0.2em;
+        padding-top: 0.75em;
       }
       .details {
         font-size: 10pt;
@@ -101,7 +116,7 @@
       }
     </style>
 
-    <paper-card id="card" heading="[[title]]" elevation="2">
+    <paper-card id="card" heading="[[title]]" elevation="2" image="[[image.src]]" placeholder-image="[[image.placeholder]]" sizing-image="cover" preload-image fade-image>
       <div class="card-content">
         <paper-material class="details" id="level" title="[[_getLevelTitle(level)]]">Class Level: [[level]]</paper-material>
         <paper-material class="details" id="age-range" title="Recommended for ages: [[minAge]]-[[maxAge]]">Ages: [[minAge]] &ndash; [[maxAge]]</paper-material>
