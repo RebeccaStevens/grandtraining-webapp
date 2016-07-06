@@ -119,8 +119,8 @@
 
     <paper-card id="card" heading="[[title]]" elevation="2" image="[[image.src]]" placeholder-image="[[image.placeholder]]" sizing-image="cover" preload-image fade-image>
       <div class="card-content">
-        <paper-material class="details" id="level" title="[[_getLevelTitle(level)]]">Class Level: [[level]]</paper-material>
-        <paper-material class="details" id="age-range" title="Recommended for ages: [[minAge]]-[[maxAge]]">Ages: [[minAge]] &ndash; [[maxAge]]</paper-material>
+        <paper-material class="details" id="level" title$="[[_getLevelTitle(level)]]">Class Level: [[level]]</paper-material>
+        <paper-material class="details" id="age-range" title$="Recommended for ages: [[minAge]]-[[maxAge]]">Ages: [[minAge]] &ndash; [[maxAge]]</paper-material>
         <span class="clear"></span>
         <div id="description">
           <content></content>
