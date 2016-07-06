@@ -480,16 +480,21 @@
        * Called when the page title changes.
        */
       _pageTitleChanged: function(title) {
+        this._updatePageTitleSize();
+      },
+
+      /**
+       * Update the font size of the page title.
+       */
+      _updatePageTitleSize: function() {
+        this.$['main-toolbar'].style.fontSize = '';
         var computedStyle = getComputedStyle(this.$['main-toolbar']);
-        var textWidth = this.getTextWidth(title, computedStyle.font);
+        var textWidth = this.getTextWidth(this.title, computedStyle.font);
         var toolbarTextWidth = this.$['main-toolbar'].clientWidth - 2 * 68;
 
         // scale the text to fit in the toolbar.
         if (textWidth > toolbarTextWidth) {
           this.$['main-toolbar'].style.fontSize = (Number.parseInt(computedStyle.fontSize, 10) * toolbarTextWidth / textWidth) + 'px';
-        }
-        else {
-          this.$['main-toolbar'].style.fontSize = '';
         }
       },
 
