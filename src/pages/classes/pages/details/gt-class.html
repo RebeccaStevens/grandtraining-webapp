@@ -66,6 +66,7 @@
       .table .row {
         @apply(--layout-horizontal);
         @apply(--layout-center-center);
+        @apply(--layout-wrap);
       }
       .table .row .cell {
         @apply(--layout-flex);
@@ -80,34 +81,38 @@
         overflow: hidden;
       }
       #dates .header .row {
-        background-color: #f0f0f0;
+        background-color: #cee6f2;
       }
       #dates .body .row:nth-child(2n) {
-        background-color: #f0f0f0;
-      }
-      #dates .body .row:nth-child(2n+1) {
         background-color: #e0e0e0;
       }
-      #dates .cell.date {
-        @apply(--layout-flex-3);
+      #dates .body .row:nth-child(2n+1) {
+        background-color: #f0f0f0;
       }
       #dates .cell.duration {
         max-width: 150px;
-        min-width: 100px;
+        min-width: 70px;
       }
       #dates .cell.cost {
         max-width: 150px;
-        min-width: 100px;
+        min-width: 70px;
       }
       #dates .cell.booknow {
         max-width: 90px;
         min-width: 90px;
       }
-      #dates .body {
-
+      #dates .header .cell.booknow {
+        display: none;
+      }
+      #dates .body .row {
+        padding: 0.625em 0.125em 0.125em 0.125em;
       }
       #dates .body .cell.date {
-        padding-left: 1em;
+        min-width: 100%;
+        text-align: center;
+      }
+      #dates .body .cell.date .date-range {
+        font-weight: bold;
       }
       #dates .body .cell.duration {
         text-align: center;
@@ -115,13 +120,29 @@
       #dates .body .cell.cost {
         text-align: center;
       }
-      #dates .body .cell.booknow {
-
-      }
       #dates .body .cell.booknow paper-button {
         font-size: 14px;
         width: calc(100% - 0.5em);
         margin: 0.25em;
+      }
+      @media (min-width: 1024px) {
+        #dates .cell.date {
+          @apply(--layout-flex-3);
+        }
+        #dates .body .row {
+          padding: 0.125em;
+        }
+        #dates .body .cell.date {
+          text-align: left;
+          padding-left: 0.75em;
+          min-width: auto;
+        }
+        #dates .body .cell.date .date-range {
+          font-weight: normal;
+        }
+        #dates .header .cell.booknow {
+          display: block;
+        }
       }
     </style>
 
@@ -148,7 +169,7 @@
               <template is="dom-repeat" items="[[dates]]" as="date">
                 <div class="row">
                   <div class="cell date">
-                    [[_getDisplayDateRange(date.start-date, date.end-date)]]<br>
+                    <span class="date-range">[[_getDisplayDateRange(date.start-date, date.end-date)]]</span><br>
                     <span class="excluded-dates" hidden$="[[!_arrayHasValues(date.excludes)]]">[[_getDisplayExcludedDates(date.excludes)]]</span>
                   </div>
                   <div class="cell duration">[[_getDisplayDuration(date.start-date, date.end-date, date.excludes)]]</div>
