@@ -110,6 +110,10 @@
         min-width: 100%;
         text-align: center;
       }
+      #dates .body .cell.date .wrap {
+        display: inline-block;
+        text-align: center;
+      }
       #dates .body .cell.date .date-range {
         font-weight: bold;
       }
@@ -168,8 +172,10 @@
               <template is="dom-repeat" items="[[dates]]" as="date">
                 <div class="row">
                   <div class="cell date">
-                    <span class="date-range">[[_getDisplayDateRange(date.start-date, date.end-date)]]</span><br>
-                    <span class="excluded-dates" hidden$="[[!_arrayHasValues(date.excludes)]]">[[_getDisplayExcludedDates(date.excludes)]]</span>
+                    <div class="wrap">
+                      <span class="date-range">[[_getDisplayDateRange(date.start-date, date.end-date)]]</span><br>
+                      <span class="excluded-dates" hidden$="[[!_arrayHasValues(date.excludes)]]">[[_getDisplayExcludedDates(date.excludes)]]</span>
+                    </div>
                   </div>
                   <div class="cell duration">[[_getDisplayDuration(date.start-date, date.end-date, date.excludes)]]</div>
                   <div class="cell cost">[[_getDisplayCurrency(date.cost)]]</div>
