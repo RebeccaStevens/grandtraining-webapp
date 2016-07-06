@@ -11,6 +11,10 @@
   --app-secondary-header-color: var(--app-primary-color);
 }
 
+:host {
+  font-size: 12pt;
+}
+
 [hidden] {
   display: none !important;
 }
@@ -60,6 +64,12 @@ paper-button[raised] {
   border: solid 1px #9cc3d6;
   background-color: var(--app-primary-color-light);
   --paper-button-ink-color: var(--app-primary-color);
+}
+
+@media (min-width: 1024px) {
+  :host {
+    font-size: 11.5pt;
+  }
 }
 
 </style></template></dom-module>
