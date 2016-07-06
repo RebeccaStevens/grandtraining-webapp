@@ -145,7 +145,7 @@
       time="-1"></polymer-cookie>
 
     <!-- Layout -->
-    <app-drawer-layout id="drawer-layout" fullbleed responsive-width="1024px">
+    <app-drawer-layout id="drawer-layout" fullbleed responsive-width="1024px" narrow="{{narrow}}">
 
       <!-- Drawer content -->
       <app-drawer>
@@ -162,7 +162,7 @@
       <!-- Main content -->
       <app-header-layout has-scrolling-region>
 
-        <app-header condenses reveals effects="waterfall">
+        <app-header condenses="[[narrow]]" reveals="[[narrow]]" fixed="[[!narrow]]" shadow effects="waterfall">
           <app-toolbar id="main-toolbar">
             <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
             <div title>[[_pageTitle]]</div>
@@ -216,6 +216,13 @@
       is: 'gt-app',
 
       properties: {
+
+        /**
+         * Whether or not this app is narrow or not.
+         */
+        narrow: {
+          type: Boolean
+        },
 
         /**
          * The path where this app should download data from.
