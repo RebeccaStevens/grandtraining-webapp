@@ -57,63 +57,71 @@
       #no-bookings-available p:first-of-type {
         margin-top: 0.33em;
       }
+      .excluded-dates {
+        font-size: 8pt;
+      }
+      .table {
+        line-height: normal;
+      }
+      .table .row {
+        @apply(--layout-horizontal);
+        @apply(--layout-center-center);
+      }
+      .table .row .cell {
+        @apply(--layout-flex);
+      }
+      .table .header .row .cell {
+        text-align: center;
+        font-weight: bold;
+        padding: 0.5em 0;
+      }
       #dates {
         border-radius: 0.5em;
         overflow: hidden;
       }
-      #dates table {
-        width: calc(100% + 1px);
-        border-collapse: collapse;
-        border-spacing: 0;
-        line-height: normal;
-      }
-      #dates table thead tr {
+      #dates .header .row {
         background-color: #f0f0f0;
       }
-      #dates table thead tr th {
-        padding: 0.67em 0.25em;
-      }
-      #dates table tr td {
-        padding: 0.25em;
-      }
-      #dates table tbody tr:nth-child(2n) {
+      #dates .body .row:nth-child(2n) {
         background-color: #f0f0f0;
       }
-      #dates table tbody tr:nth-child(2n+1) {
+      #dates .body .row:nth-child(2n+1) {
         background-color: #e0e0e0;
       }
-      #dates table thead .date {
-        text-align: center;
+      #dates .cell.date {
+        @apply(--layout-flex-3);
       }
-      #dates table thead .duration {
-        text-align: center;
+      #dates .cell.duration {
+        max-width: 150px;
+        min-width: 100px;
       }
-      #dates table thead .cost {
-        text-align: center;
+      #dates .cell.cost {
+        max-width: 150px;
+        min-width: 100px;
       }
-      #dates table thead .booknow {
+      #dates .cell.booknow {
+        max-width: 90px;
+        min-width: 90px;
+      }
+      #dates .body {
 
       }
-      #dates table tbody .date {
-        text-align: left;
-        padding-left: 2%;
+      #dates .body .cell.date {
+        padding-left: 1em;
       }
-      #dates table tbody .date .excluded-dates {
-        font-size: 8pt;
-      }
-      #dates table tbody .duration {
+      #dates .body .cell.duration {
         text-align: center;
       }
-      #dates table tbody .cost {
+      #dates .body .cell.cost {
         text-align: center;
       }
-      #dates table tbody .booknow {
-        width: 90px;
+      #dates .body .cell.booknow {
+
       }
-      #dates table tbody .booknow paper-button {
+      #dates .body .cell.booknow paper-button {
         font-size: 14px;
-        width: calc(100% - 0.3em);
-        margin: 0.15em;
+        width: calc(100% - 0.5em);
+        margin: 0.25em;
       }
     </style>
 
@@ -127,30 +135,28 @@
         </div>
         <div id="bookings" hidden$="[[!_arrayHasValues(dates)]]">
           <h3>Book Now</h3>
-          <paper-material id="dates">
-            <table>
-              <thead>
-                <tr>
-                  <th class="date">Date</th>
-                  <th class="duration">Duration</th>
-                  <th class="cost">Cost</th>
-                  <th class="booknow"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <template is="dom-repeat" items="[[dates]]" as="date">
-                  <tr>
-                    <td class="date">
-                      [[_getDisplayDateRange(date.start-date, date.end-date)]]<br>
-                      <span class="excluded-dates" hidden$="[[!_arrayHasValues(date.excludes)]]">[[_getDisplayExcludedDates(date.excludes)]]</span>
-                    </td>
-                    <td class="duration">[[_getDisplayDuration(date.start-date, date.end-date, date.excludes)]]</td>
-                    <td class="cost">[[_getDisplayCurrency(date.cost)]]</td>
-                    <td class="booknow"><a name="classes" href$="#" tabindex="-1"><paper-button raised>Book Now</paper-button></a></td>
-                  </tr>
-                </template>
-              </tbody>
-            </table>
+          <paper-material id="dates" class="table">
+            <div class="header">
+              <div class="row">
+                <div class="cell date">Date</div>
+                <div class="cell duration">Duration</div>
+                <div class="cell cost">Cost</div>
+                <div class="cell booknow"></div>
+              </div>
+            </div>
+            <div class="body">
+              <template is="dom-repeat" items="[[dates]]" as="date">
+                <div class="row">
+                  <div class="cell date">
+                    [[_getDisplayDateRange(date.start-date, date.end-date)]]<br>
+                    <span class="excluded-dates" hidden$="[[!_arrayHasValues(date.excludes)]]">[[_getDisplayExcludedDates(date.excludes)]]</span>
+                  </div>
+                  <div class="cell duration">[[_getDisplayDuration(date.start-date, date.end-date, date.excludes)]]</div>
+                  <div class="cell cost">[[_getDisplayCurrency(date.cost)]]</div>
+                  <div class="cell booknow"><a name="classes" href$="#" tabindex="-1"><paper-button raised>Book Now</paper-button></a></div>
+                </div>
+              </template>
+            </div>
           </paper-material>
         </div>
         <div id="no-bookings-available" hidden$="[[_arrayHasValues(dates)]]">
