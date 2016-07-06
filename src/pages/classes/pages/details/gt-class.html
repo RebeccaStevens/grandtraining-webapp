@@ -173,7 +173,7 @@
                   </div>
                   <div class="cell duration">[[_getDisplayDuration(date.start-date, date.end-date, date.excludes)]]</div>
                   <div class="cell cost">[[_getDisplayCurrency(date.cost)]]</div>
-                  <div class="cell booknow"><a name="classes" href$="#" tabindex="-1"><paper-button raised>Book Now</paper-button></a></div>
+                  <div class="cell booknow"><a name="classes" href$="[[_getBookNowLink(date.id)]]" tabindex="-1"><paper-button raised>Book Now</paper-button></a></div>
                 </div>
               </template>
             </div>
@@ -441,6 +441,13 @@
           }
           container.style.fontSize = adjustedFontSize + 'px';
         }
+      },
+
+      /**
+       * Get the link to follow to book this course.
+       */
+      _getBookNowLink: function(id) {
+        return GT.app.data.pages.bookings.url + '/bookclass/' + id;
       },
 
       ready: function() {
