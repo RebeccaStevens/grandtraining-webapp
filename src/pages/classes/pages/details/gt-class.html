@@ -415,16 +415,23 @@
           var computedStyle = getComputedStyle(container);
           var textWidth = GT.app.getTextWidth(title, computedStyle.font);
           var toolbarTextWidth = container.clientWidth - 32;
+          var toolbarTextHeight = Polymer.dom(this.$.card.root).querySelector('.header').clientHeight - 20;
+
+          var fontSize = Number.parseInt(computedStyle.fontSize, 10);
+          var adjustedFontSize = fontSize * toolbarTextWidth / textWidth;
+          var minFontSize = 18;
+          var maxFontSize = toolbarTextHeight * 0.55;
 
           // scale the text to fit in the toolbar.
-          if (textWidth > toolbarTextWidth) {
-            var fontSize = (Number.parseInt(computedStyle.fontSize, 10) * toolbarTextWidth / textWidth);
-            if (fontSize < 18) {
-              fontSize = 18;
+          if (textWidth > toolbarTextWidth || fontSize > maxFontSize || fontSize < minFontSize) {
+            if (adjustedFontSize > maxFontSize) {
+              adjustedFontSize = maxFontSize;
             }
-            container.style.fontSize = fontSize + 'px';
-          }
-          else {
+            if (adjustedFontSize < minFontSize) {
+              adjustedFontSize = minFontSize;
+            }
+            container.style.fontSize = adjustedFontSize + 'px';
+          } else {
             container.style.fontSize = '';
           }
         }, 0);
