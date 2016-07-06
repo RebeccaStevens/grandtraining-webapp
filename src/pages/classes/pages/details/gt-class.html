@@ -16,7 +16,8 @@
         --paper-card-header-text: {
           color: #88b6cd;
           font-size: 36px;
-          padding-bottom: 0;
+          line-height: normal;
+          padding-bottom: 4px;
           font-weight: bold;
           text-shadow:  3px  3px 0 #000,
                        -1px -1px 0 #000,
@@ -195,7 +196,8 @@
       properties: {
 
         title: {
-          type: String
+          type: String,
+          observer: '_titleChanged'
         },
 
         level: {
@@ -404,6 +406,30 @@
           normal: number + nOrds[i],
           super:  number + sOrds[i]
         };
+      },
+
+      /**
+       * Called when `title` changes.
+       */
+      _titleChanged: function(title) {
+        this.async(function() {
+          var container = Polymer.dom(this.$.card.root).querySelector('.title-text');
+          var computedStyle = getComputedStyle(container);
+          var textWidth = GT.app.getTextWidth(title, computedStyle.font);
+          var toolbarTextWidth = container.clientWidth - 32;
+
+          // scale the text to fit in the toolbar.
+          if (textWidth > toolbarTextWidth) {
+            var fontSize = (Number.parseInt(computedStyle.fontSize, 10) * toolbarTextWidth / textWidth);
+            if (fontSize < 18) {
+              fontSize = 18;
+            }
+            container.style.fontSize = fontSize + 'px';
+          }
+          else {
+            container.style.fontSize = '';
+          }
+        }, 0);
       }
     });
   </script>

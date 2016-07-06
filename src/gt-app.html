@@ -467,7 +467,7 @@
        *
        * @see http://stackoverflow.com/questions/118241/calculate-text-width-with-javascript/21015393#21015393
        */
-      _getTextWidth: function(text, font) {
+      getTextWidth: function(text, font) {
           // re-use canvas object for better performance
           var canvas = this._getTextWidthCanvas || (this._getTextWidthCanvas = document.createElement("canvas"));
           var context = canvas.getContext("2d");
@@ -481,7 +481,7 @@
        */
       _pageTitleChanged: function(title) {
         var computedStyle = getComputedStyle(this.$['main-toolbar']);
-        var textWidth = this._getTextWidth(title, computedStyle.font);
+        var textWidth = this.getTextWidth(title, computedStyle.font);
         var toolbarTextWidth = this.$['main-toolbar'].clientWidth - 2 * 68;
 
         // scale the text to fit in the toolbar.
