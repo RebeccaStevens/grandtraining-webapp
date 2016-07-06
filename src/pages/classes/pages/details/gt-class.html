@@ -442,6 +442,13 @@
           container.style.fontSize = adjustedFontSize + 'px';
         }
       },
+
+      ready: function() {
+        window.addEventListener('resize', function() {
+          this.debounce('gt-class-resize', function() {
+            this._updateTitleSize();
+          }, 100);
+        }.bind(this));
       }
     });
   </script>

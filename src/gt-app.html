@@ -531,6 +531,11 @@
 
       ready: function() {
         this.init();
+        window.addEventListener('resize', function() {
+          this.debounce('gt-app-resize', function() {
+            this._updatePageTitleSize();
+          }, 100);
+        }.bind(this));
       }
 
     });
