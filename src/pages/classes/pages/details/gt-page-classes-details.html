@@ -23,8 +23,8 @@
           font-size: 36px;
         };
       }
-      #card .card-content {
-        padding-top: 0.25em;
+      #card > .card-content {
+        padding: 0.25em 0.5em 0.5em 0.5em;
       }
       #classes {
         --paper-card-background-color: var(--app-primary-color-light);
@@ -53,6 +53,9 @@
         max-width: 1050px;
       }
       @media (min-width: 1024px) {
+        #card > .card-content {
+          padding: 0.25em 1em 1em 1em;
+        }
         #classes .card-content gt-class {
           min-width: 600px;
           max-width: 1000px;
