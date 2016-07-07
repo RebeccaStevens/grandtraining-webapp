@@ -1,7 +1,7 @@
 <link rel="import" href="../../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
-<link rel="import" href="../../../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../../../bower_components/neon-animation/neon-animated-pages.html">
 <link rel="import" href="../../../bower_components/app-route/app-route.html">
 
 <link rel="import" href="../../../styles/gt-styles.html">
@@ -32,11 +32,12 @@
       on-error="_handleAjaxError"></iron-ajax>
 
     <!-- Layout -->
-    <iron-pages id="pages"
+    <neon-animated-pages id="pages"
       role="main"
       selected="[[page]]"
       attr-for-selected="name"
       fallback-selection="404"
+      on-iron-activate="_pageAboutToChange"
       on-page-loaded="_pageLoaded"
       on-page-error="_pageErrorOccurred">
       <gt-page-classes-home id="pageHome" name="home"></gt-page-classes-home>
@@ -44,7 +45,7 @@
         <gt-page-classes-details name$="[[_urlToName(cc.url)]]"></gt-page-classes-details>
       </template>
       <gt-page-404 id="page404" name="404"></gt-page-404>
-    </iron-pages>
+    </neon-animated-pages>
   </template>
 
   <script>
@@ -75,6 +76,7 @@
         if (pageEl === null) {
           if (!Polymer.isInstance(this.$.page404)) {
             this.app.pageLoading = true;
+            this.$.pages.cancelAnimation();
             this.importHref(this.resolveUrl('../404/gt-page-404.html'), null, null, true);
           }
           return;
@@ -83,6 +85,7 @@
         // load page import if it hasn't alreeady been imported.
         if (!Polymer.isInstance(pageEl)) {
           this.app.pageLoading = true;
+          this.$.pages.cancelAnimation();
           var shortName = 'details';
           if (this.page === 'home') {
             shortName = 'home'
@@ -95,6 +98,7 @@
         // if the page is not initialised.
         else if(!pageEl.isInitialised) {
           this.app.pageLoading = true;
+          this.$.pages.cancelAnimation();
           pageEl.init();
         }
         // else the page is loaded and read to be display
@@ -124,7 +128,14 @@
         if (e.target === this._getPageElement()) {
           this.app.pageError = false;
           this.app.pageLoading = false;
-          this.$.pages.select(this.page);
+          // if we are own the right page
+          if (this._getPageElement().name === this.$.pages.selected) {
+            // play the animation
+            this.$.pages.select(this.$.pageHome.name);    // quickly change the page back to home
+            this.$.pages.select(this.page);               // then show the actual page again
+          } else {
+            this.$.pages.select(this.page);
+          }
         }
       },
 
@@ -185,6 +196,7 @@
        */
       onSwitchBackTo: function() {
         this.page = 'home';
+        this.$.pages.cancelAnimation();
         if (this.$.pageHome.onSwitchBackTo instanceof Function) {
           this.$.pageHome.onSwitchBackTo();
         }
