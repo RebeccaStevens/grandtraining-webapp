@@ -34,7 +34,7 @@
     <!-- Layout -->
     <neon-animated-pages id="pages"
       role="main"
-      selected="[[page]]"
+      selected="[[renderedPage]]"
       attr-for-selected="name"
       fallback-selection="404"
       on-iron-activate="_pageAboutToChange"
@@ -76,7 +76,6 @@
         if (pageEl === null) {
           if (!Polymer.isInstance(this.$.page404)) {
             this.app.pageLoading = true;
-            this.$.pages.cancelAnimation();
             this.importHref(this.resolveUrl('../404/gt-page-404.html'), null, null, true);
           }
           return;
@@ -85,7 +84,6 @@
         // load page import if it hasn't alreeady been imported.
         if (!Polymer.isInstance(pageEl)) {
           this.app.pageLoading = true;
-          this.$.pages.cancelAnimation();
           var shortName = 'details';
           if (this.page === 'home') {
             shortName = 'home'
@@ -98,7 +96,6 @@
         // if the page is not initialised.
         else if(!pageEl.isInitialised) {
           this.app.pageLoading = true;
-          this.$.pages.cancelAnimation();
           pageEl.init();
         }
         // else the page is loaded and read to be display
@@ -108,6 +105,7 @@
             pageEl.onSwitchBackTo();
           }
           this.app.pageLoading = false;
+          this.renderedPage = this.page;
         }
 
         this.app.pageError = false;
@@ -128,14 +126,7 @@
         if (e.target === this._getPageElement()) {
           this.app.pageError = false;
           this.app.pageLoading = false;
-          // if we are own the right page
-          if (this._getPageElement().name === this.$.pages.selected) {
-            // play the animation
-            this.$.pages.select(this.$.pageHome.name);    // quickly change the page back to home
-            this.$.pages.select(this.page);               // then show the actual page again
-          } else {
-            this.$.pages.select(this.page);
-          }
+          this.renderedPage = this.page;
         }
       },
 
@@ -146,6 +137,7 @@
         if (e.target === this._getPageElement()) {
           this.app.pageError = true;
           this.app.pageLoading = false;
+          this.renderedPage = this.page;
         }
       },
 

@@ -171,7 +171,7 @@
 
         <iron-pages id="pages"
           role="main"
-          selected="[[page]]"
+          selected="[[renderedPage]]"
           attr-for-selected="name"
           fallback-selection="404"
           hidden$="[[_hidePages]]"
@@ -335,6 +335,7 @@
         if (pageEl === null) {
           pageEl = this.$.page404;
           pageName = '404';
+          this.renderedPage = this.page;
         }
 
         // load page import if it hasn't alreeady been imported.
@@ -354,6 +355,7 @@
             pageEl.onSwitchBackTo();
           }
           this.pageLoading = false;
+          this.renderedPage = this.page;
         }
 
         this.pageError = false;
@@ -369,6 +371,7 @@
       _pageLoaded: function() {
         this.pageError = false;
         this.pageLoading = false;
+        this.renderedPage = this.page;
       },
 
       /**
@@ -377,6 +380,7 @@
       _pageErrorOccurred: function() {
         this.pageError = true;
         this.pageLoading = false;
+        this.renderedPage = this.page;
       },
 
       /**
@@ -407,7 +411,11 @@
         if (page === 'home') {
           return companyName;
         }
-        return this.data.pages[page].title;
+        var pageData = this.data.pages[page];
+        if (pageData) {
+          return pageData.title;
+        }
+        return companyName;
       },
 
       /**
