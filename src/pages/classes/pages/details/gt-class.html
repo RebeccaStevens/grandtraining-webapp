@@ -486,7 +486,7 @@
        * Get the link to follow to book this course.
        */
       _getBookNowLink: function(id) {
-        return GT.app.data.pages.bookings.url + '/bookclass/' + id;
+        return this.app.data.links.bookclass + '/' + id;
       },
 
       ready: function() {
