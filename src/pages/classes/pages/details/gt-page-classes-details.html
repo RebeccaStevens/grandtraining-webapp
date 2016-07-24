@@ -86,21 +86,23 @@
           <html-echo html="[[pageData.description]]"></html-echo>
         </div>
 
-        <paper-card id="classes" heading="Classes">
-          <div class="card-content">
-            <template is="dom-repeat" items="[[pageData.classes]]" as="class">
-              <gt-class
-                title="[[class.title]]"
-                level="[[class.level]]"
-                image="[[class.image]]"
-                min-age="[[class.min-age]]"
-                max-age="[[class.max-age]]"
-                dates="[[class.dates]]">
-                <html-echo html="[[class.description]]"></html-echo>
-              </gt-class>
-            </template>
-          </div>
-        </paper-card>
+        <template is="dom-if" if="[[doesArrayHaveValues(pageData.classes)]]">
+          <paper-card id="classes" heading="Classes">
+            <div class="card-content">
+              <template is="dom-repeat" items="[[pageData.classes]]" as="class">
+                <gt-class
+                  title="[[class.title]]"
+                  level="[[class.level]]"
+                  image="[[class.image]]"
+                  min-age="[[class.min-age]]"
+                  max-age="[[class.max-age]]"
+                  dates="[[class.dates]]">
+                  <html-echo html="[[class.description]]"></html-echo>
+                </gt-class>
+              </template>
+            </div>
+          </paper-card>
+        </template>
       </div>
     </paper-card>
   </template>
