@@ -10,6 +10,7 @@
 <link rel="import" href="../../../../../bower_components/neon-animation/neon-animation-runner-behavior.html">
 
 <link rel="import" href="../../../../../styles/gt-styles.html">
+<link rel="import" href="../../../../gt-element-common-behavior.html">
 
 <dom-module id="gt-location-selector">
   <template>
@@ -66,6 +67,11 @@
   <script>
     Polymer({
       is: 'gt-location-selector',
+
+      behaviors: [
+        GT.ElementCommonBehavior,
+        Polymer.NeonAnimationRunnerBehavior
+      ],
 
       properties: {
 
@@ -193,8 +199,6 @@
           }
         }
       },
-
-      behaviors: [Polymer.NeonAnimationRunnerBehavior],
 
       listeners: {
         'neon-animation-finish': '_onNeonAnimationFinish'

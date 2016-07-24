@@ -1,6 +1,7 @@
 <link rel="import" href="../../../bower_components/polymer/polymer.html">
 
 <link rel="import" href="../../../styles/gt-styles.html">
+<link rel="import" href="../../gt-element-common-behavior.html">
 <link rel="import" href="../gt-page-behavior.html">
 
 <dom-module id="gt-page-faq">
@@ -17,7 +18,10 @@
     Polymer({
       is: 'gt-page-faq',
 
-      behaviors: [GT.PageBehavior],
+      behaviors: [
+        GT.ElementCommonBehavior,
+        GT.PageBehavior
+      ],
 
       ready: function() {
         this.pageReady();

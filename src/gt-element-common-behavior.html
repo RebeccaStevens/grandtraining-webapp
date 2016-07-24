@@ -1,0 +1,18 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../imports/gt.html">
+
+<script>
+
+  GT.ElementCommonBehavior = {
+
+    /**
+     * Returns if true if the array has any values.
+     *
+     * @param {Array} arr
+     * @returns {Boolean}
+     */
+    _arrayHasValues: function(arr) {
+      return arr && arr.length > 0;
+    },
+  };
+</script>

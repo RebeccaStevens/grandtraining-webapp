@@ -9,6 +9,7 @@
 <link rel="import" href="../../../../../bower_components/neon-animation/animations/slide-left-animation.html">
 
 <link rel="import" href="../../../../../styles/gt-styles.html">
+<link rel="import" href="../../../../gt-element-common-behavior.html">
 <link rel="import" href="../../../gt-page-behavior.html">
 
 <link rel="import" href="gt-class.html">
@@ -107,6 +108,12 @@
     Polymer({
       is: 'gt-page-classes-details',
 
+      behaviors: [
+        GT.ElementCommonBehavior,
+        GT.PageBehavior,
+        Polymer.NeonSharedElementAnimatableBehavior
+      ],
+
       properties: {
         animationConfig: {
           type: Object,
@@ -149,11 +156,6 @@
           }
         }
       },
-
-      behaviors: [
-        GT.PageBehavior,
-        Polymer.NeonSharedElementAnimatableBehavior
-      ],
 
       /**
        * Called when the page data loads.

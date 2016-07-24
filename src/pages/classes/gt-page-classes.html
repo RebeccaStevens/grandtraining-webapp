@@ -5,6 +5,7 @@
 <link rel="import" href="../../../bower_components/app-route/app-route.html">
 
 <link rel="import" href="../../../styles/gt-styles.html">
+<link rel="import" href="../../gt-element-common-behavior.html">
 <link rel="import" href="../gt-page-behavior.html">
 
 <dom-module id="gt-page-classes">
@@ -52,14 +53,15 @@
     Polymer({
       is: 'gt-page-classes',
 
-      properties: {
-
-      },
-
       behaviors: [
+        GT.ElementCommonBehavior,
         GT.PageContainerBehavior,
         GT.PageBehavior
       ],
+
+      properties: {
+
+      },
 
       /**
        * Called when the page is changed.

@@ -19,6 +19,7 @@
 <link rel="import" href="../styles/gt-styles.html">
 <link rel="import" href="../imports/gt.html">
 <link rel="import" href="gt-page-container-behavior.html">
+<link rel="import" href="gt-element-common-behavior.html">
 <link rel="import" href="gt-icons.html">
 
 <dom-module id="gt-app">
@@ -216,6 +217,11 @@
 
       is: 'gt-app',
 
+      behaviors: [
+        GT.ElementCommonBehavior,
+        GT.PageContainerBehavior
+      ],
+
       properties: {
 
         /**
@@ -321,10 +327,6 @@
         }
 
       },
-
-      behaviors: [
-        GT.PageContainerBehavior
-      ],
 
       /**
        * Called when the page is changed.

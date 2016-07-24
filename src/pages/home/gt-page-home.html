@@ -7,6 +7,7 @@
 <link rel="import" href="../../../bower_components/iron-ajax/iron-ajax.html">
 
 <link rel="import" href="../../../styles/gt-styles.html">
+<link rel="import" href="../../gt-element-common-behavior.html">
 <link rel="import" href="../gt-page-behavior.html">
 
 <link rel="import" href="gt-testimonial.html">
@@ -126,6 +127,11 @@
     Polymer({
       is: 'gt-page-home',
 
+      behaviors: [
+        GT.ElementCommonBehavior,
+        GT.PageBehavior
+      ],
+
       properties: {
 
         /**
@@ -133,8 +139,6 @@
          */
         pageData: Object,
       },
-
-      behaviors: [GT.PageBehavior],
 
       observers: [
         '_carouselImagesChanged(pageData.carouselImages)'

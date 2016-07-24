@@ -4,6 +4,7 @@
 <link rel="import" href="../../../../../bower_components/paper-button/paper-button.html">
 
 <link rel="import" href="../../../../../styles/gt-styles.html">
+<link rel="import" href="../../../../gt-element-common-behavior.html">
 
 <dom-module id="gt-class">
   <template>
@@ -210,6 +211,10 @@
     Polymer({
       is: 'gt-class',
 
+      behaviors: [
+        GT.ElementCommonBehavior
+      ],
+
       properties: {
 
         title: {
@@ -395,16 +400,6 @@
        */
       _isAvailable: function(availability) {
         return availability === 'available';
-      },
-
-      /**
-       * Returns if true if the array has any values.
-       *
-       * @param {Array} arr
-       * @returns {Boolean}
-       */
-      _arrayHasValues: function(arr) {
-        return arr.length > 0;
       },
 
       /**
