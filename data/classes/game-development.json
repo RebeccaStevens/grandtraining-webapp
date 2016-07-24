@@ -1,4 +1,48 @@
 {
   "title": "Game Development",
-  "description": "<p>learn to make games.</p>"
+  "description": "<p>learn to make games. Uciam ducimin reruntur, cus dolorerempos volorehendis ut aris doluptatur. Bit inus, ipsum aut quas sunditatur. Itatem earunt dolut alite sandusdaerum aspide voluptatium volupis velest fugit doluptur.</p><p>Rem vidunt utas ullia sam, ipsam dolorestia del magnatur aditatem recestr undandis sima dolupis sae doluptaque eaquibu sandipsam faccus.</p>",
+  "classes": [
+    {
+      "title": "Create 3D Video Games",
+      "level": "Introduction",
+      "image": {
+        "src": "../../images/classes/game-development/1.jpg",
+        "placeholder": ""
+      },
+      "min-age": 6,
+      "max-age": 12,
+      "description": "<p>Qui sum inum iderfer chicate de sunt odi dolorem si undaectate consequia pa nonsequ idigenis acerestet evenis dolorup tatur, offictatum ipis dolorpo restium est oditat que sam venis duntur se non culpa invel ipit repudae dici omniendit, tem hicto berchil lorepe prae. Et odisquo ssumquatur</p>",
+      "dates": [
+        {
+          "id": 13,
+          "start-date": "2016-06-27",
+          "end-date": "2016-07-01",
+          "excludes": [],
+          "cost": 370,
+          "availability": "available"
+        },
+        {
+          "id": 14,
+          "start-date": "2016-07-04",
+          "end-date": "2016-07-08",
+          "excludes": [],
+          "cost": 370,
+          "availability": "available"
+        }
+      ]
+    },
+    {
+      "title": "Advanced Game Creation",
+      "level": "Advanced",
+      "image": {
+        "src": "../../images/classes/game-development/2.jpg",
+        "placeholder": ""
+      },
+      "min-age": 6,
+      "max-age": 12,
+      "description": "<p>Rundit eumquidicide volor re eum adisquaspic temporecte lit fugia deroreped ullorpossum es expelentem consed et repelibus non consequia in eate ped eost, ipicaboratus ma eum hiliquuntis sim quia cus et pro berore, eossiti veles adistis intia verro eum, vel incimaxim aliqui occus et mollandis quisquas pore consequos et utemo cusdant enis ima eos esendest perio qui te ventibu sandis que as est quiat quatqui sit enient eate conet fugiae. Uga. Obist officient ium aut aute sequibus volenis sumquia eprorpos volorup tature repe aliquundit aut quis exerisit diciendende corum laces nonsenim harumet lis sitatesci tem que perferum in explat.</p><p>Et am, tem estint eum faccus.</p>",
+      "dates": [
+      ]
+    }
+  ]
 }
