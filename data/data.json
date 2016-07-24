@@ -55,5 +55,9 @@
         "name": "Wellington CBD"
       }
     }
+  },
+  "links": {
+    "bookclass": "/bookings/booknow/bookclass",
+    "contactus": "/about-us/contact"
   }
 }
