@@ -507,7 +507,20 @@
         if (this.page === 'home') {
           return;
         }
-        window.history.back();
+
+        /*
+         * Push a new state instead of simply using window.history.back()
+         * as whether or not the back location is part of this site or
+         * another site is unknowable.
+         */
+
+        var path = window.location.href;
+        if (path.endsWith('/')) {
+          path += '..';
+        } else {
+          path += '/..';
+        }
+        window.history.pushState({}, null, path);
         window.dispatchEvent(new CustomEvent('location-changed'));
       },
 
