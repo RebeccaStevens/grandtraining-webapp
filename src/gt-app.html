@@ -526,8 +526,8 @@
       _updatePageTitleSize: function() {
         this.$['main-toolbar'].style.fontSize = '';
         var computedStyle = getComputedStyle(this.$['main-toolbar']);
-        var textWidth = this.getTextWidth(this.title, computedStyle.font);
-        var toolbarTextWidth = this.$['main-toolbar'].clientWidth - 2 * 68;
+        var textWidth = this.getTextWidth(this._pageTitle, computedStyle.font);
+        var toolbarTextWidth = this.$['main-toolbar'].clientWidth - (2 * 62);
 
         // scale the text to fit in the toolbar.
         if (textWidth > toolbarTextWidth) {
