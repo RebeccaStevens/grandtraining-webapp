@@ -5,6 +5,19 @@
 
   GT.ElementCommonBehavior = {
 
+    properties: {
+
+    /**
+     * A referenceto the main app element.
+     */
+    app: {
+      type: Object,
+      value: function() {
+        return GT.app;
+      }
+    }
+  },
+
     /**
      * Returns if true if the array has any values.
      *
