@@ -90,6 +90,9 @@
       #dates .body .row:nth-child(2n) {
         background-color: #e8e8e8;
       }
+      #dates .body .row[disabled] {
+        color: var(--app-text-disabled-color);
+      }
       #dates .cell.duration {
         min-width: 60px;
       }
@@ -127,6 +130,9 @@
         font-size: 14px;
         width: calc(100% - 0.5em);
         margin: 0.25em;
+      }
+      #dates .body .cell.booknow paper-button[disabled] {
+        color: var(--app-text-disabled-color);
       }
       @media (min-width: 640px) {
         #dates .cell.date {
@@ -170,7 +176,7 @@
             </div>
             <div class="body">
               <template is="dom-repeat" items="[[dates]]" as="date">
-                <div class="row">
+                <div class="row" disabled$="[[!_isAvailable(date.availability)]]">
                   <div class="cell date">
                     <div class="wrap">
                       <span class="date-range">[[_getDisplayDateRange(date.start-date, date.end-date)]]</span><br>
@@ -179,7 +185,14 @@
                   </div>
                   <div class="cell duration">[[_getDisplayDuration(date.start-date, date.end-date, date.excludes)]]</div>
                   <div class="cell cost">[[_getDisplayCurrency(date.cost)]]</div>
-                  <div class="cell booknow"><a name="classes" href$="[[_getBookNowLink(date.id)]]" tabindex="-1"><paper-button raised>Book Now</paper-button></a></div>
+                  <div class="cell booknow">
+                    <template is="dom-if" if="[[_isAvailable(date.availability)]]">
+                      <a name="classes" href$="[[_getBookNowLink(date.id)]]" tabindex="-1"><paper-button raised>[[_getBookNowText(date.availability)]]</paper-button></a>
+                    </template>
+                    <template is="dom-if" if="[[!_isAvailable(date.availability)]]">
+                      <paper-button raised disabled>[[_getBookNowText(date.availability)]]</paper-button>
+                    </template>
+                  </div>
                 </div>
               </template>
             </div>
@@ -357,6 +370,31 @@
        */
       _getDisplayCurrency: function(amount) {
         return '$' + amount.toFixed(2);
+      },
+
+      /**
+       * Get the text for the book now button based on the class availability.
+       *
+       * @param {!String} availability
+       */
+      _getBookNowText: function(availability) {
+        switch (availability) {
+          case 'available':
+            return 'Book Now';
+          case 'full':
+            return 'Full';
+          case 'canceled':
+            return 'Canceled';
+        }
+      },
+
+      /**
+       * Returns true if availability is available.
+       *
+       * @param {!String} availability
+       */
+      _isAvailable: function(availability) {
+        return availability === 'available';
       },
 
       /**
