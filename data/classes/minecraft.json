@@ -18,21 +18,24 @@
           "start-date": "2016-06-27",
           "end-date": "2016-07-1",
           "excludes": ["2016-06-28", "2016-06-29"],
-          "cost": 225
+          "cost": 225,
+          "availability": "available"
         },
         {
           "id": 2,
           "start-date": "2019-12-30",
           "end-date": "2020-01-3",
           "excludes": [],
-          "cost": 370
+          "cost": 370,
+          "availability": "full"
         },
         {
           "id": 3,
           "start-date": "2016-06-29",
           "end-date": "2016-06-29",
           "excludes": [],
-          "cost": 95
+          "cost": 95,
+          "availability": "canceled"
         }
       ]
     },
@@ -64,14 +67,16 @@
           "start-date": "2016-07-12",
           "end-date": "2016-07-15",
           "excludes": [],
-          "cost": 370
+          "cost": 370,
+          "availability": "available"
         },
         {
           "id": 5,
           "start-date": "2016-07-19",
           "end-date": "2016-07-22",
           "excludes": [],
-          "cost": 370
+          "cost": 370,
+          "availability": "available"
         }
       ]
     },
@@ -92,14 +97,16 @@
           "start-date": "2016-07-12",
           "end-date": "2016-07-15",
           "excludes": [],
-          "cost": 370
+          "cost": 370,
+          "availability": "available"
         },
         {
           "id": 7,
           "start-date": "2016-07-19",
           "end-date": "2016-07-22",
           "excludes": [],
-          "cost": 370
+          "cost": 370,
+          "availability": "available"
         }
       ]
     },
@@ -119,14 +126,16 @@
           "start-date": "2016-07-12",
           "end-date": "2016-07-15",
           "excludes": [],
-          "cost": 370
+          "cost": 370,
+          "availability": "available"
         },
         {
           "id": 9,
           "start-date": "2016-07-19",
           "end-date": "2016-07-22",
           "excludes": [],
-          "cost": 370
+          "cost": 370,
+          "availability": "available"
         }
       ]
     },
@@ -146,14 +155,16 @@
           "start-date": "2016-07-12",
           "end-date": "2016-07-15",
           "excludes": [],
-          "cost": 370
+          "cost": 370,
+          "availability": "available"
         },
         {
           "id": 11,
           "start-date": "2016-07-19",
           "end-date": "2016-07-22",
           "excludes": [],
-          "cost": 370
+          "cost": 370,
+          "availability": "available"
         }
       ]
     },
@@ -173,7 +184,8 @@
           "start-date": "2016-07-18",
           "end-date": "2016-07-22",
           "excludes": [],
-          "cost": 370
+          "cost": 370,
+          "availability": "available"
         }
       ]
     }
