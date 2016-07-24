@@ -164,7 +164,7 @@
         <div id="description">
           <content></content>
         </div>
-        <div id="bookings" hidden$="[[!_arrayHasValues(dates)]]">
+        <div id="bookings" hidden$="[[!doesArrayHaveValues(dates)]]">
           <h3>Book Now</h3>
           <paper-material id="dates" class="table">
             <div class="header">
@@ -181,7 +181,7 @@
                   <div class="cell date">
                     <div class="wrap">
                       <span class="date-range">[[_getDisplayDateRange(date.start-date, date.end-date)]]</span><br>
-                      <span class="excluded-dates" hidden$="[[!_arrayHasValues(date.excludes)]]">[[_getDisplayExcludedDates(date.excludes)]]</span>
+                      <span class="excluded-dates" hidden$="[[!doesArrayHaveValues(date.excludes)]]">[[_getDisplayExcludedDates(date.excludes)]]</span>
                     </div>
                   </div>
                   <div class="cell duration">[[_getDisplayDuration(date.start-date, date.end-date, date.excludes)]]</div>
@@ -199,7 +199,7 @@
             </div>
           </paper-material>
         </div>
-        <div id="no-bookings-available" hidden$="[[_arrayHasValues(dates)]]">
+        <div id="no-bookings-available" hidden$="[[doesArrayHaveValues(dates)]]">
           <h3>This class is currently unavailable to book.</h3>
           <p>Please check back later or contact us for more information.</p>
         </div>
