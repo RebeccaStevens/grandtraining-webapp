@@ -166,7 +166,8 @@
 
         <app-header condenses="[[narrow]]" reveals="[[narrow]]" fixed="[[!narrow]]" shadow effects="waterfall">
           <app-toolbar id="main-toolbar">
-            <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
+            <paper-icon-button icon="arrow-back" on-tap="_backButtonTapped" hidden$="[[!_showBackButton(subroute.path)]]"></paper-icon-button>
+            <paper-icon-button icon="menu" drawer-toggle hidden$="[[_showBackButton(subroute.path)]]"></paper-icon-button>
             <div title>[[_pageTitle]]</div>
           </app-toolbar>
         </app-header>
@@ -499,6 +500,24 @@
        */
       _pageTitleChanged: function(title) {
         this._updatePageTitleSize();
+      },
+
+      _backButtonTapped: function() {
+        // don't do anything if we are on the home page
+        if (this.page === 'home') {
+          return;
+        }
+        window.history.back();
+        window.dispatchEvent(new CustomEvent('location-changed'));
+      },
+
+      /**
+       * Returns true if the back button should be shown.
+       *
+       * @param {String} subPath
+       */
+      _showBackButton: function(subPath) {
+        return subPath !== "" && subPath !== "/";
       },
 
       /**
