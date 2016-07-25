@@ -196,10 +196,16 @@
        */
       onSwitchBackTo: function() {
         this.page = 'home';
-        this.$.pages.cancelAnimation();
         if (this.$.pageHome.onSwitchBackTo instanceof Function) {
           this.$.pageHome.onSwitchBackTo();
         }
+      },
+
+      /**
+       * Called when the page is switched from.
+       */
+      onSwitchFrom: function() {
+        this.page = 'home';
       },
 
       ready: function() {
