@@ -66,13 +66,14 @@
       /**
        * Called when the page is changed.
        */
-      pageChanged: function(pageName) {
+      pageChanged: function(pageName, oldPageName) {
         // if this page isn't ready, don't continue
         if (!this.isInitialised) {
           return;
         }
 
         var pageEl = this._getPageElement();
+        var oldPageEl = Polymer.dom(this.$.pages).querySelector('[name="' + oldPageName + '"]');
 
         // if the page element doesn't exist, the page doesn't exist
         if (pageEl === null) {
@@ -81,6 +82,11 @@
             this.importHref(this.resolveUrl('../404/gt-page-404.html'), null, null, true);
           }
           return;
+        }
+
+        // if the old page has an `onSwitchFrom` function, call it.
+        if (oldPageEl !== null && oldPageEl.onSwitchFrom instanceof Function) {
+          oldPageEl.onSwitchFrom();
         }
 
         // load page import if it hasn't alreeady been imported.

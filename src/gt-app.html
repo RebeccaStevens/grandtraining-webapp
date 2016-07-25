@@ -332,14 +332,20 @@
       /**
        * Called when the page is changed.
        */
-      pageChanged: function(pageName) {
+      pageChanged: function(pageName, oldPageName) {
         var pageEl = Polymer.dom(this.$.pages).querySelector('[name="' + pageName + '"]');
+        var oldPageEl = Polymer.dom(this.$.pages).querySelector('[name="' + oldPageName + '"]');
 
         // if the page element doesn't exist, the page doesn't exist
         if (pageEl === null) {
           pageEl = this.$.page404;
           pageName = '404';
           this.renderedPage = this.page;
+        }
+
+        // if the old page has an `onSwitchFrom` function, call it.
+        if (oldPageEl !== null && oldPageEl.onSwitchFrom instanceof Function) {
+          oldPageEl.onSwitchFrom();
         }
 
         // load page import if it hasn't alreeady been imported.
