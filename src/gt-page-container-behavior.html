@@ -16,6 +16,16 @@
       },
 
       /**
+       * The pages element that contains the pages.
+       */
+      pages: {
+        type: HTMLElement,
+        value: function() {
+          return this.$.pages
+        }
+      },
+
+      /**
        * The page that is currently being displayed.
        */
       renderedPage: {
@@ -47,6 +57,20 @@
      */
     _routePageChanged: function(pageName) {
       this.page = pageName || 'home';
+    },
+
+    /**
+     * Returns the renderedPage's element.
+     *
+     * @returns {HTMLElement}
+     */
+    getRenderedPageElement: function() {
+      var pe = Polymer.dom(this.pages).querySelector('[name="' + this.renderedPage + '"]');
+
+      while (pe && pe.pages && pe.renderedPage && pe.getRenderedPageElement instanceof Function) {
+        pe = Polymer.dom(pe.pages).querySelector('[name="' + pe.renderedPage + '"]');
+      }
+      return pe;
     }
   };
 </script>
