@@ -16,8 +16,11 @@
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/paper-styles/color.html">
 <link rel="import" href="../bower_components/polymer-cookie/polymer-cookie.html">
+
 <link rel="import" href="../styles/gt-styles.html">
 <link rel="import" href="../imports/gt.html">
+<link rel="import" href="animations/main-page-entry-animation.html">
+<link rel="import" href="animations/main-page-exit-animation.html">
 <link rel="import" href="gt-page-container-behavior.html">
 <link rel="import" href="gt-element-common-behavior.html">
 <link rel="import" href="gt-icons.html">
@@ -177,6 +180,8 @@
           selected="[[renderedPageName]]"
           attr-for-selected="name"
           fallback-selection="404"
+          entry-animation="main-page-entry-animation"
+          exit-animation="main-page-exit-animation"
           hidden$="[[_hidePages]]"
           on-page-loaded="_pageLoaded"
           on-page-error="_pageErrorOccurred">
