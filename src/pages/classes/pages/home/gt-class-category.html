@@ -50,7 +50,7 @@
         <span class="clear"></span>
       </div>
       <div class="card-actions">
-        <a name="classes" href$="[[href]]" tabindex="-1"><paper-button raised on-tap="_OnMoreInfoTapped">More Info</paper-button></a>
+        <a name="classes" href$="[[href]]" tabindex="-1"><paper-button raised on-tap="_onMoreInfoTapped">More Info</paper-button></a>
       </div>
     </paper-card>
   </paper-card>
@@ -193,7 +193,7 @@
         }
       },
 
-      _OnMoreInfoTapped: function() {
+      _onMoreInfoTapped: function() {
         this.parent.setClassCardToAnimateOn(this);
       },
 
