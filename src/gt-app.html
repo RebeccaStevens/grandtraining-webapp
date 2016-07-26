@@ -162,7 +162,7 @@
       </app-drawer>
 
       <!-- Main content -->
-      <app-header-layout id="header-layout" has-scrolling-region>
+      <app-header-layout id="header-layout">
 
         <app-header condenses="[[narrow]]" reveals="[[narrow]]" fixed="[[!narrow]]" shadow effects="waterfall">
           <app-toolbar id="main-toolbar">
@@ -384,7 +384,7 @@
        * @param {Number} duration - The duration of the scroll animation
        */
       scrollToTop: function(duration) {
-        var scrollAreaElement = Polymer.dom(this.$['header-layout'].root).querySelector('#contentContainer');
+        var scrollAreaElement = document.body;
         var dist = scrollAreaElement.scrollTop;
 
         scrollAreaElement.scrollTop = 0;  // scroll to top
