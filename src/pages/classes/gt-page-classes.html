@@ -42,7 +42,7 @@
       on-iron-activate="_pageAboutToChange"
       on-page-loaded="_pageLoaded"
       on-page-error="_pageErrorOccurred">
-      <gt-page-classes-home id="pageHome" name="home"></gt-page-classes-home>
+      <gt-page-classes-hub id="pageHub" name="hub"></gt-page-classes-hub>
       <template is="dom-repeat" items="[[pageData.class-categories]]" as="cc" on-dom-change="_pagesReady">
         <gt-page-classes-details name$="[[_urlToName(cc.url)]]"></gt-page-classes-details>
       </template>
@@ -94,8 +94,8 @@
         if (!Polymer.isInstance(pageEl)) {
           this.app.pageLoading = true;
           var shortName = 'details';
-          if (this.page === 'home') {
-            shortName = 'home'
+          if (this.page === this.mainPageName) {
+            shortName = this.mainPageName
           }
           this.importHref(this.resolveUrl('pages/' + shortName + '/' + pageEl.nodeName.toLowerCase() + '.html'), function() {
             pageEl = this._getPageElement();
@@ -166,7 +166,7 @@
        * Scroll to the top.
        */
       _scrollToTop: function() {
-        if (this.page === 'home') {
+        if (this.page === this.mainPageName) {
           this.app.scrollToTop();
         }
         else {
@@ -211,9 +211,9 @@
        * Called when the page is switched back to.
        */
       onSwitchBackTo: function() {
-        this.page = 'home';
-        if (this.$.pageHome.onSwitchBackTo instanceof Function) {
-          this.$.pageHome.onSwitchBackTo();
+        this.page = this.mainPageName;
+        if (this.$.pageHub.onSwitchBackTo instanceof Function) {
+          this.$.pageHub.onSwitchBackTo();
         }
       },
 
@@ -221,7 +221,11 @@
        * Called when the page is switched from.
        */
       onSwitchFrom: function() {
-        this.page = 'home';
+        this.page = this.mainPageName;
+      },
+
+      created: function() {
+        this.mainPageName = 'hub';
       },
 
       ready: function() {
