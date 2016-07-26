@@ -448,7 +448,7 @@
        * Compute the value of `_pageTitle`.
        */
       _computePageTitle: function(page, companyName) {
-        if (page === 'home') {
+        if (page === this.mainPageName) {
           return companyName;
         }
         var pageData = this.data.pages[page];
@@ -540,7 +540,7 @@
 
       _backButtonTapped: function() {
         // don't do anything if we are on the home page
-        if (this.page === 'home') {
+        if (this.page === this.mainPageName) {
           return;
         }
 
