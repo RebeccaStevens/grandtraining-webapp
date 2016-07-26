@@ -12,6 +12,7 @@
 
   --app-text-color: #333;
   --app-text-disabled-color: #999;
+  --app-text-link-color: var(--app-primary-header-color);
 
   --app-border-radius: 8px;
 }
@@ -33,8 +34,13 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--app-primary-header-color);
 }
 
-a {
+a, a:visited {
   text-decoration: none;
+  color: var(--app-text-link-color);
+}
+
+a:hover {
+  color: var(--app-primary-color)
 }
 
 neon-animated-pages > .iron-selected {
