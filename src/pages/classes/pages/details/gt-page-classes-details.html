@@ -129,14 +129,14 @@
                 toPage: this,
                 timing: {
                   delay: 0,
-                  duration: 1000
+                  duration: GT.animation.entryDuration
                 }
               },{
                 name: 'fade-in-animation',
                 node: this.$.classes,
                 timing: {
                   delay: 0,
-                  duration: 1000
+                  duration: GT.animation.entryDuration
                 }
               }],
               exit: [{
@@ -144,7 +144,7 @@
                 node: this,
                 timing: {
                   delay: 0,
-                  duration: 1000
+                  duration: GT.animation.exitDuration
                 }
               }]
             };

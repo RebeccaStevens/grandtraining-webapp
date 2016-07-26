@@ -108,14 +108,14 @@
                 fromPage: this,
                 timing: {
                   delay: 0,
-                  duration: 1000
+                  duration: GT.animation.heroDuration
                 }
               },{
                 name: 'fade-out-animation',
                 node: this,
                 timing: {
                   delay: 0,
-                  duration: 1000
+                  duration: GT.animation.heroDuration
                 }
               }]
             };
@@ -169,7 +169,7 @@
 
         // get all the gt-class-category elements
         var ccs = Polymer.dom(this.$['class-categories']).querySelectorAll('gt-class-category');
-        var timingOffset = 150;   // the timing offset between each call to make the element visible
+        var timingOffset = GT.animation.timingOffset;   // the timing offset between each call to make the element visible
 
         var showCC = function(i) {
           this.async(function() {

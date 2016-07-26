@@ -2,5 +2,27 @@
   // create an object for storing global data if one does not already exist
   if (window.GT === undefined) {
     window.GT = {};
+
+    window.GT.animation = {
+      /**
+       * The duration of entry animations.
+       */
+      entryDuration: 1000,
+
+      /**
+       * The duration of exit animations.
+       */
+      exitDuration: 500,
+
+      /**
+       * The duration of exit animations.
+       */
+      heroDuration: 1000,
+
+      /**
+       * The duration of exit animations.
+       */
+      timingOffset: 150
+    };
   }
 </script>
