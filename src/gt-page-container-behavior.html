@@ -26,6 +26,14 @@
       },
 
       /**
+       * The name of the main page - the page to be displayed by default.
+       */
+      mainPageName: {
+        type: String,
+        value: 'home'
+      },
+
+      /**
        * The page that is currently being displayed.
        */
       renderedPage: {
@@ -56,7 +64,7 @@
      * Called when the route data's page is changed.
      */
     _routePageChanged: function(pageName) {
-      this.page = pageName || 'home';
+      this.page = pageName || this.mainPageName;
     },
 
     /**
