@@ -104,7 +104,7 @@
             return {
               exit: [{
                 name: 'hero-animation',
-                id: 'hero',
+                id: 'class-card',
                 fromPage: this,
                 timing: {
                   delay: 0,
@@ -126,7 +126,7 @@
           type: Object,
           value: function() {
             return {
-              'hero': null    // set by `_setHero`
+              'class-card': null    // set by `setClassCardToAnimateOn`
             };
           }
         }
@@ -154,8 +154,8 @@
         this._showClassCategories();
       },
 
-      setHero: function(element) {
-        this.sharedElements.hero = element;
+      setClassCardToAnimateOn: function(element) {
+        this.sharedElements['class-card'] = element;
       },
 
       /**
