@@ -115,9 +115,9 @@
           }
           this.app.pageLoading = false;
           this.renderedPage = this.page;
+          this._scrollToTop();
         }
 
-        this.app.scrollToTop(GT.animation.entryDuration);
         this.app.pageError = false;
       },
 
@@ -137,6 +137,7 @@
           this.app.pageError = false;
           this.app.pageLoading = false;
           this.renderedPage = this.page;
+          this._scrollToTop();
         }
       },
 
@@ -148,6 +149,7 @@
           this.app.pageError = true;
           this.app.pageLoading = false;
           this.renderedPage = this.page;
+          this._scrollToTop();
         }
       },
 
@@ -158,6 +160,18 @@
        */
       _urlToName: function(url) {
         return url.replace(/\//g, '');
+      },
+
+      /**
+       * Scroll to the top.
+       */
+      _scrollToTop: function() {
+        if (this.page === 'home') {
+          this.app.scrollToTop();
+        }
+        else {
+          this.app.scrollToTop(GT.animation.entryDuration);
+        }
       },
 
       /**
