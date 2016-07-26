@@ -462,7 +462,7 @@
         var container = Polymer.dom(this.$.card.root).querySelector('.title-text');
         container.style.fontSize = '';
         var computedStyle = getComputedStyle(container);
-        var textWidth = GT.app.getTextWidth(this.title, computedStyle.font);
+        var textWidth = this.app.getTextWidth(this.title, computedStyle.font);
         var toolbarTextWidth = container.clientWidth - 32;
         var toolbarTextHeight = Polymer.dom(this.$.card.root).querySelector('.header').clientHeight - 20;
 
