@@ -7,9 +7,9 @@
     properties: {
 
       /**
-       * The page we are on.
+       * The name of the page we are on.
        */
-      page: {
+      pageName: {
         type: String,
         reflectToAttribute: true,
         observer: 'pageChanged'
@@ -36,7 +36,7 @@
       /**
        * The page that is currently being displayed.
        */
-      renderedPage: {
+      renderedPageName: {
         type: String,
       },
 
@@ -64,19 +64,19 @@
      * Called when the route data's page is changed.
      */
     _routePageChanged: function(pageName) {
-      this.page = pageName || this.mainPageName;
+      this.pageName = pageName || this.mainPageName;
     },
 
     /**
-     * Returns the renderedPage's element.
+     * Returns the renderedPageName's element.
      *
      * @returns {HTMLElement}
      */
     getRenderedPageElement: function() {
-      var pe = Polymer.dom(this.pages).querySelector('[name="' + this.renderedPage + '"]');
+      var pe = Polymer.dom(this.pages).querySelector('[name="' + this.renderedPageName + '"]');
 
-      while (pe && pe.pages && pe.renderedPage && pe.getRenderedPageElement instanceof Function) {
-        pe = Polymer.dom(pe.pages).querySelector('[name="' + pe.renderedPage + '"]');
+      while (pe && pe.pages && pe.renderedPageName && pe.getRenderedPageElement instanceof Function) {
+        pe = Polymer.dom(pe.pages).querySelector('[name="' + pe.renderedPageName + '"]');
       }
       return pe;
     }

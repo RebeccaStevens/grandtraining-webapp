@@ -36,7 +36,7 @@
     <!-- Layout -->
     <neon-animated-pages id="pages"
       role="main"
-      selected="[[renderedPage]]"
+      selected="[[renderedPageName]]"
       attr-for-selected="name"
       fallback-selection="404"
       on-iron-activate="_pageAboutToChange"
@@ -94,7 +94,7 @@
         if (!Polymer.isInstance(pageEl)) {
           this.app.pageLoading = true;
           var shortName = 'details';
-          if (this.page === this.mainPageName) {
+          if (this.pageName === this.mainPageName) {
             shortName = this.mainPageName
           }
           this.importHref(this.resolveUrl('pages/' + shortName + '/' + pageEl.nodeName.toLowerCase() + '.html'), function() {
@@ -114,7 +114,7 @@
             pageEl.onSwitchBackTo();
           }
           this.app.pageLoading = false;
-          this.renderedPage = this.page;
+          this.renderedPageName = this.pageName;
           this._scrollToTop();
         }
 
@@ -126,7 +126,7 @@
        */
       _pagesReady: function() {
         this.pageReady();
-        this.pageChanged(this.page);  // now that this page is ready, display the child page.
+        this.pageChanged(this.pageName);  // now that this page is ready, display the child page.
       },
 
       /**
@@ -136,7 +136,7 @@
         if (e.target === this._getPageElement()) {
           this.app.pageError = false;
           this.app.pageLoading = false;
-          this.renderedPage = this.page;
+          this.renderedPageName = this.pageName;
           this._scrollToTop();
         }
       },
@@ -148,7 +148,7 @@
         if (e.target === this._getPageElement()) {
           this.app.pageError = true;
           this.app.pageLoading = false;
-          this.renderedPage = this.page;
+          this.renderedPageName = this.pageName;
           this._scrollToTop();
         }
       },
@@ -166,7 +166,7 @@
        * Scroll to the top.
        */
       _scrollToTop: function() {
-        if (this.page === this.mainPageName) {
+        if (this.pageName === this.mainPageName) {
           this.app.scrollToTop();
         }
         else {
@@ -178,7 +178,7 @@
        * Get the active page element.
        */
       _getPageElement: function() {
-        return Polymer.dom(this.$.pages).querySelector('[name="' + this.page + '"]');
+        return Polymer.dom(this.$.pages).querySelector('[name="' + this.pageName + '"]');
       },
 
       /**
@@ -211,7 +211,7 @@
        * Called when the page is switched back to.
        */
       onSwitchBackTo: function() {
-        this.page = this.mainPageName;
+        this.pageName = this.mainPageName;
         if (this.$.pageHub.onSwitchBackTo instanceof Function) {
           this.$.pageHub.onSwitchBackTo();
         }
@@ -221,7 +221,7 @@
        * Called when the page is switched from.
        */
       onSwitchFrom: function() {
-        this.page = this.mainPageName;
+        this.pageName = this.mainPageName;
       },
 
       created: function() {

@@ -152,7 +152,7 @@
       <!-- Drawer content -->
       <app-drawer id="drawer">
         <app-toolbar>Menu</app-toolbar>
-        <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
+        <iron-selector selected="[[renderedPageName]]" attr-for-selected="name" class="drawer-list" role="navigation">
           <a name="home" href$="[[data.pages.home.url]]">[[data.pages.home.menuTitle]]</a>
           <a name="classes" href$="[[data.pages.classes.url]]">[[data.pages.classes.menuTitle]]</a>
           <a name="bookings" href$="[[data.pages.bookings.url]]">[[data.pages.bookings.menuTitle]]</a>
@@ -174,7 +174,7 @@
 
         <iron-pages id="pages"
           role="main"
-          selected="[[renderedPage]]"
+          selected="[[renderedPageName]]"
           attr-for-selected="name"
           fallback-selection="404"
           hidden$="[[_hidePages]]"
@@ -259,7 +259,7 @@
          */
         _pageTitle: {
           type: String,
-          computed: '_computePageTitle(page, data.company.name)',
+          computed: '_computePageTitle(pageName, data.company.name)',
           observer: '_pageTitleChanged'
         },
 
@@ -340,7 +340,7 @@
         if (pageEl === null) {
           pageEl = this.$.page404;
           pageName = '404';
-          this.renderedPage = this.page;
+          this.renderedPageName = this.pageName;
         }
 
         // if the old page has an `onSwitchFrom` function, call it.
@@ -365,7 +365,7 @@
             pageEl.onSwitchBackTo();
           }
           this.pageLoading = false;
-          this.renderedPage = this.page;
+          this.renderedPageName = this.pageName;
         }
 
         this.pageError = false;
@@ -411,7 +411,7 @@
       _pageLoaded: function() {
         this.pageError = false;
         this.pageLoading = false;
-        this.renderedPage = this.page;
+        this.renderedPageName = this.pageName;
       },
 
       /**
@@ -420,7 +420,7 @@
       _pageErrorOccurred: function() {
         this.pageError = true;
         this.pageLoading = false;
-        this.renderedPage = this.page;
+        this.renderedPageName = this.pageName;
       },
 
       /**
@@ -447,11 +447,11 @@
       /**
        * Compute the value of `_pageTitle`.
        */
-      _computePageTitle: function(page, companyName) {
-        if (page === this.mainPageName) {
+      _computePageTitle: function(pageName, companyName) {
+        if (pageName === this.mainPageName) {
           return companyName;
         }
-        var pageData = this.data.pages[page];
+        var pageData = this.data.pages[pageName];
         if (pageData) {
           return pageData.title;
         }
@@ -462,7 +462,7 @@
        * reinitialise the current page.
        */
       _reinitPage: function() {
-        var pageEl = Polymer.dom(this.$.pages).querySelector('[name="' + this.page + '"]');
+        var pageEl = Polymer.dom(this.$.pages).querySelector('[name="' + this.pageName + '"]');
 
         if (this._shellError) {
           this._shellLoading = true;  // turn the loading overlay on
@@ -540,7 +540,7 @@
 
       _backButtonTapped: function() {
         // don't do anything if we are on the home page
-        if (this.page === this.mainPageName) {
+        if (this.pageName === this.mainPageName) {
           return;
         }
 
