@@ -467,7 +467,7 @@
         var toolbarTextHeight = Polymer.dom(this.$.card.root).querySelector('.header').clientHeight - 20;
 
         var fontSize = Number.parseInt(computedStyle.fontSize, 10);
-        var adjustedFontSize = fontSize * toolbarTextWidth / textWidth;
+        var adjustedFontSize = (fontSize * toolbarTextWidth / textWidth) - 0.5;
         var minFontSize = 18;
         var maxFontSize = toolbarTextHeight * 0.55;
 
