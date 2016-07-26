@@ -221,7 +221,10 @@
        * Called when the page is switched from.
        */
       onSwitchFrom: function() {
-        this.pageName = this.mainPageName;
+        // wait until the exit animation is finished
+        this.async(function() {
+          this.pageName = this.mainPageName;
+        }, GT.animation.exitDuration);
       },
 
       created: function() {
