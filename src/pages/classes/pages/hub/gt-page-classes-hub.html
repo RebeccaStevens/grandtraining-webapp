@@ -9,6 +9,7 @@
 <link rel="import" href="../../../../../styles/gt-styles.html">
 <link rel="import" href="../../../../../imports/gt.html">
 <link rel="import" href="../../../../gt-element-common-behavior.html">
+<link rel="import" href="../../../../elements/gt-animated-card/gt-animated-card-holder-behavior.html">
 <link rel="import" href="../../../gt-page-behavior.html">
 <link rel="import" href="gt-location-selector.html">
 <link rel="import" href="gt-class-category.html">
@@ -78,6 +79,7 @@
       behaviors: [
         GT.ElementCommonBehavior,
         GT.PageBehavior,
+        GT.AnimatedCardHolderBehavior,
         Polymer.NeonSharedElementAnimatableBehavior
       ],
 
@@ -167,21 +169,7 @@
           return;
         }
 
-        // get all the gt-class-category elements
-        var ccs = Polymer.dom(this.$['class-categories']).querySelectorAll('gt-class-category');
-        var timingOffset = GT.animation.timingOffset;   // the timing offset between each call to make the element visible
-
-        var showCC = function(i) {
-          this.async(function() {
-            ccs[i].show()
-          }, i * timingOffset);
-        }.bind(this);
-
-        // for each one
-        for (var i in ccs) {
-          ccs[i].shown = false;
-          showCC(i);
-        }
+        this.showCards(this.$['class-categories'], 'gt-class-category');
       },
 
       /**

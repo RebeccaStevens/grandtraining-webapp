@@ -1,7 +1,6 @@
 <link rel="import" href="../../../../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../../../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../../../../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../../../../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../../../../bower_components/iron-image/iron-image.html">
 <link rel="import" href="../../../../../bower_components/neon-animation/animations/scale-up-animation.html">
 <link rel="import" href="../../../../../bower_components/neon-animation/animations/scale-down-animation.html">
@@ -12,6 +11,7 @@
 <link rel="import" href="../../../../../styles/gt-styles.html">
 <link rel="import" href="../../../../../imports/gt.html">
 <link rel="import" href="../../../../gt-element-common-behavior.html">
+<link rel="import" href="../../../../elements/gt-animated-card/gt-animated-card-behavior.html">
 
 <dom-module id="gt-class-category">
   <template>
@@ -53,7 +53,6 @@
         <a name="classes" href$="[[href]]" tabindex="-1"><paper-button raised on-tap="_onMoreInfoTapped">More Info</paper-button></a>
       </div>
     </paper-card>
-  </paper-card>
   </template>
 
   <script>
@@ -62,7 +61,7 @@
 
       behaviors: [
         GT.ElementCommonBehavior,
-        Polymer.NeonAnimationRunnerBehavior
+        GT.AnimatedCardBehavior
       ],
 
       properties: {
@@ -95,112 +94,10 @@
         imagePlaceholder: {
           type: String
         },
-
-        /**
-         * States whether or not this element is shown.
-         */
-        shown: {
-          type: Boolean,
-          value: false,
-          notify: true,
-          reflectToAttribute: true
-        },
-
-        /**
-         * True if in the process of hidden the element.
-         */
-        _hidding: {
-          type: Boolean,
-          value: false
-        },
-
-        /**
-         * The animations this element has.
-         */
-        animationConfig: {
-          value: function() {
-            return {
-              entry: [
-                {
-                  name: 'scale-up-animation',
-                  node: this,
-                  timing: {
-                    delay: 0,
-                    duration: GT.animation.entryDuration
-                  }
-                },
-                {
-                  name: 'fade-in-animation',
-                  node: this,
-                  timing: {
-                    delay: 0,
-                    duration: GT.animation.entryDuration
-                  }
-                }
-              ],
-              exit: [
-                {
-                  name: 'scale-down-animation',
-                  node: this,
-                  timing: {
-                    delay: 0,
-                    duration: GT.animation.exitDuration
-                  }
-                },
-                {
-                  name: 'fade-out-animation',
-                  node: this,
-                  timing: {
-                    delay: 0,
-                    duration: GT.animation.exitDuration
-                  }
-                }
-              ],
-            };
-          }
-        }
-      },
-
-      listeners: {
-        'neon-animation-finish': '_onNeonAnimationFinish'
-      },
-
-      /**
-       * Show this element.
-       */
-      show: function() {
-        this.shown = true;
-        this.cancelAnimation();
-        this.playAnimation('entry');
-      },
-
-      /**
-       * Hide this element.
-       */
-      hide: function() {
-        this._hidding = true;
-        this.cancelAnimation();
-        this.playAnimation('exit');
-      },
-
-      /**
-       * Called when an animation finishes playing.
-       */
-      _onNeonAnimationFinish: function() {
-        if (this._hidding) {
-          this._hidding = false;
-          this.shown = false;
-        }
       },
 
       _onMoreInfoTapped: function() {
         this.parent.setClassCardToAnimateOn(this);
-      },
-
-      ready: function() {
-        if (this.shown) {
-          this._show();
-        }
       }
     });
   </script>
