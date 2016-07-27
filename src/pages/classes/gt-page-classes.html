@@ -8,6 +8,7 @@
 <link rel="import" href="../../../imports/gt.html">
 <link rel="import" href="../../gt-element-common-behavior.html">
 <link rel="import" href="../gt-page-behavior.html">
+<link rel="import" href="pages/hub/gt-page-classes-hub.html">
 
 <dom-module id="gt-page-classes">
   <template>
@@ -42,7 +43,7 @@
       on-page-loaded="_pageLoaded"
       on-page-error="_pageErrorOccurred">
       <gt-page-classes-hub id="pageHub" name="hub"></gt-page-classes-hub>
-      <template is="dom-repeat" items="[[pageData.class-categories]]" as="cc" on-dom-change="_pagesReady">
+      <template is="dom-repeat" items="[[pageData.class-categories]]" as="cc" on-dom-change="_onPagesStamped">
         <gt-page-classes-details name$="[[_urlToName(cc.url)]]"></gt-page-classes-details>
       </template>
       <gt-page-404 id="page404" name="404"></gt-page-404>
@@ -60,8 +61,25 @@
       ],
 
       properties: {
+        _ajaxLoaded: {
+          type: Boolean,
+          value: false
+        },
 
+        _pagesStamped: {
+          type: Boolean,
+          value: false
+        },
+
+        _hubPageLoaded: {
+          type: Boolean,
+          value: false
+        }
       },
+
+      observers: [
+        '_pageReady(isInitialised, _ajaxLoaded, _pagesStamped, _hubPageLoaded)'
+      ],
 
       /**
        * Called when the page is changed.
@@ -72,7 +90,7 @@
           return;
         }
 
-        var pageEl = this._getPageElement();
+        var pageEl = this.getPageElement();
         var oldPageEl = Polymer.dom(this.$.pages).querySelector('[name="' + oldPageName + '"]');
 
         // if the page element doesn't exist, the page doesn't exist
@@ -97,7 +115,7 @@
             shortName = this.mainPageName
           }
           this.importHref(this.resolveUrl('pages/' + shortName + '/' + pageEl.nodeName.toLowerCase() + '.html'), function() {
-            pageEl = this._getPageElement();
+            pageEl = this.getPageElement();
             pageEl.init();
           }, null, true);
         }
@@ -123,16 +141,18 @@
       /**
        * Called when the detail pages are stamped out to the dom.
        */
-      _pagesReady: function() {
-        this.pageReady();
-        this.pageChanged(this.pageName);  // now that this page is ready, display the child page.
+      _onPagesStamped: function() {
+        this._pagesStamped = true;
       },
 
       /**
        * Called when a page has loaded.
        */
       _pageLoaded: function(e) {
-        if (e.target === this._getPageElement()) {
+        if (!this.isInitialised && e.target === this.$.pageHub) {
+          this._hubPageLoaded = true;
+        }
+        if (e.target === this.getPageElement()) {
           this.app.pageError = false;
           this.app.pageLoading = false;
           this.renderedPageName = this.pageName;
@@ -145,7 +165,7 @@
        * Called when a page loading error occurs.
        */
       _pageErrorOccurred: function(e) {
-        if (e.target === this._getPageElement()) {
+        if (e.target === this.getPageElement()) {
           this.app.pageError = true;
           this.app.pageLoading = false;
           this.renderedPageName = this.pageName;
@@ -175,18 +195,18 @@
         }
       },
 
-      /**
-       * Get the active page element.
-       */
-      _getPageElement: function() {
-        return Polymer.dom(this.$.pages).querySelector('[name="' + this.pageName + '"]');
+      _pageReady: function(isInitialised, ajaxLoaded, pagesStamped, hubPageLoaded) {
+        if (!isInitialised && ajaxLoaded && pagesStamped && hubPageLoaded) {
+          this.pageReady();
+          this.pageChanged(this.pageName);  // now that this page is ready, display the child page.
+        }
       },
 
       /**
        * Called when the page data loads.
        */
       _handleAjaxResponse: function() {
-
+        this._ajaxLoaded = true;
       },
 
       /**
@@ -200,12 +220,11 @@
        * Initialise the page.
        */
       init: function() {
-        if (this.isInitialised) {
-          var pageEl = this._getPageElement();
-          pageEl.init();
-        } else {
+        if (!this.isInitialised) {
           this.$.pageDataLoader.generateRequest();
         }
+        var pageEl = this.getPageElement();
+        pageEl.init();
       },
 
       /**
