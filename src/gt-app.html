@@ -631,6 +631,7 @@
       },
 
       ready: function() {
+        this.renderedPageName = this.mainPageName;
         this.init();
         window.addEventListener('resize', function() {
           this.debounce('gt-app-resize', function() {
