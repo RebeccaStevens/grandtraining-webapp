@@ -13,8 +13,8 @@
 <link rel="import" href="../../../../animations/scale-up-and-fade-in-animation.html">
 <link rel="import" href="../../../../animations/scale-down-and-fade-out-animation.html">
 <link rel="import" href="../../../../gt-element-common-behavior.html">
-<link rel="import" href="../../../gt-page-behavior.html">
 <link rel="import" href="../../../../elements/gt-location-selector.html">
+<link rel="import" href="../../../gt-page-behavior.html">
 <link rel="import" href="gt-class-category.html">
 
 <dom-module id="gt-page-classes-hub">
@@ -24,10 +24,6 @@
         display: block;
         @apply(--layout-vertical);
         @apply(--layout-center);
-      }
-      gt-location-selector {
-        max-width: 500px;
-        margin: 1em 0.75em;
       }
       #class-categories {
         margin: 0.75em 0.75em 0 0.75em;
@@ -167,9 +163,9 @@
       },
 
       /**
-       * Show the location selector element.
+       * Animate the location selector element in.
        */
-      _showLocationSelector: function() {
+      _animateLocationSelectorIn: function() {
         var ls = this.$['location-selector'];
         ls.show();
       },
@@ -203,7 +199,7 @@
        * Called when the page data loads.
        */
       _handleAjaxResponse: function() {
-        this._showLocationSelector();
+        this._animateLocationSelectorIn();
         this.pageReady();
       },
 
@@ -225,7 +221,7 @@
        * Called when the page is switched back to.
        */
       onSwitchBackTo: function() {
-        this._showLocationSelector();
+        this._animateLocationSelectorIn();
         this._showClassCategories();
       },
 
