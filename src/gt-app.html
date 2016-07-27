@@ -400,7 +400,7 @@
 
         // animate the scroll
         if (dist !== 0 && duration > 0) {
-          var renderedPageElement = this.getRenderedPageElement();
+          var renderedPageElement = this.getRenderedPageElement(true);
 
           renderedPageElement.animate([
             { transform: 'translateY(' + (-dist) + 'px)', offset: 0 },

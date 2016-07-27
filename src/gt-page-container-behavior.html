@@ -70,13 +70,48 @@
     /**
      * Returns the renderedPageName's element.
      *
+     * @param {Boolean} deep
      * @returns {HTMLElement}
      */
-    getRenderedPageElement: function() {
-      var pe = Polymer.dom(this.pages).querySelector('[name="' + this.renderedPageName + '"]');
+    getRenderedPageElement: function(deep) {
+      if (deep === undefined) {
+        deep = false;
+      }
+      return this._getPageElementImpl(this.renderedPageName, deep);
+    },
 
-      while (pe && pe.pages && pe.renderedPageName && pe.getRenderedPageElement instanceof Function) {
-        pe = Polymer.dom(pe.pages).querySelector('[name="' + pe.renderedPageName + '"]');
+    /**
+     * Returns the pageName's element.
+     *
+     * @param {Boolean} deep
+     * @returns {HTMLElement}
+     */
+    getPageElement: function(deep) {
+      if (deep === undefined) {
+        deep = false;
+      }
+      return this._getPageElementImpl(this.pageName, deep);
+    },
+
+    /**
+     * Implemtation of getPageElement and getRenderedPageElement.
+     *
+     * @param {String} name
+     * @param {Boolean} deep
+     * @returns {HTMLElement}
+     */
+    _getPageElementImpl: function(name, deep) {
+      var pe = Polymer.dom(this.pages).querySelector('[name="' + name + '"]');
+
+      if (deep) {
+        while (pe && pe.pages && pe.renderedPageName && pe.getRenderedPageElement instanceof Function) {
+          var deepPe = Polymer.dom(pe.pages).querySelector('[name="' + name + '"]');
+          if (deepPe !== null) {
+            pe = deepPe;
+          } else {
+            break;
+          }
+        }
       }
       return pe;
     }
