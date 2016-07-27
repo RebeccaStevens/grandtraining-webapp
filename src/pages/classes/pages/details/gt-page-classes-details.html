@@ -202,8 +202,9 @@
        * Called when the page data loads.
        */
       _handleAjaxResponse: function() {
-        if (this._showLocationSectorOnLoad) {
+        if (this._showLocationSectorOnLoad || this._playShowCardAnimationOnLoad) {
           this._showCard = true;
+          this._playShowCardAnimationOnLoad = false;
           this.playAnimation('showCard');
         }
         this.pageReady();
@@ -218,10 +219,16 @@
 
       /**
        * Initialise the page.
+       *
+       * @param {Boolean} useOwnEnteryAnimation - if true, the `showCard` animation will play when the card is ready
        */
-      init: function() {
+      init: function(useOwnEnteryAnimation) {
         this._showCard = this.isDefined(this.app.location);
         this._showLocationSectorOnLoad = !this._showCard;
+
+        if (useOwnEnteryAnimation) {
+          this._playShowCardAnimationOnLoad = true;
+        }
 
         if (this._showLocationSectorOnLoad) {
           this.pageReady();
