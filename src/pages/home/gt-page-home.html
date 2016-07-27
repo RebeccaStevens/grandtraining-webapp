@@ -2,14 +2,17 @@
 <link rel="import" href="../../../bower_components/neon-slideshow/neon-carousel-pages.html">
 <link rel="import" href="../../../bower_components/iron-image/iron-image.html">
 <link rel="import" href="../../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../../bower_components/neon-animation/neon-animation-runner-behavior.html">
+<link rel="import" href="../../../bower_components/neon-animation/animations/cascaded-animation.html">
 
 <link rel="import" href="../../../styles/gt-styles.html">
 <link rel="import" href="../../../imports/gt.html">
+<link rel="import" href="../../animations/scale-up-and-fade-in-animation.html">
+<link rel="import" href="../../animations/scale-down-and-fade-out-animation.html">
 <link rel="import" href="../../gt-element-common-behavior.html">
-<link rel="import" href="../../elements/gt-animated-card/gt-animated-card.html">
-<link rel="import" href="../../elements/gt-animated-card/gt-animated-card-holder-behavior.html">
 <link rel="import" href="../gt-page-behavior.html">
 
 <link rel="import" href="gt-testimonial.html">
@@ -44,11 +47,11 @@
         @apply(--layout-center-justified);
         margin-bottom: 0.75em;
       }
-      #cards > gt-animated-card {
+      #cards > paper-card {
         margin: 0.75em 0.75em 0 0.75em;
         @apply(--layout-flex);
       }
-      gt-animated-card {
+      paper-card {
         min-width: 300px;
         max-width: 500px;
       }
@@ -76,7 +79,7 @@
         #subtitle {
           font-size: 32pt;
         }
-        gt-animated-card {
+        paper-card {
           max-width: 750px;
         }
       }
@@ -103,24 +106,24 @@
 
     <div id="cards">
 
-      <gt-animated-card heading="[[pageData.philosophy.heading]]">
+      <paper-card heading="[[pageData.philosophy.heading]]">
         <div class="card-content"><html-echo html="[[pageData.philosophy.content]]"></html-echo></div>
-      </gt-animated-card>
+      </paper-card>
 
-      <gt-animated-card heading="[[pageData.classes.heading]]">
+      <paper-card shown heading="[[pageData.classes.heading]]">
         <div class="card-content"><html-echo html="[[pageData.classes.content]]"></html-echo></div>
         <div class="card-actions">
           <a name="classes" href$="[[app.data.pages.classes.url]]" tabindex="-1"><paper-button raised>Book Now</paper-button></a>
         </div>
-      </gt-animated-card>
+      </paper-card>
 
-      <gt-animated-card heading="[[pageData.testimonials.heading]]">
+      <paper-card shown heading="[[pageData.testimonials.heading]]">
         <div class="card-content">
           <template is="dom-repeat" items="[[pageData.testimonials.list]]" as="testimonial">
             <gt-testimonial content="[[testimonial.content]]" by="[[testimonial.by]]" date="[[testimonial.date]]"></gt-testimonial>
           </template>
         </div>
-      </gt-animated-card>
+      </paper-card>
 
     </div>
   </template>
@@ -132,7 +135,7 @@
       behaviors: [
         GT.ElementCommonBehavior,
         GT.PageBehavior,
-        GT.AnimatedCardHolderBehavior
+        Polymer.NeonAnimationRunnerBehavior
       ],
 
       properties: {
@@ -141,6 +144,26 @@
          * The data the page will use.
          */
         pageData: Object,
+
+        /**
+         * The animations this element has.
+         */
+        animationConfig: {
+          value: function() {
+            return {
+              entry: {
+                name: 'cascaded-animation',
+                animation: 'scale-up-and-fade-in-animation',
+                nodes: Polymer.dom(this.$.cards).querySelectorAll('paper-card'),
+                nodeDelay: GT.animation.timingOffset,
+                timing: {
+                  delay: 0,
+                  duration: GT.animation.entryDuration
+                }
+              }
+            };
+          }
+        }
       },
 
       observers: [
@@ -179,7 +202,7 @@
        * Called when the page is switched back to.
        */
       onSwitchBackTo: function() {
-        this.showCards(this.$.cards);
+        this.playAnimation('entry');
       },
 
       /**
@@ -187,7 +210,7 @@
        */
       _handleAjaxResponse: function() {
         this.pageReady();
-        this.showCards(this.$.cards);
+        this.playAnimation('entry');
       },
 
       /**

@@ -2,14 +2,17 @@
 <link rel="import" href="../../../../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../../../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../../../../bower_components/html-echo/html-echo.html">
+<link rel="import" href="../../../../../bower_components/neon-animation/neon-animation-runner-behavior.html">
 <link rel="import" href="../../../../../bower_components/neon-animation/neon-shared-element-animatable-behavior.html">
 <link rel="import" href="../../../../../bower_components/neon-animation/animations/hero-animation.html">
-<link rel="import" href="../../../../../bower_components/neon-animation/animations/fade-in-animation.html">
+<link rel="import" href="../../../../../bower_components/neon-animation/animations/fade-out-animation.html">
+<link rel="import" href="../../../../../bower_components/neon-animation/animations/cascaded-animation.html">
 
 <link rel="import" href="../../../../../styles/gt-styles.html">
 <link rel="import" href="../../../../../imports/gt.html">
+<link rel="import" href="../../../../animations/scale-up-and-fade-in-animation.html">
+<link rel="import" href="../../../../animations/scale-down-and-fade-out-animation.html">
 <link rel="import" href="../../../../gt-element-common-behavior.html">
-<link rel="import" href="../../../../elements/gt-animated-card/gt-animated-card-holder-behavior.html">
 <link rel="import" href="../../../gt-page-behavior.html">
 <link rel="import" href="gt-location-selector.html">
 <link rel="import" href="gt-class-category.html">
@@ -79,7 +82,7 @@
       behaviors: [
         GT.ElementCommonBehavior,
         GT.PageBehavior,
-        GT.AnimatedCardHolderBehavior,
+        Polymer.NeonAnimationRunnerBehavior,
         Polymer.NeonSharedElementAnimatableBehavior
       ],
 
@@ -104,6 +107,16 @@
           type: Object,
           value: function() {
             return {
+              showCards: {
+                name: 'cascaded-animation',
+                animation: 'scale-up-and-fade-in-animation',
+                nodes: [],  // will be set once the gt-class-categories are stamped out
+                nodeDelay: GT.animation.timingOffset,
+                timing: {
+                  delay: 0,
+                  duration: GT.animation.entryDuration
+                }
+              },
               exit: [{
                 name: 'hero-animation',
                 id: 'class-card',
@@ -118,6 +131,15 @@
                 timing: {
                   delay: 0,
                   duration: GT.animation.heroDuration
+                }
+              },{
+                name: 'cascaded-animation',
+                animation: 'scale-down-and-fade-out-animation',
+                nodes: [],  // will be set once the gt-class-categories are stamped out
+                nodeDelay: -1,  // can't use zero as it will default to 50
+                timing: {
+                  delay: 0,
+                  duration: GT.animation.entryDuration  // use the entryDuration so the effect looks the same as the entry just in reverse
                 }
               }]
             };
@@ -153,6 +175,9 @@
       },
 
       _ccStamped: function() {
+        var ccs = Polymer.dom(this.$['class-categories']).querySelectorAll('gt-class-category');
+        this.animationConfig.showCards.nodes = ccs;
+        this.animationConfig.exit[2].nodes = ccs;
         this._showClassCategories();
       },
 
@@ -169,7 +194,9 @@
           return;
         }
 
-        this.showCards(this.$['class-categories'], 'gt-class-category');
+        if (this.animationConfig.showCards.nodes.length > 0) {
+          this.playAnimation('showCards');
+        }
       },
 
       /**

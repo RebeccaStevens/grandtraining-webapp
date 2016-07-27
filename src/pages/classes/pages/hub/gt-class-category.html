@@ -11,17 +11,12 @@
 <link rel="import" href="../../../../../styles/gt-styles.html">
 <link rel="import" href="../../../../../imports/gt.html">
 <link rel="import" href="../../../../gt-element-common-behavior.html">
-<link rel="import" href="../../../../elements/gt-animated-card/gt-animated-card-behavior.html">
 
 <dom-module id="gt-class-category">
   <template>
     <style include="gt-styles">
       :host {
         display: block;
-        visibility: hidden;
-      }
-      :host([shown]) {
-        visibility: visible;
       }
       #card {
         width: 100%;
@@ -60,8 +55,7 @@
       is: 'gt-class-category',
 
       behaviors: [
-        GT.ElementCommonBehavior,
-        GT.AnimatedCardBehavior
+        GT.ElementCommonBehavior
       ],
 
       properties: {
