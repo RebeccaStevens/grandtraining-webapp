@@ -8,7 +8,6 @@
 <link rel="import" href="../../../imports/gt.html">
 <link rel="import" href="../../gt-element-common-behavior.html">
 <link rel="import" href="../gt-page-behavior.html">
-<link rel="import" href="pages/hub/gt-page-classes-hub.html">
 
 <dom-module id="gt-page-classes">
   <template>
@@ -71,14 +70,14 @@
           value: false
         },
 
-        _hubPageLoaded: {
+        _subPageLoaded: {
           type: Boolean,
           value: false
         }
       },
 
       observers: [
-        '_pageReady(isInitialised, _ajaxLoaded, _pagesStamped, _hubPageLoaded)'
+        '_pageReady(isInitialised, _ajaxLoaded, _pagesStamped, _subPageLoaded)'
       ],
 
       /**
@@ -99,6 +98,7 @@
             this.app.pageLoading = true;
             this.importHref(this.resolveUrl('../404/gt-page-404.html'), null, null, true);
           }
+          this.renderedPageName = this.pageName;
           return;
         }
 
@@ -142,6 +142,25 @@
        * Called when the detail pages are stamped out to the dom.
        */
       _onPagesStamped: function() {
+        if (!this.isInitialised) {
+          var pageEl = this.getPageElement();
+
+          if (pageEl === null) {
+            this.importHref(this.resolveUrl('../404/gt-page-404.html'), function() {
+              this.renderedPageName = this.pageName;
+              this._subPageLoaded = true;
+            }, null, true);
+          }
+          else {
+            var shortName = this.pageName === this.mainPageName ? this.mainPageName : 'details';
+
+            this.importHref(this.resolveUrl('pages/' + shortName + '/' + pageEl.nodeName.toLowerCase() + '.html'), function() {
+              pageEl.init(true);
+            }, function() {
+              this.importHref(this.resolveUrl('../404/gt-page-404.html'), null, null, true);
+            }, true);
+          }
+        }
         this._pagesStamped = true;
       },
 
@@ -149,10 +168,10 @@
        * Called when a page has loaded.
        */
       _pageLoaded: function(e) {
-        if (!this.isInitialised && e.target === this.$.pageHub) {
-          this._hubPageLoaded = true;
-        }
         if (e.target === this.getPageElement() || e.target === this.$.page404) {
+          if (!this.isInitialised) {
+            this._subPageLoaded = true;
+          }
           this.app.pageError = false;
           this.app.pageLoading = false;
           this.renderedPageName = this.pageName;
@@ -198,7 +217,6 @@
       _pageReady: function(isInitialised, ajaxLoaded, pagesStamped, hubPageLoaded) {
         if (!isInitialised && ajaxLoaded && pagesStamped && hubPageLoaded) {
           this.pageReady();
-          this.pageChanged(this.pageName);  // now that this page is ready, display the child page.
         }
       },
 
