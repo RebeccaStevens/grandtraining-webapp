@@ -2,6 +2,7 @@
 <link rel="import" href="../../../../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../../../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../../../../bower_components/html-echo/html-echo.html">
+<link rel="import" href="../../../../../bower_components/neon-animation/neon-animation-runner-behavior.html">
 <link rel="import" href="../../../../../bower_components/neon-animation/neon-shared-element-animatable-behavior.html">
 <link rel="import" href="../../../../../bower_components/neon-animation/animations/hero-animation.html">
 <link rel="import" href="../../../../../bower_components/neon-animation/animations/fade-in-animation.html">
@@ -11,8 +12,9 @@
 <link rel="import" href="../../../../../styles/gt-styles.html">
 <link rel="import" href="../../../../../imports/gt.html">
 <link rel="import" href="../../../../gt-element-common-behavior.html">
+<link rel="import" href="../../../../animations/scale-up-and-fade-in-animation.html">
+<link rel="import" href="../../../../elements/gt-location-selector.html">
 <link rel="import" href="../../../gt-page-behavior.html">
-
 <link rel="import" href="gt-class.html">
 
 <dom-module id="gt-page-classes-details">
@@ -20,6 +22,14 @@
     <style include="gt-styles">
       :host {
         display: block;
+      }
+      #location-selector.float {
+        margin: 0 auto;
+        z-index: 1;
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
       }
       #card {
         display: block;
@@ -81,7 +91,14 @@
       on-error="_handleAjaxError"></iron-ajax>
 
     <!-- Layout -->
-    <paper-card id="card" heading="[[pageData.title]]">
+    <gt-location-selector
+      id="location-selector"
+      global-cities="[[app.data.cities]]"
+      location="{{app.location}}"
+      on-location-set="_locationSet"
+      hidden$="[[!_showLocationSectorOnLoad]]"></gt-location-selector>
+
+    <paper-card id="card" heading="[[pageData.title]]" hidden$="[[!_showCard]]">
       <div class="card-content">
         <div id="description">
           <html-echo html="[[pageData.description]]"></html-echo>
@@ -115,6 +132,7 @@
       behaviors: [
         GT.ElementCommonBehavior,
         GT.PageBehavior,
+        Polymer.NeonAnimationRunnerBehavior,
         Polymer.NeonSharedElementAnimatableBehavior
       ],
 
@@ -146,6 +164,15 @@
                   delay: 0,
                   duration: GT.animation.exitDuration
                 }
+              }],
+              showCard: [{
+                name: 'scale-up-and-fade-in-animation',
+                node: this.$.card,
+                transformOrigin: '50% 50vh',
+                timing: {
+                  delay: 0,
+                  duration: GT.animation.entryDuration
+                }
               }]
             };
           }
@@ -161,10 +188,24 @@
         }
       },
 
+      _locationSet: function() {
+        if (this._showLocationSectorOnLoad) {
+          this.$['location-selector'].toggleClass('float', true); // float the location-selector so it does interfear with the showCard animation
+          this.$['location-selector'].hide();
+
+          this.app.pageLoading = true;
+          this.$.pageDataLoader.generateRequest();
+        }
+      },
+
       /**
        * Called when the page data loads.
        */
       _handleAjaxResponse: function() {
+        if (this._showLocationSectorOnLoad) {
+          this._showCard = true;
+          this.playAnimation('showCard');
+        }
         this.pageReady();
       },
 
@@ -179,7 +220,14 @@
        * Initialise the page.
        */
       init: function() {
-        this.$.pageDataLoader.generateRequest();
+        this._showCard = this.isDefined(this.app.location);
+        this._showLocationSectorOnLoad = !this._showCard;
+
+        if (this._showLocationSectorOnLoad) {
+          this.pageReady();
+        } else {
+          this.$.pageDataLoader.generateRequest();
+        }
       },
 
       /**
