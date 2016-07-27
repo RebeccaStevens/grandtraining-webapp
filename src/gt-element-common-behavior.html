@@ -20,7 +20,7 @@
   },
 
     /**
-     * Returns if true if the array has any values.
+     * Returns true if the array has any values.
      *
      * @param {Array} arr
      * @returns {Boolean}
@@ -28,5 +28,15 @@
     doesArrayHaveValues: function(arr) {
       return arr && arr.length > 0;
     },
+
+    /**
+     * Returns true if the value is not undefined or null.
+     *
+     * @param {*} val
+     * @returns {Boolean}
+     */
+    isDefined: function(val) {
+      return val !== undefined && val !== null;
+    }
   };
 </script>
