@@ -224,7 +224,9 @@
           this.$.pageDataLoader.generateRequest();
         }
         var pageEl = this.getPageElement();
-        pageEl.init();
+        if (Polymer.isInstance(pageEl)) {
+          pageEl.init();
+        }
       },
 
       /**
