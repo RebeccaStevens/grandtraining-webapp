@@ -418,7 +418,7 @@
        * Called when a page has loaded.
        */
       _pageLoaded: function(e) {
-        if (e.target === this.getPageElement()) {
+        if (e.target === this.getPageElement() || e.target === this.$.page404) {
           this.pageError = false;
           this.pageLoading = false;
           this.renderedPageName = this.pageName;
@@ -430,7 +430,7 @@
        * Called when a page loading error occurs.
        */
       _pageErrorOccurred: function(e) {
-        if (e.target === this.getPageElement()) {
+        if (e.target === this.getPageElement() || e.target === this.$.page404) {
           this.pageError = true;
           this.pageLoading = false;
           this.renderedPageName = this.pageName;

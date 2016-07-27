@@ -152,7 +152,7 @@
         if (!this.isInitialised && e.target === this.$.pageHub) {
           this._hubPageLoaded = true;
         }
-        if (e.target === this.getPageElement()) {
+        if (e.target === this.getPageElement() || e.target === this.$.page404) {
           this.app.pageError = false;
           this.app.pageLoading = false;
           this.renderedPageName = this.pageName;
@@ -165,7 +165,7 @@
        * Called when a page loading error occurs.
        */
       _pageErrorOccurred: function(e) {
-        if (e.target === this.getPageElement()) {
+        if (e.target === this.getPageElement() || e.target === this.$.page404) {
           this.app.pageError = true;
           this.app.pageLoading = false;
           this.renderedPageName = this.pageName;
