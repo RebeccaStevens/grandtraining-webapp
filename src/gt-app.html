@@ -417,19 +417,23 @@
       /**
        * Called when a page has loaded.
        */
-      _pageLoaded: function() {
-        this.pageError = false;
-        this.pageLoading = false;
-        this.renderedPageName = this.pageName;
+      _pageLoaded: function(e) {
+        if (e.target === this.getPageElement()) {
+          this.pageError = false;
+          this.pageLoading = false;
+          this.renderedPageName = this.pageName;
+        }
       },
 
       /**
        * Called when a page loading error occurs.
        */
-      _pageErrorOccurred: function() {
-        this.pageError = true;
-        this.pageLoading = false;
-        this.renderedPageName = this.pageName;
+      _pageErrorOccurred: function(e) {
+        if (e.target === this.getPageElement()) {
+          this.pageError = true;
+          this.pageLoading = false;
+          this.renderedPageName = this.pageName;
+        }
       },
 
       /**
