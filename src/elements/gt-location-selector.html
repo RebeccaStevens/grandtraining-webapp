@@ -1,27 +1,23 @@
-<link rel="import" href="../../../../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../../../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
-<link rel="import" href="../../../../../bower_components/paper-listbox/paper-listbox.html">
-<link rel="import" href="../../../../../bower_components/paper-item/paper-item.html">
-<link rel="import" href="../../../../../bower_components/paper-card/paper-card.html">
-<link rel="import" href="../../../../../bower_components/iron-flex-layout/iron-flex-layout.html">
-<link rel="import" href="../../../../../bower_components/neon-animation/animations/slide-up-animation.html">
-<link rel="import" href="../../../../../bower_components/neon-animation/animations/fade-out-animation.html">
-<link rel="import" href="../../../../../bower_components/neon-animation/animations/slide-from-top-animation.html">
-<link rel="import" href="../../../../../bower_components/neon-animation/neon-animation-runner-behavior.html">
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/neon-animation/animations/slide-up-animation.html">
+<link rel="import" href="../../bower_components/neon-animation/animations/fade-out-animation.html">
+<link rel="import" href="../../bower_components/neon-animation/animations/slide-from-top-animation.html">
+<link rel="import" href="../../bower_components/neon-animation/neon-animation-runner-behavior.html">
 
-<link rel="import" href="../../../../../styles/gt-styles.html">
-<link rel="import" href="../../../../../imports/gt.html">
-<link rel="import" href="../../../../gt-element-common-behavior.html">
+<link rel="import" href="../../styles/gt-styles.html">
+<link rel="import" href="../../imports/gt.html">
+<link rel="import" href="../gt-element-common-behavior.html">
 
 <dom-module id="gt-location-selector">
   <template>
     <style include="gt-styles">
       :host {
         display: block;
-        visibility: hidden;
-      }
-      :host([shown]) {
-        visibility: visible;
       }
       #card {
         width: 100%;
@@ -147,24 +143,6 @@
         },
 
         /**
-         * States whether or not this element is shown.
-         */
-        shown: {
-          type: Boolean,
-          value: false,
-          notify: true,
-          reflectToAttribute: true
-        },
-
-        /**
-         * True if in the process of hidden the element.
-         */
-        _hidding: {
-          type: Boolean,
-          value: false
-        },
-
-        /**
          * The animations this element has.
          */
         animationConfig: {
@@ -209,7 +187,7 @@
        * Show this element.
        */
       show: function() {
-        this.shown = true;
+        this.style.display = '';
         this.cancelAnimation();
         this.playAnimation('entry');
       },
@@ -229,7 +207,7 @@
       _onNeonAnimationFinish: function() {
         if (this._hidding) {
           this._hidding = false;
-          this.shown = false;
+          this.style.display = 'none';
         }
       },
 
@@ -339,6 +317,7 @@
         if (this.location !== undefined) {
           this._locationChanged(this.location);
         }
+        this.playAnimation('entry');
       }
     });
   </script>
