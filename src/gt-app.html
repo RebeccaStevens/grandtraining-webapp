@@ -514,7 +514,7 @@
        * Read the locationID cookie.
        */
       _readLocationID: function() {
-        var locationID = Number.parseInt(this.$['locationID-cookie'].readCookie(), 10);
+        var locationID = this.$['locationID-cookie'].readCookie();
 
         for (var city in this.data.cities) {
           if (this.data.cities[city][locationID] !== undefined) {
