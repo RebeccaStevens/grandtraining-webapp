@@ -146,19 +146,26 @@
           var pageEl = this.getPageElement();
 
           if (pageEl === null) {
-            this.importHref(this.resolveUrl('../404/gt-page-404.html'), function() {
-              this.renderedPageName = this.pageName;
-              this._subPageLoaded = true;
-            }, null, true);
+            if (!Polymer.isInstance(this.$.page404)) {
+              this.app.pageLoading = true;
+              this.importHref(this.resolveUrl('../404/gt-page-404.html'), function() {
+                this.renderedPageName = this.pageName;
+                this._subPageLoaded = true;
+              }, null, true);
+            }
           }
           else {
-            var shortName = this.pageName === this.mainPageName ? this.mainPageName : 'details';
+            if (!Polymer.isInstance(pageEl)) {
+              var shortName = this.pageName === this.mainPageName ? this.mainPageName : 'details';
 
-            this.importHref(this.resolveUrl('pages/' + shortName + '/' + pageEl.nodeName.toLowerCase() + '.html'), function() {
-              pageEl.init(true);
-            }, function() {
-              this.importHref(this.resolveUrl('../404/gt-page-404.html'), null, null, true);
-            }, true);
+              this.importHref(this.resolveUrl('pages/' + shortName + '/' + pageEl.nodeName.toLowerCase() + '.html'), function() {
+                pageEl.init(true);
+              }, function() {
+                if (!Polymer.isInstance(this.$.page404)) {
+                  this.importHref(this.resolveUrl('../404/gt-page-404.html'), null, null, true);
+                }
+              }, true);
+            }
           }
         }
         this._pagesStamped = true;
