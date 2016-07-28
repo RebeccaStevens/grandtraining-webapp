@@ -193,6 +193,8 @@
       },
 
       _locationSet: function() {
+        this._locationId = this.app.location.id;
+        
         if (this._showLocationSectorOnLoad) {
           this.$['location-selector'].toggleClass('float', true); // float the location-selector so it does interfear with the showCard animation
           this.$['location-selector'].hide();
