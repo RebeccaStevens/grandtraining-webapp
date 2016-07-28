@@ -477,7 +477,7 @@
        * reinitialise the current page.
        */
       _reinitPage: function() {
-        var pageEl = Polymer.dom(this.$.pages).querySelector('[name="' + this.pageName + '"]');
+        var pageEl = this.getPageElement(true);
 
         if (this._shellError) {
           this._shellLoading = true;  // turn the loading overlay on
