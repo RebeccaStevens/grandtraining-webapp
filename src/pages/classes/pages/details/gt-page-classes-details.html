@@ -84,7 +84,7 @@
     <!-- Download data -->
     <iron-ajax
       id="pageDataLoader"
-      url="[[app.dataPath]]classes/[[name]].json"
+      url="[[_getPageDataUrl(app.dataPath, _locationId, name)]]"
       handle-as="json"
       last-response="{{pageData}}"
       on-response="_handleAjaxResponse"
@@ -137,6 +137,10 @@
       ],
 
       properties: {
+        _locationId: {
+          tpye: String
+        },
+
         animationConfig: {
           type: Object,
           value: function() {
@@ -198,6 +202,10 @@
         }
       },
 
+      _getPageDataUrl: function(dataPath, locationId, name) {
+        return dataPath + 'classes/' + locationId + '/' + name + '.json';
+      },
+
       /**
        * Called when the page data loads.
        */
@@ -230,6 +238,10 @@
         this._showCard = this.isDefined(this.app.location);
         this._showLocationSectorOnLoad = !this._showCard;
 
+        if (this.app.location) {
+          this._locationId = this.app.location.id;
+        }
+
         if (useOwnEnteryAnimation) {
           this._playShowCardAnimationOnLoad = true;
         }
@@ -245,6 +257,11 @@
        * Called when the page is switched back to.
        */
       onSwitchBackTo: function() {
+        if (!this.app.location || this._locationId !== this.app.location.id) {
+          this.app.pageLoading = true;
+          this.init();
+          return false; // the page is not ready to be displayed
+        }
       },
 
       ready: function() {
