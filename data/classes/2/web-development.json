@@ -1,0 +1,48 @@
+{
+  "title": "Web Development",
+  "description": "<p>Learn to make web stuff (Auckland CBD). Apieni ullaciet quo dolorios rest poressi ntotatenda nis sum aliae pere officipic tem de velest, aute rae prae eic tem ide veligni hiliqui assimus as ipsuntem fugit arundae rspita debis que cus consequam iliquae nosti optas niae por sit aut hillit, ipsa simus, numquiam quiatur aliquatiam ra volendandi derenim olorers persped itatium qui susto moluptaturit quam eiciant od earcid unt voluptatur</p>",
+  "classes": [
+    {
+      "title": "Introduction to Website Development",
+      "level": "Introduction",
+      "image": {
+        "src": "../../images/classes/web-development/1.jpg",
+        "placeholder": ""
+      },
+      "min-age": 8,
+      "max-age": 15,
+      "description": "<p>Tackle front-end development head on with this simple introduction to web design.<ul><li>Use graphics programs and create animations.</li><li>Learn to use HTML and CSS.</li><li>Embed and share your creations via social networking sites such as YouTube, Twitter and Facebook.</li></ul>No prior experience is necessary.</p>",
+      "dates": [
+        {
+          "id": 117,
+          "start-date": "2016-06-27",
+          "end-date": "2016-07-01",
+          "excludes": [],
+          "cost": 370,
+          "availability": "available"
+        }
+      ]
+    },
+    {
+      "title": "Progressive Web Apps",
+      "level": "Advanced",
+      "image": {
+        "src": "../../images/classes/web-development/2.jpg",
+        "placeholder": ""
+      },
+      "min-age": 11,
+      "max-age": 17,
+      "description": "<p>A new revolution on the web today. In this course we’ll create a social chatting web application with a responsive layout, that works offline and can be can be installed on the home screen of mobile devices.</p><p>We’ll use about Polymer as the backbone of our application; create a login system using Google OAuth and use Firebase to hosting the application and store any data we need.</p><p>Here is an excellent article <a href=\"https://infrequently.org/2015/06/progressive-apps-escaping-tabs-without-losing-our-soul/\" target=\"_blank\">Progressive Apps: Escaping Tabs Without Losing Our Soul by Alex Russell</a></p>",
+      "dates": [
+        {
+          "id": 118,
+          "start-date": "2016-07-04",
+          "end-date": "2016-07-08",
+          "excludes": [],
+          "cost": 460,
+          "availability": "available"
+        }
+      ]
+    }
+  ]
+}

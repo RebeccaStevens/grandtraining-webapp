@@ -1,6 +1,6 @@
 {
   "title": "Programming",
-  "description": "<p>Learn to program. Conet odis etumquatur, quaecatquam asim que laboribusae. Ita sam vero officti osseculpa volupti ncillig enihitia il iduciur.</p><p>Xerum utem quiam, ut andae nullum et audia quam, sita volut qui veniet enis renimax imaximo lectibus ex excerum abor apellen dusdamus mos pedis alique et mi, tectiorrovid endam expelendit faci nullaut estem abo. Sed quatur atque conestiant aut lis dolorerum net officto ea numquia voluptat mi, comnis comnihil ipsam uta verum faccabo. Et oditat aut ommodipic te re, seque siti doluptatia quaest la si conectu rendit rem cus reperiberiti coritiandita dias dest que non poreped mod magnihil intotas a doluptam qui dolorepro officiaessim sequis soloriae de vent ulparum non coreptation comnis secatus ma di totas consedigendi nonessi illent.</p>",
+  "description": "<p>Learn to program (Auckland CBD). Conet odis etumquatur, quaecatquam asim que laboribusae. Ita sam vero officti osseculpa volupti ncillig enihitia il iduciur.</p><p>Xerum utem quiam, ut andae nullum et audia quam, sita volut qui veniet enis renimax imaximo lectibus ex excerum abor apellen dusdamus mos pedis alique et mi, tectiorrovid endam expelendit faci nullaut estem abo. Sed quatur atque conestiant aut lis dolorerum net officto ea numquia voluptat mi, comnis comnihil ipsam uta verum faccabo. Et oditat aut ommodipic te re, seque siti doluptatia quaest la si conectu rendit rem cus reperiberiti coritiandita dias dest que non poreped mod magnihil intotas a doluptam qui dolorepro officiaessim sequis soloriae de vent ulparum non coreptation comnis secatus ma di totas consedigendi nonessi illent.</p>",
   "classes": [
     {
       "title": "Introduction to Scratch",
@@ -14,7 +14,7 @@
       "description": "<p>In these classes, we get children excited about the wonders of coding. They learn to code by creating interactive stories, games, and other projects in Scratch. With its modular framework, Scratch makes it easy for kids to have fun while developing important problem-solving skills. Scratch teaches kids to think creatively, reason systematically, and work collaboratively. Scratch is designed for ages 7+.</p>",
       "dates": [
         {
-          "id": 15,
+          "id": 115,
           "start-date": "2016-06-27",
           "end-date": "2016-07-01",
           "excludes": [],
@@ -87,7 +87,7 @@
       "description": "<p>We are pleased to announce this new course: Learning to Program with Minecraft.</p><p>After becoming familiar with installing and playing with the many varied modifications produced by the Minecraft community, the most common question we receive from students is how to make their own custom mods.</p><p>This is a practical course in how to program in Java to create your own plugins and modifications to Minecraft. Jump in and out of game to see how the changes we make beneath the hood effect gameplay.</p><p>All students are welcome, however a familiarity with some programming would be a strong advantage. Students are also expected to have a sufficient knowledge of manipulating Minecraft with mods and modpacks and a thirst to take things to the next level. </p><p>The programming language we use is Java: one of the industry's most in-demand and the language on which Minecraft is built.</p><p>The goal is for students to discover that coding can be creative, rewarding and most of all, fun. </p>",
       "dates": [
         {
-          "id": 12,
+          "id": 112,
           "start-date": "2016-07-18",
           "end-date": "2016-07-22",
           "excludes": [],
