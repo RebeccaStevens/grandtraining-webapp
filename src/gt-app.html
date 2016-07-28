@@ -603,9 +603,13 @@
        * Called when the page data loads.
        */
       _handleAjaxResponse: function() {
-        this._shellError = false;
-        this._shellLoading = false;
-        this._readLocationID();
+        if (this.data) {
+          this._shellError = false;
+          this._shellLoading = false;
+          this._readLocationID();
+        } else {
+          this._handleAjaxError();
+        }
       },
 
       /**

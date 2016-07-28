@@ -231,7 +231,11 @@
        * Called when the page data loads.
        */
       _handleAjaxResponse: function() {
-        this._ajaxLoaded = true;
+        if (this.pageData) {
+          this._ajaxLoaded = true;
+        } else {
+          this._handleAjaxError();
+        }
       },
 
       /**

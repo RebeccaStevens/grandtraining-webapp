@@ -202,12 +202,16 @@
        * Called when the page data loads.
        */
       _handleAjaxResponse: function() {
-        if (this._showLocationSectorOnLoad || this._playShowCardAnimationOnLoad) {
-          this._showCard = true;
-          this._playShowCardAnimationOnLoad = false;
-          this.playAnimation('showCard');
+        if (this.pageData) {
+          if (this._showLocationSectorOnLoad || this._playShowCardAnimationOnLoad) {
+            this._showCard = true;
+            this._playShowCardAnimationOnLoad = false;
+            this.playAnimation('showCard');
+          }
+          this.pageReady();
+        } else {
+          this._handleAjaxError();
         }
-        this.pageReady();
       },
 
       /**

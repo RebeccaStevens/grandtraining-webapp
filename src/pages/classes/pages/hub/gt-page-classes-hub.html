@@ -199,7 +199,11 @@
        * Called when the page data loads.
        */
       _handleAjaxResponse: function() {
-        this.pageReady();
+        if (this.pageData) {
+          this.pageReady();
+        } else {
+          this._handleAjaxError();
+        }
       },
 
       /**

@@ -209,8 +209,12 @@
        * Called when the page data loads.
        */
       _handleAjaxResponse: function() {
-        this.pageReady();
-        this.playAnimation('entry');
+        if (this.pageData) {
+          this.pageReady();
+          this.playAnimation('entry');
+        } else {
+          this._handleAjaxError();
+        }
       },
 
       /**
