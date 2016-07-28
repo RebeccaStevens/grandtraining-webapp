@@ -489,7 +489,10 @@
 
           // if the page has an init function, call it.
           if (pageEl !== null && pageEl.init instanceof Function) {
-            pageEl.init();
+            // add a small delay so the load screen can be seen
+            this.async(function() {
+              pageEl.init();
+            }, 250);
           }
           // otherwise, wait a bit and turn the loading overlay off
           else {
