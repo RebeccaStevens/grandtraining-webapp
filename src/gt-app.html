@@ -371,10 +371,17 @@
         else {
           // if the page has an `onSwitchBackTo` function, call it.
           if (pageEl.onSwitchBackTo instanceof Function) {
-            pageEl.onSwitchBackTo();
+            // if it doesn't return false, the page is ready to be displayed
+            if (pageEl.onSwitchBackTo() !== false) {
+              this.pageLoading = false;
+              this.renderedPageName = this.pageName;
+              this.scrollToTop();
+            }
+          } else {
+            this.pageLoading = false;
+            this.renderedPageName = this.pageName;
+            this.scrollToTop();
           }
-          this.pageLoading = false;
-          this.renderedPageName = this.pageName;
         }
 
         this.pageError = false;
@@ -383,7 +390,6 @@
         if (!this.$.drawer.persistent) {
           this.$.drawer.close();
         }
-        this.scrollToTop();
       },
 
       /**

@@ -128,11 +128,17 @@
         else {
           // if the page has an `onSwitchBackTo` function, call it.
           if (pageEl.onSwitchBackTo instanceof Function) {
-            pageEl.onSwitchBackTo();
+            // if it doesn't return false, the page is ready to be displayed
+            if (pageEl.onSwitchBackTo() !== false) {
+              this.app.pageLoading = false;
+              this.renderedPageName = this.pageName;
+              this._scrollToTop();
+            }
+          } else {
+            this.app.pageLoading = false;
+            this.renderedPageName = this.pageName;
+            this._scrollToTop();
           }
-          this.app.pageLoading = false;
-          this.renderedPageName = this.pageName;
-          this._scrollToTop();
         }
 
         this.app.pageError = false;
