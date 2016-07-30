@@ -29,13 +29,14 @@
       }
       #title {
         text-align: center;
-        font-size: 22pt;
+        font-size: var(--app-title-font-size);
         margin-top: 0.4em;
         margin-bottom: 0.25em;
+        line-height: 1.33;
       }
       #subtitle {
         text-align: center;
-        font-size: 17pt;
+        font-size: var(--app-subtitle-font-size);
         margin-top: 0;
         margin-bottom: 0.4em;
         line-height: 1.33;
@@ -64,21 +65,7 @@
       gt-testimonial:last-of-type {
         margin-bottom: 0;
       }
-      @media (min-width: 1280px) {
-        #title {
-          font-size: 28pt;
-        }
-        #subtitle {
-          font-size: 22pt;
-        }
-      }
       @media (min-width: 2560px) {
-        #title {
-          font-size: 36pt;
-        }
-        #subtitle {
-          font-size: 32pt;
-        }
         #cards {
           margin: 0 0.75em;
         }

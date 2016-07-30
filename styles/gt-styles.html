@@ -16,6 +16,8 @@
 
   --app-border-radius: 8px;
 
+  --app-title-font-size: 20pt;
+  --app-subtitle-font-size: 16pt;
   --app-header-1-font-size: 26pt;
   --app-header-2-font-size: 22pt;
   --app-header-3-font-size: 18pt;
@@ -105,11 +107,16 @@ gt-location-selector {
 }
 
 @media (min-width: 640px) {
-
+  :root {
+    --app-title-font-size: 22pt;
+    --app-subtitle-font-size: 17pt;
+  }
 }
 
 @media (min-width: 1024px) {
   :root {
+    --app-title-font-size: 24pt;
+    --app-subtitle-font-size: 19pt;
     --app-text-font-size: 12pt;
   }
   gt-location-selector {
@@ -118,7 +125,10 @@ gt-location-selector {
 }
 
 @media (min-width: 1280px) {
-
+  :root {
+    --app-title-font-size: 28pt;
+    --app-subtitle-font-size: 23pt;
+  }
 }
 
 @media (min-width: 1440px) {
@@ -131,6 +141,8 @@ gt-location-selector {
 
 @media (min-width: 2560px) {
   :root {
+    --app-title-font-size: 36pt;
+    --app-subtitle-font-size: 31pt;
     --app-header-1-font-size: 32pt;
     --app-header-2-font-size: 28pt;
     --app-header-3-font-size: 22pt;
