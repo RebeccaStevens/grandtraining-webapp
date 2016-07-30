@@ -35,7 +35,7 @@
         display: block;
       }
 
-      app-header {
+      #main-header-layout app-header {
         background-color: var(--app-primary-color);
         color: #fff;
       }
@@ -55,19 +55,35 @@
         @apply(--layout-center-center);
       }
 
+      #drawer {
+        --app-drawer-content-container: {
+          color: var(--paper-blue-grey-100);
+          background: linear-gradient(var(--paper-blue-grey-800) 60%, var(--paper-grey-900));
+        }
+      }
+      #drawer app-toolbar [main-title] {
+        padding-left: 8px
+      }
       .drawer-list {
-        margin: 0 20px;
+        display: block;
+        margin-top: -1px;
+        border-bottom: solid 1px rgba(255, 255, 255, 0.1);
+        border-top: solid 1px rgba(0, 0, 0, 0.2);
       }
       .drawer-list a {
         display: block;
-        padding: 0 16px;
-        line-height: 40px;
+        padding: 0 24px;
+        line-height: 48px;
         text-decoration: none;
-        color: var(--app-secondary-color);
+        border-top: solid 1px rgba(255, 255, 255, 0.1);
+        border-bottom: solid 1px rgba(0, 0, 0, 0.2);
+        color: var(--paper-blue-grey-100);
       }
       .drawer-list a.iron-selected {
-        color: black;
-        font-weight: bold;
+        background-color: rgba(255, 255, 255, 0.125);
+      }
+      .drawer-list a:focus {
+        outline-color: var(--paper-amber-900);
       }
       .drawer-list a.subroute {
         padding-left: 32px;
@@ -167,19 +183,26 @@
     <app-drawer-layout id="drawer-layout" fullbleed responsive-width="1023px" narrow="{{narrow}}">
 
       <!-- Drawer content -->
-      <app-drawer id="drawer">
-        <app-toolbar>Menu</app-toolbar>
-        <iron-selector selected="[[renderedPageName]]" attr-for-selected="name" class="drawer-list" role="navigation">
-          <a name="home" href$="[[data.pages.home.url]]">[[data.pages.home.menuTitle]]</a>
-          <a name="classes" href$="[[data.pages.classes.url]]">[[data.pages.classes.menuTitle]]</a>
-          <a name="bookings" href$="[[data.pages.bookings.url]]">[[data.pages.bookings.menuTitle]]</a>
-          <a name="faq" href$="[[data.pages.faq.url]]">[[data.pages.faq.menuTitle]]</a>
-          <a name="about-us" href$="[[data.pages.about-us.url]]">[[data.pages.about-us.menuTitle]]</a>
-        </iron-selector>
+      <app-drawer id="drawer" on-app-drawer-transitioned="_drawerTransitioned">
+        <app-header-layout id="drawer-header-layout" has-scrolling-region>
+          <app-header condenses="[[narrow]]" reveals="[[narrow]]" fixed="[[!narrow]]" shadow effects="waterfall">
+            <app-toolbar>
+              <div main-title>Menu</div>
+            </app-toolbar>
+          </app-header>
+
+          <iron-selector id="main-menu" selected="[[renderedPageName]]" attr-for-selected="name" class="drawer-list" role="navigation">
+            <a name="home" href$="[[data.pages.home.url]]">[[data.pages.home.menuTitle]]</a>
+            <a name="classes" href$="[[data.pages.classes.url]]">[[data.pages.classes.menuTitle]]</a>
+            <a name="bookings" href$="[[data.pages.bookings.url]]">[[data.pages.bookings.menuTitle]]</a>
+            <a name="faq" href$="[[data.pages.faq.url]]">[[data.pages.faq.menuTitle]]</a>
+            <a name="about-us" href$="[[data.pages.about-us.url]]">[[data.pages.about-us.menuTitle]]</a>
+          </iron-selector>
+        </app-header-layout>
       </app-drawer>
 
       <!-- Main content -->
-      <app-header-layout id="header-layout">
+      <app-header-layout id="main-header-layout">
 
         <app-header condenses="[[narrow]]" reveals="[[narrow]]" fixed="[[!narrow]]" shadow effects="waterfall">
           <app-toolbar id="main-toolbar">
@@ -638,6 +661,12 @@
         // scale the text to fit in the toolbar.
         if (textWidth > toolbarTextWidth) {
           title.style.fontSize = (Number.parseInt(computedStyle.fontSize, 10) * toolbarTextWidth / textWidth - 0.5) + 'px';
+        }
+      },
+
+      _drawerTransitioned: function() {
+        if (this.$.drawer.opened) {
+          document.activeElement.blur();
         }
       },
 
