@@ -17,7 +17,7 @@
         display: block;
         --paper-card-header-text: {
           color: #88b6cd;
-          font-size: 36px;
+          font-size: var(--app-header-1-font-size);
           line-height: 1.05;
           padding-bottom: 4px;
           font-weight: bold;
@@ -36,7 +36,7 @@
         padding-top: 0.75em;
       }
       .details {
-        font-size: 10pt;
+        font-size: var(--app-small-text-font-size);
         margin-bottom: 0.5em;
         background-color: #f0f0f0;
         border-radius: 0.5em;
@@ -51,17 +51,19 @@
       #age-range {
 
       }
-      #bookings h3 {
+      #bookings h4 {
         margin-bottom: 0.25em;
+        margin-left: var(--app-border-radius);
+        font-size: var(--app-header-4-font-size);
       }
-      #no-bookings-available h3 {
+      #no-bookings-available h4 {
         margin-bottom: 0;
       }
       #no-bookings-available p:first-of-type {
         margin-top: 0.33em;
       }
       .excluded-dates {
-        font-size: 8pt;
+        font-size: var(--app-tiny-text-font-size);
       }
       .table {
         line-height: normal;
@@ -101,8 +103,8 @@
         min-width: 60px;
       }
       #dates .cell.booknow {
-        max-width: 96px;
-        min-width: 96px;
+        max-width: 98px;
+        min-width: 98px;
       }
       #dates .header .cell.booknow {
         display: none;
@@ -128,7 +130,7 @@
         text-align: center;
       }
       #dates .body .cell.booknow paper-button {
-        font-size: 14px;
+        font-size: var(--app-text-font-size);
         width: calc(100% - 0.5em);
         margin: 0.25em;
       }
@@ -153,6 +155,16 @@
         #dates .header .cell.booknow {
           display: block;
         }
+        #dates .cell.booknow {
+          max-width: 104px;
+          min-width: 104px;
+        }
+      }
+      @media (min-width: 2560px) {
+        #dates .cell.booknow {
+          max-width: 120px;
+          min-width: 120px;
+        }
       }
     </style>
 
@@ -165,7 +177,7 @@
           <content></content>
         </div>
         <div id="bookings" hidden$="[[!doesArrayHaveValues(dates)]]">
-          <h3>Book Now</h3>
+          <h4>Book Now</h4>
           <paper-material id="dates" class="table">
             <div class="header">
               <div class="row">
@@ -200,7 +212,7 @@
           </paper-material>
         </div>
         <div id="no-bookings-available" hidden$="[[doesArrayHaveValues(dates)]]">
-          <h3>This class is currently unavailable to book.</h3>
+          <h4>This class is currently unavailable to book.</h4>
           <p>Please check back later or <a href$="[[app.data.links.contactus]]">contact us</a> for more information.</p>
         </div>
       </div>

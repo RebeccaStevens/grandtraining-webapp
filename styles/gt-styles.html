@@ -15,10 +15,20 @@
   --app-text-link-color: var(--app-primary-header-color);
 
   --app-border-radius: 8px;
+
+  --app-header-1-font-size: 26pt;
+  --app-header-2-font-size: 22pt;
+  --app-header-3-font-size: 18pt;
+  --app-header-4-font-size: 16pt;
+  --app-tiny-text-font-size: 8pt;
+  --app-small-text-font-size: 10pt;
+  --app-text-font-size: 11.5pt;
+  --app-large-text-font-size: 13pt;
 }
 
 :host {
-  font-size: 11.5pt;
+  font-size: var(--app-text-font-size);
+  color: var(--app-text-color);
 }
 
 [hidden] {
@@ -60,7 +70,7 @@ paper-card {
   box-sizing: border-box;
   --paper-card-header-text: {
     color: var(--app-secondary-header-color);
-    font-size: 18pt;
+    font-size: var(--app-header-3-font-size);
     padding-bottom: 0;
   };
   --paper-card-actions: {
@@ -94,18 +104,41 @@ gt-location-selector {
   margin: 0.75em 0.75em 0 0.75em;
 }
 
+@media (min-width: 640px) {
+
+}
+
 @media (min-width: 1024px) {
-  :host {
-    font-size: 12pt;
+  :root {
+    --app-text-font-size: 12pt;
   }
   gt-location-selector {
     margin: 1em auto 0.25em auto;
   }
 }
 
+@media (min-width: 1280px) {
+
+}
+
+@media (min-width: 1440px) {
+
+}
+
+@media (min-width: 1920px) {
+
+}
+
 @media (min-width: 2560px) {
-  :host {
-    font-size: 14pt;
+  :root {
+    --app-header-1-font-size: 32pt;
+    --app-header-2-font-size: 28pt;
+    --app-header-3-font-size: 22pt;
+    --app-header-4-font-size: 18pt;
+    --app-tiny-text-font-size: 10pt;
+    --app-small-text-font-size: 12pt;
+    --app-text-font-size: 14pt;
+    --app-large-text-font-size: 15pt;
   }
 }
 
