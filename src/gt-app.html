@@ -44,11 +44,12 @@
       }
 
       #main-toolbar {
-        --app-toolbar-font-size: var(--app-header-1-font-size);
+        --app-toolbar-font-size: 28px;
       }
 
       #main-toolbar [main-title] {
         z-index: -1;
+        padding: 0 60px;
         @apply(--layout-fit);
         @apply(--layout-vertical);
         @apply(--layout-center-center);
@@ -184,7 +185,7 @@
           <app-toolbar id="main-toolbar">
             <paper-icon-button icon="arrow-back" on-tap="_backButtonTapped" hidden$="[[!_showBackButton(subroute.path)]]"></paper-icon-button>
             <paper-icon-button icon="menu" drawer-toggle hidden$="[[_showBackButton(subroute.path)]]"></paper-icon-button>
-            <div main-title>[[_pageTitle]]</div>
+            <div id="main-toolbar-title" main-title>[[_pageTitle]]</div>
           </app-toolbar>
         </app-header>
 
@@ -628,14 +629,15 @@
        * Update the font size of the page title.
        */
       _updatePageTitleSize: function() {
-        this.$['main-toolbar'].style.fontSize = '';
-        var computedStyle = getComputedStyle(this.$['main-toolbar']);
+        var title = this.$['main-toolbar-title'];
+        title.style.fontSize = '';
+        var computedStyle = getComputedStyle(title);
         var textWidth = this.getTextWidth(this._pageTitle, computedStyle.font);
-        var toolbarTextWidth = this.$['main-toolbar'].clientWidth - (2 * 62);
+        var toolbarTextWidth = title.clientWidth - Number.parseInt(computedStyle.paddingLeft, 10) - Number.parseInt(computedStyle.paddingRight, 10);
 
         // scale the text to fit in the toolbar.
         if (textWidth > toolbarTextWidth) {
-          this.$['main-toolbar'].style.fontSize = (Number.parseInt(computedStyle.fontSize, 10) * toolbarTextWidth / textWidth) + 'px';
+          title.style.fontSize = (Number.parseInt(computedStyle.fontSize, 10) * toolbarTextWidth / textWidth - 0.5) + 'px';
         }
       },
 
