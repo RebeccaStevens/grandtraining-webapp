@@ -45,10 +45,10 @@
         @apply(--layout-wrap);
         @apply(--layout-start);
         @apply(--layout-center-justified);
-        margin-bottom: 0.75em;
+        margin: 0 0.5em;
       }
       #cards > paper-card {
-        margin: 0.75em 0.75em 0 0.75em;
+        margin: 0.5em;
         @apply(--layout-flex);
       }
       paper-card {
@@ -78,6 +78,12 @@
         }
         #subtitle {
           font-size: 32pt;
+        }
+        #cards {
+          margin: 0 0.75em;
+        }
+        #cards > paper-card {
+          margin: 0.75em;
         }
         paper-card {
           max-width: 750px;
