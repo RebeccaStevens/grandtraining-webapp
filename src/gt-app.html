@@ -1,6 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/iron-media-query/iron-media-query.html">
 <link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
 <link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
 <link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
@@ -128,6 +129,13 @@
         }
       }
     </style>
+
+    <iron-media-query query="(min-width:  640px)" query-matches="{{_screenWidth.greaterThanOrEqualTo640}}"></iron-media-query>
+    <iron-media-query query="(min-width: 1024px)" query-matches="{{_screenWidth.greaterThanOrEqualTo1024}}"></iron-media-query>
+    <iron-media-query query="(min-width: 1280px)" query-matches="{{_screenWidth.greaterThanOrEqualTo1280}}"></iron-media-query>
+    <iron-media-query query="(min-width: 1440px)" query-matches="{{_screenWidth.greaterThanOrEqualTo1440}}"></iron-media-query>
+    <iron-media-query query="(min-width: 1920px)" query-matches="{{_screenWidth.greaterThanOrEqualTo1960}}"></iron-media-query>
+    <iron-media-query query="(min-width: 2560px)" query-matches="{{_screenWidth.greaterThanOrEqualTo2560}}"></iron-media-query>
 
     <!-- Routing -->
     <app-location route="{{route}}"></app-location>
@@ -303,6 +311,20 @@
           value: false
         },
 
+        _screenWidth: {
+          type: Object,
+          value: function() {
+            return {
+              greaterThanOrEqualTo640:  false,
+              greaterThanOrEqualTo1024: false,
+              greaterThanOrEqualTo1280: false,
+              greaterThanOrEqualTo1440: false,
+              greaterThanOrEqualTo1920: false,
+              greaterThanOrEqualTo2560: false,
+            };
+          }
+        },
+
         /**
          * States whether the pages should be hidden.
          */
@@ -336,6 +358,10 @@
         }
 
       },
+
+      observers: [
+        '_screenWidthThresholdChanged(_screenWidth.*)'
+      ],
 
       /**
        * Called when the page is changed.
@@ -417,6 +443,10 @@
             delay: 0
           });
         }
+      },
+
+      _screenWidthThresholdChanged: function() {
+        this.updateStyles();
       },
 
       /**
