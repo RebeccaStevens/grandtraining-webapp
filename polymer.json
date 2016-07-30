@@ -2,13 +2,13 @@
   "entrypoint": "index.html",
   "shell": "src/gt-app.html",
   "fragments": [
-    "src/pages/home/gt-pages-home.html",
-    "src/pages/classes/gt-pages-classes.html",
-    "src/pages/classes/pages/gt-pages-classes-home.html",
-    "src/pages/classes/pages/gt-pages-classes-detail.html",
-    "src/pages/bookings/gt-pages-bookings.html",
-    "src/pages/faq/gt-pages-faq.html",
-    "src/pages/about-us/gt-pages-about-us.html",
-    "src/pages/404/gt-pages-404.html"
+    "src/pages/home/gt-page-home.html",
+    "src/pages/classes/gt-page-classes.html",
+    "src/pages/classes/pages/hub/gt-page-classes-hub.html",
+    "src/pages/classes/pages/details/gt-page-classes-details.html",
+    "src/pages/bookings/gt-page-bookings.html",
+    "src/pages/faq/gt-page-faq.html",
+    "src/pages/about-us/gt-page-about-us.html",
+    "src/pages/404/gt-page-404.html"
   ]
 }
