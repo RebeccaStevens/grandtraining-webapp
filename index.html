@@ -48,6 +48,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       });
     }
 
+    // add support for these function if the browser doesn't have them
+    if (Number.parseInt === undefined) {
+      Number.parseInt = window.parseInt;
+    }
+    if (Number.parseFloat === undefined) {
+      Number.parseFloat = window.parseFloat;
+    }
+
   </script>
 
   <link rel="import" href="/src/gt-app.html">
