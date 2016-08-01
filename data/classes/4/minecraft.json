@@ -16,7 +16,7 @@
         {
           "id": 301,
           "start-date": "2016-06-27",
-          "end-date": "2016-07-1",
+          "end-date": "2016-07-01",
           "excludes": ["2016-06-28", "2016-06-29"],
           "cost": 225,
           "availability": "available"
@@ -24,7 +24,7 @@
         {
           "id": 302,
           "start-date": "2019-12-30",
-          "end-date": "2020-01-3",
+          "end-date": "2020-01-03",
           "excludes": [],
           "cost": 370,
           "availability": "full"
