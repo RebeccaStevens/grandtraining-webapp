@@ -102,14 +102,17 @@
         min-width: 60px;
       }
       #dates .cell.booknow {
-        max-width: 98px;
-        min-width: 98px;
+        max-width: 104px;
+        min-width: 104px;
       }
       #dates .header .cell.booknow {
         display: none;
       }
       #dates .body .row {
         padding: 0.625em 0.125em 0.125em 0.125em;
+      }
+      #dates .body .row .cell {
+        padding: 0.25em 0;
       }
       #dates .body .cell.date {
         min-width: 100%;
@@ -127,6 +130,9 @@
       }
       #dates .body .cell.cost {
         text-align: center;
+      }
+      #dates .body .cell.booknow {
+        padding: 0 !important;
       }
       #dates .body .cell.booknow paper-button {
         font-size: var(--app-text-font-size);
@@ -155,14 +161,14 @@
           display: block;
         }
         #dates .cell.booknow {
-          max-width: 104px;
-          min-width: 104px;
+          max-width: 112px;
+          min-width: 112px;
         }
       }
       @media (min-width: 2560px) {
         #dates .cell.booknow {
-          max-width: 120px;
-          min-width: 120px;
+          max-width: 132px;
+          min-width: 132px;
         }
       }
     </style>
