@@ -64,6 +64,7 @@
      * Called when the route data's page is changed.
      */
     _routePageChanged: function(pageName) {
+      document.activeElement.blur();
       this.pageName = pageName || this.mainPageName;
     },
 
