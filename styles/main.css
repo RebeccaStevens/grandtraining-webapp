@@ -7,3 +7,20 @@ body {
   background-attachment: fixed;
   color: #333;
 }
+
+/* copied from gt-styles for broswer support */
+
+a {
+  text-decoration: none;
+}
+
+ul, ol {
+  padding-left: 20px;
+}
+
+p:first-child {
+  margin-top: 0;
+}
+p:last-child {
+  margin-bottom: 0;
+}
