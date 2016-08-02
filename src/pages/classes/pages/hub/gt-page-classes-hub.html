@@ -27,7 +27,7 @@
       }
       #class-categories {
         margin: 0.75em 0.75em 0 0.75em;
-        max-width: 2560px;
+        max-width: 100%;
         @apply(--layout-horizontal);
         @apply(--layout-start);
         @apply(--layout-center-justified);
@@ -54,6 +54,9 @@
         }
       }
       @media (min-width: 2560px) {
+        #class-categories {
+          max-width: 2560px;
+        }
         #class-categories gt-class-category {
           min-width: 650px;
           max-width: 850px;
