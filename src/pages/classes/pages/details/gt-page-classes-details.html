@@ -67,8 +67,15 @@
       }
       #classes .card-content gt-class {
         min-width: 100%;
+        margin: 0.375em;
         @apply(--layout-flex);
         -ms-flex: 0 1 100% !important
+      }
+      #classes .card-content gt-class:first-of-type {
+        margin-top: 0;
+      }
+      #classes .card-content gt-class:last-of-type {
+        margin-bottom: 0;
       }
       #description {
         margin: 0 0.5em 1em 0.5em;
@@ -78,6 +85,9 @@
         #classes .card-content gt-class {
           min-width: calc(100% - 1em);
           margin: 0.5em;
+        }
+        #classes .card-content gt-class:last-of-type {
+          margin-bottom: 0.5em;
         }
         #card > .card-content {
           padding: 0.25em 1em 1em 1em;
