@@ -113,8 +113,9 @@
       }
       #main-toolbar-large .main-menu.drawer-list a {
         display: block;
+        text-align: center;
         font-size: 18px;
-        padding: 0 8px;
+        padding: 0 4px;
         letter-spacing: 0.5px;
         line-height: 46px;
         color: var(--paper-grey-300);
@@ -723,6 +724,31 @@
         }
       },
 
+      /**
+       * Set a fixed width on the menu items in the desktop view.
+       * This width is dependant on the width of element's text.
+       */
+      _setFixedWithOnDesktopMenuItems: function() {
+        var items = Polymer.dom(this.$['main-toolbar-large']).querySelectorAll('.main-menu.drawer-list a');
+        for (var i=0; i<items.length; i++) {
+          // increase the font size to the large version so the text width is at the larger size
+          items[i].style.fontWeight = 'bold';
+          items[i].style.fontSize = '20px';
+
+          var computedStyle = getComputedStyle(items[i]); // compute the style
+          var text = items[i].textContent;                // get the text
+
+          // calculate the width of the text taking into account the letter spacing and round it up.
+          var textWidth = Math.floor(this.getTextWidth(text, computedStyle.font) + text.length + 1);
+
+          items[i].style.width = textWidth + 'px';  // set the element's size
+
+          // clear the font styles that were applied just before
+          items[i].style.fontWeight = '';
+          items[i].style.fontSize = '';
+        }
+      },
+
       _drawerTransitioned: function() {
         if (this.$.drawer.opened) {
           document.activeElement.blur();
@@ -737,6 +763,7 @@
           this._shellError = false;
           this._shellLoading = false;
           this._readLocationID();
+          this._setFixedWithOnDesktopMenuItems();
         } else {
           this._handleAjaxError();
         }
