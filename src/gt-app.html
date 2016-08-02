@@ -808,7 +808,7 @@
         // calculate the width of the text taking into account the letter spacing and border, then round it up.
         var textWidth = Math.floor(this.getTextWidth(text, font) + text.length + 3);
 
-        mainTitle.style.width = textWidth + 'px';  // set the element's size
+        mainTitle.style.minWidth = textWidth + 'px';  // set the element's size
 
         // clear the font styles that were applied just before
         mainTitle.style.fontWeight = '';
@@ -831,7 +831,7 @@
           // calculate the width of the text taking into account the letter spacing and border, then round it up.
           var textWidth = Math.floor(this.getTextWidth(text, font) + text.length + 3);
 
-          items[i].style.width = textWidth + 'px';  // set the element's size
+          items[i].style.minWidth = textWidth + 'px';  // set the element's size
 
           // clear the font styles that were applied just before
           items[i].style.fontWeight = '';
