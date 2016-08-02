@@ -1,6 +1,7 @@
 <link rel="import" href="../../../../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../../../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../../../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../../../../bower_components/html-echo/html-echo.html">
 <link rel="import" href="../../../../../bower_components/neon-animation/neon-animation-runner-behavior.html">
 <link rel="import" href="../../../../../bower_components/neon-animation/neon-shared-element-animatable-behavior.html">
@@ -145,6 +146,7 @@
           </paper-card>
         </template>
       </div>
+      <paper-icon-button class="close-button" icon="close" on-tap="close"></paper-icon-button>
     </paper-card>
   </template>
 
@@ -260,6 +262,14 @@
        */
       _handleAjaxError: function() {
         this.pageError();
+      },
+
+      /**
+       * Close this page and return to the class category hub.
+       */
+      close: function() {
+        window.history.pushState({}, null, this.app.data.pages.classes.url);
+        window.dispatchEvent(new CustomEvent('location-changed'));
       },
 
       /**
