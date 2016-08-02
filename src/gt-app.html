@@ -43,10 +43,13 @@
         --paper-icon-button-ink-color: white;
       }
 
-      #main-header-layout app-header app-toolbar,
+      #main-header-layout app-header app-toolbar {
+        --app-toolbar-font-size: 32px;
+      }
+
       #main-header-layout app-header app-toolbar a {
-        --app-toolbar-font-size: 28px;
         color: #ffffff;
+        letter-spacing: 1px;
       }
 
       #main-toolbar-small [main-title] {
@@ -111,27 +114,42 @@
       #main-toolbar-large .main-menu.drawer-list {
         @apply(--layout-horizontal);
       }
-      #main-toolbar-large .main-menu.drawer-list a {
+      #main-toolbar-large a {
         display: block;
         text-align: center;
-        font-size: 18px;
         padding: 0 4px;
         letter-spacing: 0.5px;
-        line-height: 46px;
         color: var(--paper-grey-300);
       }
-      #main-toolbar-large .main-menu.drawer-list a:hover {
-        color: var(--paper-grey-50);
-        font-weight: bold;
+      #main-toolbar-large .main-menu.drawer-list a {
+        font-size: 18px;
+        letter-spacing: 0.5px;
+        line-height: 46px;
       }
-      #main-toolbar-large .main-menu.drawer-list a.iron-selected {
+      #main-toolbar-large a:hover {
+        color: var(--paper-grey-50);
+        font-weight: 500;
+      }
+      #main-toolbar-large a:focus {
+        color: var(--paper-grey-50);
+        font-weight: 500;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+        outline: none;
+        border: solid 1px var(--app-primary-color-light);
+        margin: -1px;
+      }
+      #main-toolbar-large a.iron-selected {
         font-weight: bold;
-        font-size: 20px;
         text-shadow: 2px 2px 4px #000000;
         letter-spacing: 1px;
         margin-top: -1px;
       }
-      #main-toolbar-large .main-menu.drawer-list a:focus {
+      #main-toolbar-large .main-menu.drawer-list a.iron-selected {
+        font-size: 20px;
+      }
+      #main-toolbar-large a.iron-selected:focus {
+        margin: -2px -1px -1px -1px;
       }
       #main-toolbar-large .main-menu.drawer-list a.subroute {
       }
@@ -259,7 +277,7 @@
         <app-header condenses="[[!_screenWidth.gtoet1024]]" reveals="[[!_screenWidth.gtoet1024]]" fixed="[[_screenWidth.gtoet1024]]" shadow effects="waterfall">
           <app-toolbar id="main-toolbar-large" hidden$="[[!_screenWidth.gtoet1024]]">
             <div class="container">
-              <a href$="[[data.pages.home.url]]"><div main-title>[[data.company.name]]</div></a>
+              <a href$="[[data.pages.home.url]]" class$="[[_getMainTitleClass(pageName, _screenWidth.gtoet1024)]]"><div main-title>[[data.company.name]]</div></a>
               <span class="flex"></span>
               <iron-selector selected="[[renderedPageName]]" attr-for-selected="name" class="main-menu drawer-list" role="navigation">
                 <a name="classes" href$="[[data.pages.classes.url]]">[[data.pages.classes.menuTitle]]</a>
@@ -725,7 +743,55 @@
       },
 
       /**
-       * Set a fixed width on the menu items in the desktop view.
+       * Get the class text string that the main title should have.
+       *
+       * @param {String} pageName
+       * @param {Boolean} gtoet1024
+       * @returns String
+       */
+      _getMainTitleClass: function(pageName, gtoet1024) {
+        if (gtoet1024) {
+          if (pageName === this.mainPageName) {
+            return 'iron-selected';
+          } else {
+            return '';
+          }
+        }
+        return '';
+      },
+
+      /**
+       * Set a fixed width on the desktop toolbar items.
+       */
+      _setFixedWithOnDesktopMainToolbarItems: function() {
+        this._setFixedWithOnDesktopMainTitle();
+        this._setFixedWithOnDesktopMenuItems();
+      },
+
+      /**
+       * Set a fixed width on the desktop's main title.
+       * This width is dependant on the width of element's text.
+       */
+      _setFixedWithOnDesktopMainTitle: function() {
+        var mainTitle = Polymer.dom(this.$['main-toolbar-large']).querySelector('[main-title]');
+
+        // increase the font size to the large version so the text width is at the larger size
+        mainTitle.style.fontWeight = 'bold';
+
+        var computedStyle = getComputedStyle(mainTitle); // compute the style
+        var text = mainTitle.textContent;                // get the text
+
+        // calculate the width of the text taking into account the letter spacing and border, then round it up.
+        var textWidth = Math.floor(this.getTextWidth(text, computedStyle.font) + text.length + 3);
+
+        mainTitle.style.width = textWidth + 'px';  // set the element's size
+
+        // clear the font styles that were applied just before
+        mainTitle.style.fontWeight = '';
+      },
+
+      /**
+       * Set a fixed width on the desktop's main menu items.
        * This width is dependant on the width of element's text.
        */
       _setFixedWithOnDesktopMenuItems: function() {
@@ -738,8 +804,8 @@
           var computedStyle = getComputedStyle(items[i]); // compute the style
           var text = items[i].textContent;                // get the text
 
-          // calculate the width of the text taking into account the letter spacing and round it up.
-          var textWidth = Math.floor(this.getTextWidth(text, computedStyle.font) + text.length + 1);
+          // calculate the width of the text taking into account the letter spacing and border, then round it up.
+          var textWidth = Math.floor(this.getTextWidth(text, computedStyle.font) + text.length + 3);
 
           items[i].style.width = textWidth + 'px';  // set the element's size
 
@@ -763,7 +829,7 @@
           this._shellError = false;
           this._shellLoading = false;
           this._readLocationID();
-          this._setFixedWithOnDesktopMenuItems();
+          this._setFixedWithOnDesktopMainToolbarItems();
         } else {
           this._handleAjaxError();
         }
