@@ -37,6 +37,16 @@
      */
     isDefined: function(val) {
       return val !== undefined && val !== null;
+    },
+
+    /**
+     * Returns a deep clone of the given object.
+     *
+     * @param {Object} obj
+     * @returns {Object}
+     */
+    cloneObject: function(obj) {
+      return JSON.parse(JSON.stringify(obj));
     }
   };
 </script>
