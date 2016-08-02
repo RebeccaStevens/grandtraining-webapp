@@ -22,6 +22,8 @@
     <style include="gt-styles">
       :host {
         display: block;
+        @apply(--layout-horizontal);
+        @apply(--layout-center-center);
       }
       #location-selector.float {
         margin: 0 auto;
@@ -34,6 +36,7 @@
       #card {
         display: block;
         margin: 0.75em;
+        max-width: 2560px;
         --paper-card-header-text: {
           color: var(--app-primary-header-color);
           padding-bottom: 0;
@@ -63,7 +66,6 @@
       }
       #classes .card-content gt-class {
         min-width: 100%;
-        margin: 0.50em;
         @apply(--layout-flex);
         -ms-flex: 0 1 100% !important
       }
@@ -72,18 +74,29 @@
         max-width: 1000px;
       }
       @media (min-width: 1024px) {
+        #classes .card-content gt-class {
+          min-width: calc(100% - 1em);
+          margin: 0.5em;
+        }
         #card > .card-content {
           padding: 0.25em 1em 1em 1em;
         }
+      }
+      @media (min-width: 1280px) {
         #classes .card-content gt-class {
-          min-width: 600px;
-          max-width: 1200px;
+          min-width: 500px;
+          max-width: 1150px;
+        }
+      }
+      @media (min-width: 1440px) {
+        #classes .card-content gt-class {
+          min-width: 650px;
         }
       }
       @media (min-width: 2560px) {
         #classes .card-content gt-class {
-          min-width: 900px;
-          max-width: 1800px;
+          min-width: 800px;
+          max-width: 1300px;
         }
         #description {
           max-width: 1300px;
