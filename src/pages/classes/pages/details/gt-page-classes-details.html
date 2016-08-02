@@ -151,6 +151,13 @@
           tpye: String
         },
 
+        _cashedPageData: {
+          type: Object,
+          value: function() {
+            return {};
+          }
+        },
+
         animationConfig: {
           type: Object,
           value: function() {
@@ -223,6 +230,7 @@
        */
       _handleAjaxResponse: function() {
         if (this.pageData) {
+          this._cashedPageData[this._locationId] = this.cloneObject(this.pageData);
           if (this._showLocationSectorOnLoad || this._playShowCardAnimationOnLoad) {
             this._showCard = true;
             this._playShowCardAnimationOnLoad = false;
@@ -261,7 +269,13 @@
         if (this._showLocationSectorOnLoad) {
           this.pageReady();
         } else {
-          this.$.pageDataLoader.generateRequest();
+          // if the data is already cashed
+          if (this._cashedPageData[this._locationId]) {
+            this.pageData = this._cashedPageData[this._locationId];
+            this.pageReady();
+          } else {
+            this.$.pageDataLoader.generateRequest();
+          }
         }
       },
 
