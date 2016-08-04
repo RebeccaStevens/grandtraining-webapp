@@ -38,11 +38,15 @@
       #previewImage iron-image {
         width: 100%;
         height: 100%;
+        padding-bottom: 100%;
       }
       @media (min-width: 640px) {
         #previewImage {
           width: 200px;
           height: 200px;
+          padding-bottom: 0;
+        }
+        #previewImage iron-image {
           padding-bottom: 0;
         }
       }
