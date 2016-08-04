@@ -485,7 +485,12 @@
         var fontSize = Number.parseInt(computedStyle.fontSize, 10);
         var adjustedFontSize = (fontSize * toolbarTextWidth / textWidth) - 0.5;
         var minFontSize = 18;
-        var maxFontSize = toolbarTextHeight * 0.55;
+        var maxFontSize;
+        if (this.$.card.image) {
+          maxFontSize = toolbarTextHeight * 0.55;
+        } else {
+          maxFontSize = computedStyle.fontSize;
+        }
 
         // scale the text to fit in the toolbar.
         if (textWidth > toolbarTextWidth || fontSize > maxFontSize || fontSize < minFontSize) {
