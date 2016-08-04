@@ -232,6 +232,10 @@
        */
       _handleAjaxResponse: function() {
         if (this.pageData) {
+          if (this.app.location) {
+            this._hideClassCategories = false;
+            this._showClassCategories();
+          }
           this.pageReady();
         } else {
           this._handleAjaxError();
