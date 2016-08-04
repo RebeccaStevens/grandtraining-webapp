@@ -1,6 +1,7 @@
 <link rel="import" href="../../../../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../../../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../../../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../../../../bower_components/paper-material/paper-material.html">
 <link rel="import" href="../../../../../bower_components/iron-image/iron-image.html">
 <link rel="import" href="../../../../../bower_components/neon-animation/animations/scale-up-animation.html">
 <link rel="import" href="../../../../../bower_components/neon-animation/animations/scale-down-animation.html">
@@ -31,6 +32,12 @@
         padding-bottom: 40%;
         float: left;
         margin: 0.4em 0.5em 0.20em 0;
+        overflow: hidden;
+        border-radius: 6px;
+      }
+      #previewImage iron-image {
+        width: 100%;
+        height: 100%;
       }
       @media (min-width: 640px) {
         #previewImage {
@@ -49,7 +56,9 @@
 
     <paper-card id="card" heading="[[name]]">
       <div class="card-content">
-        <iron-image id="previewImage" src="[[imageSrc]]" placeholder="[[imagePlaceholder]]" preload fade sizing="cover"></iron-image>
+        <paper-material id="previewImage" elevation="3">
+          <iron-image src="[[imageSrc]]" placeholder="[[imagePlaceholder]]" preload fade sizing="cover"></iron-image>
+        </paper-material>
         <content></content>
         <span class="clear"></span>
       </div>
