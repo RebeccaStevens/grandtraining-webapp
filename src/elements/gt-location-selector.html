@@ -309,8 +309,11 @@
        */
       _locationSelected: function(e) {
         this._preventNextLocationChangedEvent = true;
-        this.location = this.globalCities[this._city.name][e.detail.item.locationId];
-        this.fire('location-set');
+        var newLocation = this.globalCities[this._city.name][e.detail.item.locationId];
+        if (newLocation !== this.location) {
+          this.location = newLocation;
+          this.fire('location-changed');
+        }
       },
 
       ready: function() {

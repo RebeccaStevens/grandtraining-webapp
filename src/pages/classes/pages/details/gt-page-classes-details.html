@@ -143,7 +143,7 @@
       id="location-selector"
       global-cities="[[app.data.cities]]"
       location="{{app.location}}"
-      on-location-set="_locationSet"
+      on-location-changed="_locationChanged"
       hidden$="[[!_showLocationSector]]"></gt-location-selector>
 
     <paper-card id="card" heading="[[pageData.title]]" hidden$="[[!_showCard]]">
@@ -263,7 +263,7 @@
         return _showLocationSectorOnLoad || !this.doesArrayHaveValues(pageDataClasses);
       },
 
-      _locationSet: function() {
+      _locationChanged: function() {
         this._locationId = this.app.location.id;
 
         if (this._showLocationSectorOnLoad) {
