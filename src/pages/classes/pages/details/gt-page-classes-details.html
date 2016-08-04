@@ -23,7 +23,7 @@
     <style include="gt-styles">
       :host {
         display: block;
-        @apply(--layout-horizontal);
+        @apply(--layout-vertical);
         @apply(--layout-center-center);
       }
       #location-selector.float {
@@ -37,6 +37,7 @@
       #card {
         display: block;
         margin: 0.75em;
+        min-width: 50%;
         max-width: 2560px;
         --paper-card-header-text: {
           color: var(--app-primary-header-color);
@@ -74,6 +75,21 @@
       }
       #classes .card-content gt-class:last-of-type {
         margin-bottom: 0;
+      }
+      #no-classes {
+        width: 100%;
+        --paper-card-background-color: var(--app-primary-color-light);
+        --paper-card-header-text: {
+          color: var(--app-secondary-header-color);
+          padding: 16px 16px 4px 16px;
+          font-size: var(--app-header-3-font-size);
+        };
+        --paper-card-content: {
+          padding: 4px 16px 16px 16px;
+        };
+      }
+      #no-classes .card-content {
+
       }
       #description {
         margin: 0 0.5em 1em 0.5em;
@@ -128,15 +144,15 @@
       global-cities="[[app.data.cities]]"
       location="{{app.location}}"
       on-location-set="_locationSet"
-      hidden$="[[!_showLocationSectorOnLoad]]"></gt-location-selector>
+      hidden$="[[!_showLocationSector]]"></gt-location-selector>
 
     <paper-card id="card" heading="[[pageData.title]]" hidden$="[[!_showCard]]">
       <div class="card-content">
-        <div id="description">
-          <html-echo html="[[pageData.description]]"></html-echo>
-        </div>
-
         <template is="dom-if" if="[[doesArrayHaveValues(pageData.classes)]]">
+          <div id="description">
+            <html-echo html="[[pageData.description]]"></html-echo>
+          </div>
+
           <paper-card id="classes" heading="Classes">
             <div class="card-content">
               <template is="dom-repeat" items="[[pageData.classes]]" as="class">
@@ -150,6 +166,14 @@
                   <html-echo html="[[class.description]]"></html-echo>
                 </gt-class>
               </template>
+            </div>
+          </paper-card>
+        </template>
+        <template is="dom-if" if="[[!doesArrayHaveValues(pageData.classes)]]">
+          <paper-card id="no-classes" heading="No Classes Available">
+            <div class="card-content">
+              <p>Unfortunatly, we are not currently offering any [[pageData.title]] classes in [[app.location.name]].</p>
+              <p>If you wish to arange one, please <a href="[[app.data.links.contactus]]">contact us</a> and we'll see what we can do.</p>
             </div>
           </paper-card>
         </template>
@@ -181,6 +205,16 @@
           }
         },
 
+        _showLocationSector: {
+          type: Boolean,
+          computed: '_computeShowLocationSector(_showLocationSectorOnLoad, pageData.classes)'
+        },
+
+        _showLocationSectorOnLoad: {
+          type: Boolean,
+          value: false
+        },
+
         animationConfig: {
           type: Object,
           value: function() {
@@ -189,13 +223,6 @@
                 name: 'hero-animation',
                 id: 'class-card',
                 toPage: this,
-                timing: {
-                  delay: 0,
-                  duration: GT.animation.entryDuration
-                }
-              },{
-                name: 'fade-in-animation',
-                node: this.$.classes,
                 timing: {
                   delay: 0,
                   duration: GT.animation.entryDuration
@@ -230,6 +257,10 @@
             };
           }
         }
+      },
+
+      _computeShowLocationSector: function(_showLocationSectorOnLoad, pageDataClasses) {
+        return _showLocationSectorOnLoad || !this.doesArrayHaveValues(pageDataClasses);
       },
 
       _locationSet: function() {
