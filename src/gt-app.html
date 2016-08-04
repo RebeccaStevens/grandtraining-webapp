@@ -194,14 +194,20 @@
         margin: 1em;
       }
       .bottom-rule {
-        margin-top: 2em;
+        margin: 0.5em 1.5em;
         width: calc(100% - 3em);
         border: inset 1px rgba(255, 255, 255, 0.40);
       }
 
       footer {
-        padding: 0.75em 2em 0.6em 2em;
+        padding: 0.3em 2em 0.7em 2em;
         text-align: center;
+      }
+
+      @media (min-width: 640px) {
+        .bottom-rule {
+          margin: 1.5em 1.5em 0.5em 1.5em;
+        }
       }
 
       @media (min-width: 1280px) {
