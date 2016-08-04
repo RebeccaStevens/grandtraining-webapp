@@ -6,8 +6,8 @@
       "title": "A Discovery Class in Computing",
       "level": "Introduction",
       "image": {
-        "src": "../../images/classes/other-classes/1.jpg",
-        "placeholder": ""
+        "src": null,
+        "placeholder": null
       },
       "min-age": 5,
       "max-age": 12,
@@ -27,8 +27,8 @@
       "title": "Build Your Own Computer",
       "level": "Introduction",
       "image": {
-        "src": "../../images/classes/other-classes/2.jpg",
-        "placeholder": ""
+        "src": null,
+        "placeholder": null
       },
       "min-age": 7,
       "max-age": 12,

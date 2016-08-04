@@ -6,8 +6,8 @@
       "title": "Introduction to Scratch",
       "level": "Introduction",
       "image": {
-        "src": "../../images/classes/programming/1.jpg",
-        "placeholder": ""
+        "src": null,
+        "placeholder": null
       },
       "min-age": 6,
       "max-age": 10,
@@ -27,8 +27,8 @@
       "title": "Scratch Coding",
       "level": "Intermediate",
       "image": {
-        "src": "../../images/classes/programming/2.jpg",
-        "placeholder": ""
+        "src": null,
+        "placeholder": null
       },
       "min-age": 7,
       "max-age": 12,
@@ -40,8 +40,8 @@
       "title": "Python for Beginners",
       "level": "Introduction",
       "image": {
-        "src": "../../images/classes/programming/3.jpg",
-        "placeholder": ""
+        "src": null,
+        "placeholder": null
       },
       "min-age": 7,
       "max-age": 17,
@@ -53,8 +53,8 @@
       "title": "Python and Java",
       "level": "Intermediate",
       "image": {
-        "src": "../../images/classes/programming/4.jpg",
-        "placeholder": ""
+        "src": null,
+        "placeholder": null
       },
       "min-age": 7,
       "max-age": 17,
@@ -66,8 +66,8 @@
       "title": "Java",
       "level": "Advanced",
       "image": {
-        "src": "../../images/classes/programming/5.jpg",
-        "placeholder": ""
+        "src": null,
+        "placeholder": null
       },
       "min-age": 12,
       "max-age": 17,

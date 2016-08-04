@@ -6,8 +6,8 @@
       "title": "Introduction to Website Development",
       "level": "Introduction",
       "image": {
-        "src": "../../images/classes/web-development/1.jpg",
-        "placeholder": ""
+        "src": null,
+        "placeholder": null
       },
       "min-age": 8,
       "max-age": 15,
@@ -27,8 +27,8 @@
       "title": "Progressive Web Apps",
       "level": "Advanced",
       "image": {
-        "src": "../../images/classes/web-development/2.jpg",
-        "placeholder": ""
+        "src": null,
+        "placeholder": null
       },
       "min-age": 11,
       "max-age": 17,

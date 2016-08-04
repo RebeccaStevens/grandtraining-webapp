@@ -6,8 +6,8 @@
       "title": "Create 3D Video Games",
       "level": "Introduction",
       "image": {
-        "src": "../../images/classes/game-development/1.jpg",
-        "placeholder": ""
+        "src": null,
+        "placeholder": null
       },
       "min-age": 6,
       "max-age": 12,
@@ -35,8 +35,8 @@
       "title": "Advanced Game Creation",
       "level": "Advanced",
       "image": {
-        "src": "../../images/classes/game-development/2.jpg",
-        "placeholder": ""
+        "src": null,
+        "placeholder": null
       },
       "min-age": 6,
       "max-age": 12,
