@@ -84,7 +84,8 @@
           name="[[cc.name]]"
           href="[[app.data.pages.classes.url]][[cc.url]]"
           image-src="[[cc.image.src]]"
-          image-placeholder="[[cc.image.placeholder]]">
+          image-placeholder="[[cc.image.placeholder]]"
+          hidden$="[[!_isAvailableInLocation(cc.locationsAvailable, app.location)]]">
           <html-echo html="[[cc.teaser]]"></html-echo>
         </gt-class-category>
       </template>
@@ -213,6 +214,17 @@
         if (this.animationConfig.showCards.nodes.length > 0) {
           this.playAnimation('showCards');
         }
+      },
+
+      /**
+       * Returns true if location is in locationsAvailable.
+       *
+       * @param {Array} locationsAvailable
+       * @param {Object} location
+       * @returns {Boolean}
+       */
+      _isAvailableInLocation: function(locationsAvailable, location) {
+        return locationsAvailable.includes(location.id);
       },
 
       /**
