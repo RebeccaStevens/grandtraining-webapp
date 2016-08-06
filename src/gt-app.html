@@ -223,12 +223,12 @@
       }
     </style>
 
-    <iron-media-query query="(min-width:  640px)" query-matches="{{_screenWidth.gtoet640}}"></iron-media-query>
-    <iron-media-query query="(min-width: 1024px)" query-matches="{{_screenWidth.gtoet1024}}"></iron-media-query>
-    <iron-media-query query="(min-width: 1280px)" query-matches="{{_screenWidth.gtoet1280}}"></iron-media-query>
-    <iron-media-query query="(min-width: 1440px)" query-matches="{{_screenWidth.gtoet1440}}"></iron-media-query>
-    <iron-media-query query="(min-width: 1920px)" query-matches="{{_screenWidth.gtoet1960}}"></iron-media-query>
-    <iron-media-query query="(min-width: 2560px)" query-matches="{{_screenWidth.gtoet2560}}"></iron-media-query>
+    <iron-media-query query="(min-width:  640px)" query-matches="{{_viewportWidth.gtoet640}}"></iron-media-query>
+    <iron-media-query query="(min-width: 1024px)" query-matches="{{_viewportWidth.gtoet1024}}"></iron-media-query>
+    <iron-media-query query="(min-width: 1280px)" query-matches="{{_viewportWidth.gtoet1280}}"></iron-media-query>
+    <iron-media-query query="(min-width: 1440px)" query-matches="{{_viewportWidth.gtoet1440}}"></iron-media-query>
+    <iron-media-query query="(min-width: 1920px)" query-matches="{{_viewportWidth.gtoet1960}}"></iron-media-query>
+    <iron-media-query query="(min-width: 2560px)" query-matches="{{_viewportWidth.gtoet2560}}"></iron-media-query>
 
     <!-- Routing -->
     <app-location route="{{route}}"></app-location>
@@ -278,10 +278,10 @@
       <!-- Main content -->
       <app-header-layout id="main-header-layout">
 
-        <app-header reveals="[[!_screenWidth.gtoet1024]]" fixed="[[_screenWidth.gtoet1024]]" shadow effects="waterfall">
-          <app-toolbar id="main-toolbar-large" hidden$="[[!_screenWidth.gtoet1024]]">
+        <app-header reveals="[[!_viewportWidth.gtoet1024]]" fixed="[[_viewportWidth.gtoet1024]]" shadow effects="waterfall">
+          <app-toolbar id="main-toolbar-large" hidden$="[[!_viewportWidth.gtoet1024]]">
             <div class="container">
-              <a href$="[[data.pages.home.url]]" class$="[[_getMainTitleClass(pageName, _screenWidth.gtoet1024)]]"><div main-title>[[data.company.name]]</div></a>
+              <a href$="[[data.pages.home.url]]" class$="[[_getMainTitleClass(pageName, _viewportWidth.gtoet1024)]]"><div main-title>[[data.company.name]]</div></a>
               <span class="flex"></span>
               <iron-selector selected="[[renderedPageName]]" attr-for-selected="name" class="main-menu drawer-list" role="navigation">
                 <a name="classes" href$="[[data.pages.classes.url]]">[[data.pages.classes.menuTitle]]</a>
@@ -291,7 +291,7 @@
               </iron-selector>
             </div>
           </app-toolbar>
-          <app-toolbar id="main-toolbar-small" hidden$="[[_screenWidth.gtoet1024]]">
+          <app-toolbar id="main-toolbar-small" hidden$="[[_viewportWidth.gtoet1024]]">
             <paper-icon-button icon="arrow-back" on-tap="_backButtonTapped" hidden$="[[!_showBackButton(subroute.path)]]"></paper-icon-button>
             <paper-icon-button icon="menu" drawer-toggle hidden$="[[_showBackButton(subroute.path)]]"></paper-icon-button>
             <div main-title>[[_pageTitle]]</div>
@@ -416,7 +416,13 @@
           value: false
         },
 
-        _screenWidth: {
+        /**
+         * The width of the view port.
+         * Used for responsive design.
+         *
+         * gtoet = greater that or equal to.
+         */
+        _viewportWidth: {
           type: Object,
           value: function() {
             return {
@@ -465,7 +471,7 @@
       },
 
       observers: [
-        '_screenWidthThresholdChanged(_screenWidth.*)'
+        '_viewportWidthThresholdChanged(_viewportWidth.*)'
       ],
 
       /**
@@ -550,7 +556,7 @@
         }
       },
 
-      _screenWidthThresholdChanged: function() {
+      _viewportWidthThresholdChanged: function() {
         this.updateStyles();
       },
 
@@ -731,7 +737,7 @@
        * Update the font size of the page title.
        */
       _updatePageTitleSize: function() {
-        if (this._screenWidth.gtoet1024) {
+        if (this._viewportWidth.gtoet1024) {
           return;
         }
         var title = Polymer.dom(this.$['main-toolbar-small']).querySelector('[main-title]');
