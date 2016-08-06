@@ -475,6 +475,87 @@
       ],
 
       /**
+       * Compute the value of `_hidePages`.
+       */
+      _computeHidePages: function(hideLoadingOverlay, hideErrorOverlay) {
+        return !hideLoadingOverlay || !hideErrorOverlay;
+      },
+
+      /**
+       * Compute the value of `_hideLoadingOverlay`.
+       */
+      _computeHideLoadingOverlay: function(pageLoading, shellLoading) {
+        return !(pageLoading || shellLoading);
+      },
+
+      /**
+       * Compute the value of `_hideErrorOverlay`.
+       */
+      _computeHideErrorOverlay: function(shellError, pageError) {
+        return !(shellError || pageError);
+      },
+
+      /**
+       * Compute the value of `_pageTitle`.
+       */
+      _computePageTitle: function(pageName, companyName) {
+        if (pageName === this.mainPageName) {
+          return companyName;
+        }
+        var pageData = this.data.pages[pageName];
+        if (pageData) {
+          return pageData.title;
+        }
+        return companyName;
+      },
+
+      /**
+       * Scroll to the top.
+       * The scroll can be animatied by passing in a duration.
+       *
+       * @param {Number} duration - The duration of the scroll animation
+       */
+      scrollToTop: function(duration) {
+        var scrollAreaElement = document.body;
+        var dist = scrollAreaElement.scrollTop;
+
+        scrollAreaElement.scrollTop = 0;  // scroll to top
+
+        // animate the scroll
+        if (dist !== 0 && duration > 0) {
+          var renderedPageElement = this.getRenderedPageElement(true);
+
+          renderedPageElement.animate([
+            { transform: 'translateY(' + (-dist) + 'px)', offset: 0 },
+            { transform: 'translateY(0px)', offset: 1 }
+          ], {
+            duration: duration,
+            iterations: 1,
+            easing: 'ease-in-out',
+            delay: 0
+          });
+        }
+      },
+
+      /**
+       * Compute the width of the given text of given font in pixels.
+       *
+       * @param {String} text The text to be rendered.
+       * @param {String} font The css font descriptor that text is to be rendered with (e.g. "bold 14px verdana").
+       * @returns {Number}
+       *
+       * @see http://stackoverflow.com/questions/118241/calculate-text-width-with-javascript/21015393#21015393
+       */
+      getTextWidth: function(text, font) {
+          // re-use canvas object for better performance
+          var canvas = this._getTextWidthCanvas || (this._getTextWidthCanvas = document.createElement("canvas"));
+          var context = canvas.getContext("2d");
+          context.font = font;
+          var metrics = context.measureText(text);
+          return metrics.width;
+      },
+
+      /**
        * Called when the page is supposted to change.
        *
        * @param {String} pageName - the new page name
@@ -532,42 +613,6 @@
       },
 
       /**
-       * Scroll to the top.
-       * The scroll can be animatied by passing in a duration.
-       *
-       * @param {Number} duration - The duration of the scroll animation
-       */
-      scrollToTop: function(duration) {
-        var scrollAreaElement = document.body;
-        var dist = scrollAreaElement.scrollTop;
-
-        scrollAreaElement.scrollTop = 0;  // scroll to top
-
-        // animate the scroll
-        if (dist !== 0 && duration > 0) {
-          var renderedPageElement = this.getRenderedPageElement(true);
-
-          renderedPageElement.animate([
-            { transform: 'translateY(' + (-dist) + 'px)', offset: 0 },
-            { transform: 'translateY(0px)', offset: 1 }
-          ], {
-            duration: duration,
-            iterations: 1,
-            easing: 'ease-in-out',
-            delay: 0
-          });
-        }
-      },
-
-      /**
-       * Called when any of the subproperties of `_viewportWidth` are changed.
-       * Used for responsive design.
-       */
-      _viewportWidthThresholdChanged: function() {
-        this.updateStyles();
-      },
-
-      /**
        * Called when a page has loaded.
        */
       _pageLoaded: function(e) {
@@ -589,41 +634,6 @@
           this.renderedPageName = this.pageName;
         }
         e.cancelBubble = true;
-      },
-
-      /**
-       * Compute the value of `_hidePages`.
-       */
-      _computeHidePages: function(hideLoadingOverlay, hideErrorOverlay) {
-        return !hideLoadingOverlay || !hideErrorOverlay;
-      },
-
-      /**
-       * Compute the value of `_hideLoadingOverlay`.
-       */
-      _computeHideLoadingOverlay: function(pageLoading, shellLoading) {
-        return !(pageLoading || shellLoading);
-      },
-
-      /**
-       * Compute the value of `_hideErrorOverlay`.
-       */
-      _computeHideErrorOverlay: function(shellError, pageError) {
-        return !(shellError || pageError);
-      },
-
-      /**
-       * Compute the value of `_pageTitle`.
-       */
-      _computePageTitle: function(pageName, companyName) {
-        if (pageName === this.mainPageName) {
-          return companyName;
-        }
-        var pageData = this.data.pages[pageName];
-        if (pageData) {
-          return pageData.title;
-        }
-        return companyName;
       },
 
       /**
@@ -685,28 +695,37 @@
       },
 
       /**
-       * Compute the width of the given text of given font in pixels.
-       *
-       * @param {String} text The text to be rendered.
-       * @param {String} font The css font descriptor that text is to be rendered with (e.g. "bold 14px verdana").
-       * @returns {Number}
-       *
-       * @see http://stackoverflow.com/questions/118241/calculate-text-width-with-javascript/21015393#21015393
-       */
-      getTextWidth: function(text, font) {
-          // re-use canvas object for better performance
-          var canvas = this._getTextWidthCanvas || (this._getTextWidthCanvas = document.createElement("canvas"));
-          var context = canvas.getContext("2d");
-          context.font = font;
-          var metrics = context.measureText(text);
-          return metrics.width;
-      },
-
-      /**
        * Called when the page title changes.
        */
       _pageTitleChanged: function(title) {
         this._updatePageTitleSize();
+      },
+
+      /**
+       * Get the class text string that the main title should have.
+       *
+       * @param {String} pageName
+       * @param {Boolean} gtoet1024
+       * @returns String
+       */
+      _getMainTitleClass: function(pageName, gtoet1024) {
+        if (gtoet1024) {
+          if (pageName === this.mainPageName) {
+            return 'iron-selected';
+          } else {
+            return '';
+          }
+        }
+        return '';
+      },
+
+      /**
+       * Returns true if the back button should be shown.
+       *
+       * @param {String} subPath
+       */
+      _showBackButton: function(subPath) {
+        return subPath !== "" && subPath !== "/";
       },
 
       /**
@@ -735,15 +754,6 @@
       },
 
       /**
-       * Returns true if the back button should be shown.
-       *
-       * @param {String} subPath
-       */
-      _showBackButton: function(subPath) {
-        return subPath !== "" && subPath !== "/";
-      },
-
-      /**
        * Update the font size of the page title.
        */
       _updatePageTitleSize: function() {
@@ -760,32 +770,6 @@
         if (textWidth > toolbarTextWidth) {
           title.style.fontSize = (Number.parseInt(computedStyle.fontSize, 10) * toolbarTextWidth / textWidth - 0.5) + 'px';
         }
-      },
-
-      /**
-       * Get the class text string that the main title should have.
-       *
-       * @param {String} pageName
-       * @param {Boolean} gtoet1024
-       * @returns String
-       */
-      _getMainTitleClass: function(pageName, gtoet1024) {
-        if (gtoet1024) {
-          if (pageName === this.mainPageName) {
-            return 'iron-selected';
-          } else {
-            return '';
-          }
-        }
-        return '';
-      },
-
-      /**
-       * Set a fixed width on the desktop toolbar items.
-       */
-      _setFixedWithOnDesktopMainToolbarItems: function() {
-        this._setFixedWithOnDesktopMainTitle();
-        this._setFixedWithOnDesktopMenuItems();
       },
 
       /**
@@ -810,6 +794,14 @@
             style.fontFamily;
         }
         return font;
+      },
+
+      /**
+       * Set a fixed width on the desktop toolbar items.
+       */
+      _setFixedWithOnDesktopMainToolbarItems: function() {
+        this._setFixedWithOnDesktopMainTitle();
+        this._setFixedWithOnDesktopMenuItems();
       },
 
       /**
@@ -867,6 +859,14 @@
         if (this.$.drawer.opened) {
           document.activeElement.blur();
         }
+      },
+
+      /**
+       * Called when any of the subproperties of `_viewportWidth` are changed.
+       * Used for responsive design.
+       */
+      _viewportWidthThresholdChanged: function() {
+        this.updateStyles();
       },
 
       /**
