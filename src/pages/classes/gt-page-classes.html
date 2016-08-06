@@ -60,16 +60,26 @@
       ],
 
       properties: {
+
+        /**
+         * True if the page's ajax has loaded.
+         */
         _ajaxLoaded: {
           type: Boolean,
           value: false
         },
 
+        /**
+         * True if the subpages have been stamped out.
+         */
         _pagesStamped: {
           type: Boolean,
           value: false
         },
 
+        /**
+         * True if the subpage that should be display is loaded.
+         */
         _subPageLoaded: {
           type: Boolean,
           value: false
@@ -230,8 +240,16 @@
         }
       },
 
-      _pageReady: function(isInitialised, ajaxLoaded, pagesStamped, hubPageLoaded) {
-        if (!isInitialised && ajaxLoaded && pagesStamped && hubPageLoaded) {
+      /**
+       * Makes this page as ready to be displayed if every thing is ready.
+       *
+       * @param {Boolean} isInitialised - whether this element is initialised
+       * @param {Boolean} ajaxLoaded - whether the ajax is loaded
+       * @param {Boolean} pagesStamped - whether the sub pages are stamped out
+       * @param {Boolean} subPageLoaded - whether the active sub page is loaded
+       */
+      _pageReady: function(isInitialised, ajaxLoaded, pagesStamped, subPageLoaded) {
+        if (!isInitialised && ajaxLoaded && pagesStamped && subPageLoaded) {
           this.pageReady();
         }
       },
