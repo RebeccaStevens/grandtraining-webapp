@@ -376,6 +376,22 @@
         },
 
         /**
+         * Whether or not a page is currently loading.
+         */
+        pageLoading: {
+          type: Boolean,
+          value: true
+        },
+
+        /**
+         * Whether or not a page loading error has occured.
+         */
+        pageError: {
+          type: Boolean,
+          value: false
+        },
+
+        /**
          * The title to display at the top of the page
          */
         _pageTitle: {
@@ -396,22 +412,6 @@
          * Whether or not a shell loading error has occured.
          */
         _shellError: {
-          type: Boolean,
-          value: false
-        },
-
-        /**
-         * Whether or not a page is currently loading.
-         */
-        pageLoading: {
-          type: Boolean,
-          value: true
-        },
-
-        /**
-         * Whether or not a page loading error has occured.
-         */
-        pageError: {
           type: Boolean,
           value: false
         },
