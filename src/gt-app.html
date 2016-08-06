@@ -763,37 +763,13 @@
         var title = Polymer.dom(this.$['main-toolbar-small']).querySelector('[main-title]');
         title.style.fontSize = '';
         var computedStyle = getComputedStyle(title);
-        var textWidth = this.getTextWidth(this._pageTitle, this._computeFont(title, computedStyle));
+        var textWidth = this.getTextWidth(this._pageTitle, GT.computeFont(title, computedStyle));
         var toolbarTextWidth = title.clientWidth - Number.parseInt(computedStyle.paddingLeft, 10) - Number.parseInt(computedStyle.paddingRight, 10);
 
         // scale the text to fit in the toolbar.
         if (textWidth > toolbarTextWidth) {
           title.style.fontSize = (Number.parseInt(computedStyle.fontSize, 10) * toolbarTextWidth / textWidth - 0.5) + 'px';
         }
-      },
-
-      /**
-       * Compute the font on the given element.
-       *
-       * @param {HTMLElement} el
-       * @param {CSSStyleDeclaration} style
-       * @returns {String}
-       */
-      _computeFont: function(el, style) {
-        if (!style) {
-          style = getComputedStyle(el);   // compute the style
-        }
-        var font = style.font;            // get the font
-        if (font === "") {
-          font =
-            style.fontStyle + ' ' +
-            style.fontVariant + ' ' +
-            style.fontWeight + ' ' +
-            style.fontSize + ' / ' +
-            style.lineHeight + ' ' +
-            style.fontFamily;
-        }
-        return font;
       },
 
       /**
@@ -815,7 +791,7 @@
         mainTitle.style.fontWeight = 'bold';
 
         var text = mainTitle.textContent;                // get the text
-        var font = this._computeFont(mainTitle);         // compute the font
+        var font = GT.computeFont(mainTitle);         // compute the font
 
         // calculate the width of the text taking into account the letter spacing and border, then round it up.
         var textWidth = Math.floor(this.getTextWidth(text, font) + text.length + 3);
@@ -838,7 +814,7 @@
           items[i].style.fontSize = '20px';
 
           var text = items[i].textContent;                // get the text
-          var font = this._computeFont(items[i]);         // compute the font
+          var font = GT.computeFont(items[i]);         // compute the font
 
           // calculate the width of the text taking into account the letter spacing and border, then round it up.
           var textWidth = Math.floor(this.getTextWidth(text, font) + text.length + 3);

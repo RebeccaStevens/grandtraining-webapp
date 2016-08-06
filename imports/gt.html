@@ -3,6 +3,9 @@
   if (window.GT === undefined) {
     window.GT = {};
 
+    /**
+     * The animation settings used in the gt app.
+     */
     window.GT.animation = {
       /**
        * The duration of entry animations.
@@ -24,5 +27,29 @@
        */
       timingOffset: 150
     };
+
+    /**
+     * Compute the css font on the given element.
+     *
+     * @param {HTMLElement} el - The element to compute the font of
+     * @param {CSSStyleDeclaration} [style] - the style of the element
+     * @returns {String} - The css font
+     */
+    window.GT.computeFont = function(el, style) {
+      if (!style) {
+        style = getComputedStyle(el);   // compute the style
+      }
+      var font = style.font;            // get the font
+      if (font === "") {
+        font =
+          style.fontStyle + ' ' +
+          style.fontVariant + ' ' +
+          style.fontWeight + ' ' +
+          style.fontSize + ' / ' +
+          style.lineHeight + ' ' +
+          style.fontFamily;
+      }
+      return font;
+    }
   }
 </script>
