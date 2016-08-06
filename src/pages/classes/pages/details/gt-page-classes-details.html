@@ -288,13 +288,10 @@
         if (!this.app.location) {
           return;
         }
-        
+
         this._locationId = this.app.location.id;
 
-        if (this._showLocationSectorOnLoad) {
-          this.$['location-selector'].toggleClass('float', true); // float the location-selector so it does interfear with the showCard animation
-          this.$['location-selector'].hide();
-
+        if (this._showLocationSector) {
           this.app.pageLoading = true;
           this.$.pageDataLoader.generateRequest();
         }
@@ -319,6 +316,11 @@
             this._showCard = true;
             this._playShowCardAnimationOnLoad = false;
             this.playAnimation('showCard');
+          }
+          if (this.doesArrayHaveValues(this.pageData.classes)) {
+            // if there are classes, hide the location selector
+            this.$['location-selector'].toggleClass('float', true); // float the location-selector so it does interfear with the showCard animation
+            this.$['location-selector'].hide();
           }
           this.pageReady();
         } else {
