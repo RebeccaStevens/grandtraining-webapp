@@ -475,7 +475,10 @@
       ],
 
       /**
-       * Called when the page is changed.
+       * Called when the page is supposted to change.
+       *
+       * @param {String} pageName - the new page name
+       * @param {String} oldPageName - the old/previous page name
        */
       pageChanged: function(pageName, oldPageName) {
         var pageEl = Polymer.dom(this.$.pages).querySelector('[name="' + pageName + '"]');

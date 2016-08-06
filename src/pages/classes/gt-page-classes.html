@@ -81,7 +81,10 @@
       ],
 
       /**
-       * Called when the page is changed.
+       * Called when the page is supposted to change.
+       *
+       * @param {String} pageName - the new page name
+       * @param {String} oldPageName - the old/previous page name
        */
       pageChanged: function(pageName, oldPageName) {
         // if this page isn't ready, don't continue
