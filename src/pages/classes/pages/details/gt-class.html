@@ -234,15 +234,22 @@
 
       properties: {
 
+        /**
+         * The class title.
+         */
         title: {
           type: String,
           observer: '_titleChanged'
         },
 
-        level: {
-          type: String
-        },
+        /**
+         * The difficulty level of the class.
+         */
+        level: String,
 
+        /**
+         * The details of the image to use for the class.
+         */
         image: {
           type: Object,
           value: function() {
@@ -253,16 +260,26 @@
           }
         },
 
+        /**
+         * The class' min recommended age.
+         */
         minAge: {
           type: Number,
           value: 5
         },
 
+        /**
+         * The class' max recommended age.
+         */
         maxAge: {
           type: Number,
           value: 17
         },
 
+
+        /**
+         * The dates the class is available.
+         */
         dates: {
           type: Array,
           value: function() {
@@ -343,6 +360,12 @@
         return dateString;
       },
 
+      /**
+       * Get the days that are excluded as a displayable string.
+       *
+       * @param {Array} excludes - The array of excluded dates
+       * @returns {String} - a string to display
+       */
       _getDisplayExcludedDates: function(excludes) {
         var excludesString = '(Excludes: ';
 

@@ -194,10 +194,16 @@
       ],
 
       properties: {
+        /**
+         * The location id to show the details for.
+         */
         _locationId: {
           tpye: String
         },
 
+        /**
+         * Stores cashed page data for each location id.
+         */
         _cashedPageData: {
           type: Object,
           value: function() {
@@ -205,16 +211,25 @@
           }
         },
 
+        /**
+         * Whether to show the location selector or not.
+         */
         _showLocationSector: {
           type: Boolean,
           computed: '_computeShowLocationSector(_showLocationSectorOnLoad, pageData.classes)'
         },
 
+        /**
+         * Whether to show the location selector on load.
+         */
         _showLocationSectorOnLoad: {
           type: Boolean,
           value: false
         },
 
+        /**
+         * The animations this element has.
+         */
         animationConfig: {
           type: Object,
           value: function() {
@@ -259,10 +274,16 @@
         }
       },
 
+      /**
+       * Compute whether or not the location selector should be shown.
+       */
       _computeShowLocationSector: function(_showLocationSectorOnLoad, pageDataClasses) {
         return _showLocationSectorOnLoad || !this.doesArrayHaveValues(pageDataClasses);
       },
 
+      /**
+       * Called when the location is changed.
+       */
       _locationChanged: function() {
         this._locationId = this.app.location.id;
 
@@ -275,6 +296,11 @@
         }
       },
 
+      /**
+       * Get the page data url to use.
+       *
+       * @returns {String} - The URL
+       */
       _getPageDataUrl: function(dataPath, locationId, name) {
         return dataPath + 'classes/' + locationId + '/' + name + '.json';
       },
@@ -350,10 +376,6 @@
           this.init();
           return false; // the page is not ready to be displayed
         }
-      },
-
-      ready: function() {
-
       }
     });
   </script>
