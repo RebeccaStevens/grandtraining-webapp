@@ -111,8 +111,18 @@
         imagePlaceholder: {
           type: String
         },
+
+        /**
+         * The parent element of this element.
+         */
+        parent: {
+          type: Object
+        }
       },
 
+      /**
+       * Called when the more info button is tapped.
+       */
       _onMoreInfoTapped: function() {
         this.parent.setClassCardToAnimateOn(this);
       }

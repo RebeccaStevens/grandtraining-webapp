@@ -105,6 +105,10 @@
 
       properties: {
 
+        /**
+         * A reference to this element.
+         * Used for data binding.
+         */
         me: {
           type: Object,
           value: function() {
@@ -120,6 +124,9 @@
           value: true
         },
 
+        /**
+         * The animations this element has.
+         */
         animationConfig: {
           type: Object,
           value: function() {
@@ -174,6 +181,15 @@
       },
 
       /**
+       * Set the card that should be animated into the details page.
+       *
+       * @param {HTMLElement} element - a `gt-class-category` element
+       */
+      setClassCardToAnimateOn: function(element) {
+        this.sharedElements['class-card'] = element;
+      },
+
+      /**
        * Called when a location is set.
        */
       _locationChanged: function() {
@@ -191,15 +207,14 @@
         ls.show();
       },
 
+      /**
+       * Called when the class categories are stamped out.
+       */
       _ccStamped: function() {
         var ccs = Polymer.dom(this.$['class-categories']).querySelectorAll('gt-class-category');
         this.animationConfig.showCards.nodes = ccs;
         this.animationConfig.exit[2].nodes = ccs;
         this._showClassCategories();
-      },
-
-      setClassCardToAnimateOn: function(element) {
-        this.sharedElements['class-card'] = element;
       },
 
       /**
