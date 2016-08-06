@@ -285,6 +285,10 @@
        * Called when the location is changed.
        */
       _locationChanged: function() {
+        if (!this.app.location) {
+          return;
+        }
+        
         this._locationId = this.app.location.id;
 
         if (this._showLocationSectorOnLoad) {
