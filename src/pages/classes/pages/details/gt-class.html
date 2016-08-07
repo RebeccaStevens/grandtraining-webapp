@@ -331,13 +331,27 @@
         var excludesString = '(Excludes: ';
 
         for (var i in excludes) {
+          i = Number.parseInt(i, 10);
           var date = new Date(excludes[i]);
-          excludesString += this._getOrdinalOfNumber(date.getDate()).super + ' ' + GT.monthLookUp[date.getMonth()].short;
-          if (i + 2 < excludes.length) {
-            excludesString += ', ';
-          }
-          else if (i + 1 < excludes.length) {
-            excludesString += ' and ';
+          excludesString += this._getOrdinalOfNumber(date.getDate()).super;
+
+          if (i + 1 < excludes.length) {
+            if (date.getMonth() === new Date(excludes[i + 1]).getMonth()) {
+              if (i + 2 < excludes.length) {
+                excludesString += ', ';
+              } else {
+                excludesString += ' and ';
+              }
+            } else {
+              excludesString +=  ' ' + GT.monthLookUp[date.getMonth()].short;
+              if (i + 2 < excludes.length) {
+                excludesString += ', ';
+              } else {
+                excludesString += ' and ';
+              }
+            }
+          } else {
+            excludesString +=  ' ' + GT.monthLookUp[date.getMonth()].short;
           }
         }
 
