@@ -1,0 +1,113 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/iron-collapse/iron-collapse.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item-body.html">
+
+<link rel="import" href="../../styles/gt-styles.html">
+<link rel="import" href="../gt-element-common-behavior.html">
+
+<dom-module id="gt-collapsible-item">
+
+	<template>
+
+		<style include="gt-styles">
+			:host {
+				display: block;
+			}
+			paper-item {
+				padding: 0;
+			}
+			#header {
+				min-height: 48px;
+				cursor: pointer;
+				@apply(--layout-horizontal);
+				@apply(--layout-center);
+			}
+			#header > h2 {
+				font-size: 16pt;
+        margin-top: 0.4em;
+        margin-bottom: 0.4em;
+				margin-left: 4px;
+			}
+			#toogle {
+				color: var(--disabled-text-color);
+			}
+			#content {
+				color: var(--primary-text-color);
+				margin-left: 44px;
+				white-space: normal;
+			}
+      @media (min-width: 1024px) {
+        #header > h2 {
+          font-size: 18pt;
+        }
+      }
+		</style>
+
+		<paper-item>
+			<paper-item-body>
+				<div id="header" on-tap="_toggleOpened">
+					<paper-icon-button id="toogle" icon="[[_toggleIcon]]"></paper-icon-button>
+					<h2>[[header]]</h2>
+				</div>
+				<iron-collapse id="content" opened="{{opened}}">
+					<content></content>
+				</iron-collapse>
+			</paper-item-body>
+		</paper-item>
+
+	</template>
+</dom-module>
+
+<script>
+	Polymer({
+		is: 'gt-collapsible-item',
+
+		behaviors: [
+			GT.ElementCommonBehavior
+		],
+
+		properties: {
+
+			/**
+			 * The text to  display in the header.
+			 */
+			header: String,
+
+			/**
+			 * True if the content section is opened
+			 */
+			opened: {
+				type: Boolean,
+				reflectToAttribute: true,
+				notify: true
+			},
+
+			/**
+			 * The icon that will be used to show whether the element is expanded or collapsed.
+			 */
+			_toggleIcon: {
+				type: String,
+				computed: '_computeToggleIcon(opened)'
+			}
+		},
+
+		/**
+		 * Open / Close the collapsible content.
+		 */
+		_toggleOpened: function() {
+			this.opened = !this.opened;
+		},
+
+		/**
+		 * Return's the icon that should be used for the paper-icon-button.
+		 *
+		 * @param {Boolean} opened - The value `opened`
+		 */
+		_computeToggleIcon: function(opened) {
+			return opened ? 'expand-less' : 'expand-more';
+		}
+	});
+</script>
