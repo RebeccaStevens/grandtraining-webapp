@@ -40,16 +40,26 @@
         margin-top: 0.4em;
         margin-bottom: 0.4em;
         margin-left: 4px;
+        white-space: normal;
+        display: inline-block;
       }
       #toogle {
         color: var(--paper-grey-500);
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+        min-height: 40px;
       }
       #content {
         white-space: normal;
+        padding: 4px 8px;
       }
       @media (min-width: 1024px) {
         #header > h2 {
           font-size: 18pt;
+        }
+        #content {
+          padding: 8px 12px 8px 44px;
         }
       }
     </style>
