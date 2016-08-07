@@ -1,9 +1,12 @@
 <link rel="import" href="../../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../../../bower_components/neon-animation/neon-animation-runner-behavior.html">
+<link rel="import" href="../../../bower_components/neon-animation/animations/fade-out-animation.html">
 
 <link rel="import" href="../../../styles/gt-styles.html">
 <link rel="import" href="../../../imports/gt.html">
+<link rel="import" href="../../animations/scale-up-and-fade-in-animation.html">
 <link rel="import" href="../../gt-element-common-behavior.html">
 <link rel="import" href="../gt-page-behavior.html">
 <link rel="import" href="gt-faq.html">
@@ -53,8 +56,39 @@
 
       behaviors: [
         GT.ElementCommonBehavior,
-        GT.PageBehavior
+        GT.PageBehavior,
+        Polymer.NeonAnimationRunnerBehavior
       ],
+
+      properties: {
+        /**
+         * The animations this element has.
+         */
+        animationConfig: {
+          type: Object,
+          value: function() {
+            return {
+              entry: {
+                name: 'scale-up-and-fade-in-animation',
+                node: this,
+                transformOrigin: '50% 50%',
+                timing: {
+                  delay: 0,
+                  duration: GT.animation.entryDuration
+                }
+              },
+              exit: {
+                name: 'fade-out-animation',
+                node: this,
+                timing: {
+                  delay: 0,
+                  duration: GT.animation.exitDuration
+                }
+              }
+            };
+          }
+        }
+      },
 
       /**
        * Initialise the page.
@@ -67,14 +101,14 @@
        * Called when the page is switched back to.
        */
       onSwitchBackTo: function() {
-
+        this.playAnimation('entry');
       },
 
       /**
        * Called when the page is switched away from.
        */
       onSwitchFrom: function() {
-
+        this.playAnimation('exit');
       },
 
       /**
@@ -82,6 +116,7 @@
        */
       _handleAjaxResponse: function() {
         if (this.pageData) {
+          this.playAnimation('entry');
           this.pageReady();
         } else {
           this._handleAjaxError();
