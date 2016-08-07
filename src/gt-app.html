@@ -154,6 +154,13 @@
       #main-toolbar-large .main-menu.drawer-list a.subroute {
       }
 
+      neon-animated-pages {
+        min-height: calc(100vh - 138px);
+      }
+      neon-animated-pages > .iron-selected {
+        min-height: calc(100vh - 138px);
+      }
+
       .overlay {
         background: #ffffff;
         padding: 1em 1.5em;
@@ -219,6 +226,15 @@
         }
         #drawer .main-menu.drawer-list a {
           line-height: 54px;
+        }
+      }
+
+      @media (min-width: 2560px) {
+        neon-animated-pages {
+          min-height: calc(100vh - 150px);
+        }
+        neon-animated-pages > .iron-selected {
+          min-height: calc(100vh - 150px);
         }
       }
     </style>
