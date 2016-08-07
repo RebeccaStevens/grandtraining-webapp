@@ -1,9 +1,11 @@
 <link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/iron-ajax/iron-ajax.html">
 
 <link rel="import" href="../../../styles/gt-styles.html">
 <link rel="import" href="../../../imports/gt.html">
 <link rel="import" href="../../gt-element-common-behavior.html">
 <link rel="import" href="../gt-page-behavior.html">
+<link rel="import" href="gt-faq.html">
 
 <dom-module id="gt-page-faq">
   <template>
@@ -12,6 +14,20 @@
         display: block;
       }
     </style>
+
+    <!-- Download data -->
+    <iron-ajax
+      id="pageDataLoader"
+      url="[[app.dataPath]]faq.json"
+      handle-as="json"
+      last-response="{{pageData}}"
+      on-response="_handleAjaxResponse"
+      on-error="_handleAjaxError"></iron-ajax>
+
+
+    <template is="dom-repeat" items="[[pageData.faqs]]" as="faq">
+      <gt-faq question="[[faq.question]]" answer="[[faq.answer]]"></gt-faq>
+    </template>
 
   </template>
 
@@ -24,8 +40,47 @@
         GT.PageBehavior
       ],
 
+      /**
+       * Initialise the page.
+       */
+      init: function() {
+        this.$.pageDataLoader.generateRequest();
+      },
+
+      /**
+       * Called when the page is switched back to.
+       */
+      onSwitchBackTo: function() {
+
+      },
+
+      /**
+       * Called when the page is switched away from.
+       */
+      onSwitchFrom: function() {
+
+      },
+
+      /**
+       * Called when the page data loads.
+       */
+      _handleAjaxResponse: function() {
+        if (this.pageData) {
+          this.pageReady();
+        } else {
+          this._handleAjaxError();
+        }
+      },
+
+      /**
+       * Called when an error occurs during the ajax request.
+       */
+      _handleAjaxError: function() {
+        this.pageError();
+      },
+
       ready: function() {
-        this.pageReady();
+        this.init();
       }
     });
   </script>

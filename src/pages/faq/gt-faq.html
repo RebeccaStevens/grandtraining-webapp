@@ -1,0 +1,46 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/html-echo/html-echo.html">
+
+<link rel="import" href="../../../styles/gt-styles.html">
+<link rel="import" href="../../gt-element-common-behavior.html">
+
+<dom-module id="gt-faq">
+  <template>
+    <style include="gt-styles">
+      :host {
+        display: block;
+      }
+    </style>
+
+    <div>
+      <h2>[[question]]</h2>
+    </div>
+    <div>
+      <html-echo html="[[answer]]"></html-echo>
+    </div>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'gt-faq',
+
+      behaviors: [
+        GT.ElementCommonBehavior
+      ],
+
+      properties: {
+
+        /**
+         * The question.
+         */
+        question: String,
+
+        /**
+         * The answer.
+         */
+        answer: String
+      }
+    });
+  </script>
+</dom-module>
