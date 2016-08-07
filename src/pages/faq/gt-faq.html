@@ -2,6 +2,7 @@
 <link rel="import" href="../../../bower_components/html-echo/html-echo.html">
 
 <link rel="import" href="../../../styles/gt-styles.html">
+<link rel="import" href="../../elements/gt-collapsible-item.html">
 <link rel="import" href="../../gt-element-common-behavior.html">
 
 <dom-module id="gt-faq">
@@ -12,12 +13,10 @@
       }
     </style>
 
-    <div>
-      <h2>[[question]]</h2>
-    </div>
-    <div>
+    <gt-collapsible-item header="[[question]]">
       <html-echo html="[[answer]]"></html-echo>
-    </div>
+    </gt-collapsible-item>
+
 
   </template>
 
