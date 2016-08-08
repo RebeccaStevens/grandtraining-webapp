@@ -134,6 +134,12 @@
        */
       onSwitchFrom: function() {
         this.playAnimation('exit');
+
+        // close all the faq elements
+        var faqs = Polymer.dom(this.$.card).querySelectorAll('gt-faq');
+        for (var i = 0; i < faqs.length; i++) {
+          faqs[i].close();
+        }
       },
 
       /**

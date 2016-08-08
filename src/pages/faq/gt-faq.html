@@ -13,7 +13,7 @@
       }
     </style>
 
-    <gt-collapsible-item header="[[question]]">
+    <gt-collapsible-item id="item" header="[[question]]">
       <html-echo html="[[answer]]"></html-echo>
     </gt-collapsible-item>
 
@@ -39,6 +39,20 @@
          * The answer.
          */
         answer: String
+      },
+
+      /**
+       * Expand this element.
+       */
+      open: function() {
+        this.$.item.open();
+      },
+
+      /**
+       * Collapsible this element.
+       */
+      close: function() {
+        this.$.item.close();
       }
     });
   </script>
