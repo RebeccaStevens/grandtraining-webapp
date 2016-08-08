@@ -19,10 +19,12 @@
 
     <!-- Routing -->
     <app-route
+      id="router"
       route="{{route}}"
       pattern="/:page"
       data="{{routeData}}"
-      tail="{{subroute}}"></app-route>
+      tail="{{subroute}}"
+      active="{{_routeActive}}"></app-route>
 
     <!-- Download data -->
     <iron-ajax
@@ -83,11 +85,17 @@
         _subPageLoaded: {
           type: Boolean,
           value: false
-        }
+        },
+
+        /**
+         * True if the route is active.
+         */
+        _routeActive: Boolean
       },
 
       observers: [
-        '_pageReady(isInitialised, _ajaxLoaded, _pagesStamped, _subPageLoaded)'
+        '_pageReady(isInitialised, _ajaxLoaded, _pagesStamped, _subPageLoaded)',
+        '_onRouteActiveChanged(_routeActive)'
       ],
 
       /**
@@ -155,6 +163,16 @@
         }
 
         this.app.pageError = false;
+      },
+
+      /**
+       * Called when the value of `_routeActive` changes.
+       */
+      _onRouteActiveChanged: function(active) {
+        // if active is false but the router's prefix is the classes url then the main page should be shown.
+        if (!active && this.$.router.route.prefix === this.app.data.pages.classes.url) {
+          this.pageName = this.mainPageName;
+        }
       },
 
       /**
