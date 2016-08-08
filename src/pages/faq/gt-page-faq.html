@@ -1,6 +1,7 @@
 <link rel="import" href="../../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../../../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../../../bower_components/iron-media-query/iron-media-query.html">
+<link rel="import" href="../../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../../bower_components/neon-animation/neon-animation-runner-behavior.html">
 <link rel="import" href="../../../bower_components/neon-animation/animations/fade-out-animation.html">
 
@@ -26,6 +27,14 @@
         width: calc(100% - 1.5em);
         max-width: 1140px;
         box-sizing: border-box;
+        --paper-card-header-text: {
+          color: var(--app-secondary-header-color);
+          padding: 4px 12px;
+          font-size: var(--app-header-1-font-size);
+        };
+      }
+      #card > .card-content {
+        padding: 0;
       }
       @media (min-width: 640px) {
         gt-faq:not(:last-of-type) {
@@ -43,12 +52,15 @@
       on-response="_handleAjaxResponse"
       on-error="_handleAjaxError"></iron-ajax>
 
+    <iron-media-query query="(min-width: 1024px)" query-matches="{{largeViewport}}"></iron-media-query>
 
-    <paper-material id="card">
-      <template is="dom-repeat" items="[[pageData.faqs]]" as="faq">
-        <gt-faq question="[[faq.question]]" answer="[[faq.answer]]"></gt-faq>
-      </template>
-    </paper-material>
+    <paper-card id="card" heading="[[_getCardHeading(app.data.pages.faq.title, largeViewport)]]">
+      <div class="card-content">
+        <template is="dom-repeat" items="[[pageData.faqs]]" as="faq">
+          <gt-faq question="[[faq.question]]" answer="[[faq.answer]]"></gt-faq>
+        </template>
+      </div>
+    </paper-card>
 
   </template>
 
@@ -90,6 +102,17 @@
             };
           }
         }
+      },
+
+      /**
+       * Returns the heading used by the card based on the size of the viewport.
+       *
+       * @param {String} title - The title that should be used as the heading on a large screen.
+       * @param {Boolean} largeViewport - Whether or not the viewport is large.
+       * @returns {String}
+       */
+      _getCardHeading: function(title, largeViewport) {
+        return largeViewport ? title : '';
       },
 
       /**
