@@ -52,7 +52,9 @@
       }
       #content {
         white-space: normal;
-        padding: 0 8px;
+      }
+      #padder {
+        padding: 0 8px 4px 8px;
       }
       @media (min-width: 640px) {
         #header > h2 {
@@ -63,8 +65,8 @@
         #header > h2 {
           font-size: 18pt;
         }
-        #content {
-          padding: 0 12px 0 44px;
+        #padder {
+          padding: 0 12px 4px 44px;
         }
       }
     </style>
@@ -76,7 +78,9 @@
           <h2>[[header]]</h2>
         </div>
         <iron-collapse id="content" opened="{{opened}}">
-          <content></content>
+          <div id="padder">
+            <content></content>
+          </div>
         </iron-collapse>
       </paper-item-body>
     </paper-item>
