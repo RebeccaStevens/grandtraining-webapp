@@ -123,6 +123,20 @@
     },
 
     /**
+     * Expand the content.
+     */
+     open: function() {
+       this.opened = true;
+     },
+
+     /**
+      * Collapsible the content.
+      */
+      close: function() {
+        this.opened = false;
+      },
+
+    /**
      * Open / Close the collapsible content.
      */
     _toggleOpened: function() {
