@@ -36,7 +36,7 @@
         @apply(--layout-center);
       }
       #header > h2 {
-        font-size: 16pt;
+        font-size: 14pt;
         margin-top: 0.4em;
         margin-bottom: 0.4em;
         margin-left: 4px;
@@ -53,6 +53,11 @@
       #content {
         white-space: normal;
         padding: 4px 8px;
+      }
+      @media (min-width: 640px) {
+        #header > h2 {
+          font-size: 16pt;
+        }
       }
       @media (min-width: 1024px) {
         #header > h2 {
