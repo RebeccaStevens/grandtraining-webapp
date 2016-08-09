@@ -48,8 +48,16 @@
     <div id="content" hidden$="[[_hideContent]]">
       <paper-material id="card">
         <template is="dom-if" if="[[_canShowMap(pageData.mapConfig.apiKey, _venue)]]">
-          <google-map id="map" api-key="[[pageData.mapConfig.apiKey]]" latitude="[[_venue.location.latitude]]" longitude="[[_venue.location.longitude]]" zoom="[[pageData.mapConfig.zoom]]">
-            <google-map-marker latitude="[[_venue.location.latitude]]" longitude="[[_venue.location.longitude]]" title="[[app.data.company.name]]"></google-map-marker>
+          <google-map id="map"
+            api-key="[[pageData.mapConfig.apiKey]]"
+            latitude="[[_venue.location.latitude]]"
+            longitude="[[_venue.location.longitude]]"
+            zoom="[[pageData.mapConfig.zoom]]"
+            min-zoom="10">
+            <google-map-marker
+              latitude="[[_venue.location.latitude]]"
+              longitude="[[_venue.location.longitude]]"
+              title="[[app.data.company.name]]"></google-map-marker>
           </google-map>
         </template>
       </paper-material>
