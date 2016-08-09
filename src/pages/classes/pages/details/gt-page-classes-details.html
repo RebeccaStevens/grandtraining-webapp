@@ -132,7 +132,7 @@
     <!-- Download data -->
     <iron-ajax
       id="pageDataLoader"
-      url="[[_getPageDataUrl(app.dataPath, _locationId, name)]]"
+      url="[[_getPageDataUrl(app.dataPath, _location.id, name)]]"
       handle-as="json"
       last-response="{{pageData}}"
       on-response="_handleAjaxResponse"
@@ -142,9 +142,9 @@
     <gt-location-selector
       id="location-selector"
       global-cities="[[app.data.cities]]"
-      location="{{app.location}}"
+      location="{{_location}}"
       on-location-changed="_locationChanged"
-      hidden$="[[!_showLocationSector]]"></gt-location-selector>
+      hidden$="[[!_showLocationSelector]]"></gt-location-selector>
 
     <paper-card id="card" heading="[[pageData.title]]" hidden$="[[!_showCard]]">
       <div class="card-content">
@@ -172,7 +172,7 @@
         <template is="dom-if" if="[[!doesArrayHaveValues(pageData.classes)]]">
           <paper-card id="no-classes" heading="No Classes Available">
             <div class="card-content">
-              <p>Unfortunatly, we are not currently offering any [[pageData.title]] classes in [[app.location.name]].</p>
+              <p>Unfortunatly, we are not currently offering any [[pageData.title]] classes in [[_location.name]].</p>
               <p>If you wish to arange one, please <a href="[[app.data.links.contactus]]">contact us</a> and we'll see what we can do.</p>
             </div>
           </paper-card>
@@ -194,12 +194,6 @@
       ],
 
       properties: {
-        /**
-         * The location id to show the details for.
-         */
-        _locationId: {
-          tpye: String
-        },
 
         /**
          * Stores cashed page data for each location id.
@@ -212,19 +206,25 @@
         },
 
         /**
+         * The location that is being shown.
+         */
+        _location: Object,
+
+        /**
          * Whether to show the location selector or not.
          */
-        _showLocationSector: {
+        _showLocationSelector: {
           type: Boolean,
-          computed: '_computeShowLocationSector(_showLocationSectorOnLoad, pageData.classes)'
+          value: false
         },
 
         /**
          * Whether to show the location selector on load.
          */
-        _showLocationSectorOnLoad: {
+        _showLocationSelectorOnLoad: {
           type: Boolean,
-          value: false
+          value: false,
+          observer: '_updateShowLocationSelector'
         },
 
         /**
@@ -275,23 +275,23 @@
       },
 
       /**
-       * Compute whether or not the location selector should be shown.
+       * Updates whether or not the location selector should be shown.
        */
-      _computeShowLocationSector: function(_showLocationSectorOnLoad, pageDataClasses) {
-        return _showLocationSectorOnLoad || !this.doesArrayHaveValues(pageDataClasses);
+      _updateShowLocationSelector: function() {
+        var hasClasses = false;
+        if (this.pageData) {
+          hasClasses = this.doesArrayHaveValues(this.pageData.classes);
+        }
+        this._showLocationSelector = this._showLocationSelectorOnLoad || !hasClasses;
       },
 
       /**
        * Called when the location is changed.
        */
       _locationChanged: function() {
-        if (!this.app.location) {
-          return;
-        }
+        this.app.location = this._location;
 
-        this._locationId = this.app.location.id;
-
-        if (this._showLocationSector) {
+        if (this._showLocationSelector) {
           this.app.pageLoading = true;
           this.$.pageDataLoader.generateRequest();
         }
@@ -311,8 +311,9 @@
        */
       _handleAjaxResponse: function() {
         if (this.pageData) {
-          this._cashedPageData[this._locationId] = this.cloneObject(this.pageData);
-          if (this._showLocationSectorOnLoad || this._playShowCardAnimationOnLoad) {
+          this._location = this.app.location;
+          this._cashedPageData[this._location.id] = this.cloneObject(this.pageData);
+          if (this._showLocationSelectorOnLoad || this._playShowCardAnimationOnLoad) {
             this._showCard = true;
             this._playShowCardAnimationOnLoad = false;
             this.playAnimation('showCard');
@@ -349,23 +350,20 @@
        * @param {Boolean} useOwnEnteryAnimation - if true, the `showCard` animation will play when the card is ready
        */
       init: function(useOwnEnteryAnimation) {
-        this._showCard = this.isDefined(this.app.location);
-        this._showLocationSectorOnLoad = !this._showCard;
-
-        if (this.app.location) {
-          this._locationId = this.app.location.id;
-        }
+        this._location = this.app.location;
+        this._showCard = this.isDefined(this._location);
+        this._showLocationSelectorOnLoad = !this._showCard;
 
         if (useOwnEnteryAnimation) {
           this._playShowCardAnimationOnLoad = true;
         }
 
-        if (this._showLocationSectorOnLoad) {
+        if (this._showLocationSelectorOnLoad) {
           this.pageReady();
         } else {
           // if the data is already cashed
-          if (this._cashedPageData[this._locationId]) {
-            this.pageData = this._cashedPageData[this._locationId];
+          if (this._cashedPageData[this._location.id]) {
+            this.pageData = this._cashedPageData[this._location.id];
             this.pageReady();
           } else {
             this.$.pageDataLoader.generateRequest();
@@ -377,7 +375,9 @@
        * Called when the page is switched back to.
        */
       onSwitchBackTo: function() {
-        if (!this.app.location || this._locationId !== this.app.location.id) {
+        this._location = this.app.location;
+
+        if (!this._location) {
           this.app.pageLoading = true;
           this.init();
           return false; // the page is not ready to be displayed

@@ -43,7 +43,7 @@
       on-error="_handleAjaxError"></iron-ajax>
 
     <!-- Layout -->
-    <gt-location-selector id="location-selector" global-cities="[[app.data.cities]]" location="{{app.location}}" on-location-changed="_locationChanged"></gt-location-selector>
+    <gt-location-selector id="location-selector" global-cities="[[app.data.cities]]" location="{{_location}}" on-location-changed="_locationChanged"></gt-location-selector>
 
     <div id="content" hidden$="[[_hideContent]]">
       <paper-material id="card">
@@ -78,6 +78,11 @@
       ],
 
       properties: {
+
+        /**
+         * The location that is being shown.
+         */
+        _location: Object,
 
         /**
          * The venue to show data for.
@@ -117,18 +122,17 @@
        * Called when a location is set.
        */
       _locationChanged: function() {
-        if (this.app.location !== undefined) {
-          this._hideContent = false;
-          this._showContent();
-        }
+        this.app.location = this._location;
+        this._hideContent = false;
+        this._showContent();
       },
 
       /**
        * Update the value of `_venue`.
        */
       _updateVenue: function() {
-        if (this.app.location) {
-          this._venue = this.pageData.venues[this.app.location.id];
+        if (this._location) {
+          this._venue = this.pageData.venues[this._location.id];
           var marker = Polymer.dom(this.$.card).querySelector('google-map google-map-marker');
           if (marker) {
             marker.info.setContent(Polymer.dom(marker).innerHTML);
@@ -173,6 +177,7 @@
        * Called when the page is switched back to.
        */
       onSwitchBackTo: function() {
+        this._location = this.app.location;
         this.$['location-selector'].show();
         this._showContent();
       },
@@ -188,7 +193,8 @@
        */
       _handleAjaxResponse: function() {
         if (this.pageData) {
-          if (this.app.location) {
+          this._location = this.app.location;
+          if (this._location) {
             this._hideContent = false;
             this._showContent();
           }
