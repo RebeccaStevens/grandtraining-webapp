@@ -1,6 +1,7 @@
 <link rel="import" href="../../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../../bower_components/neon-animation/neon-animation-runner-behavior.html">
 <link rel="import" href="../../../bower_components/html-echo/html-echo.html">
 <link rel="import" href="../../../bower_components/google-map/google-map.html">
@@ -29,10 +30,17 @@
       }
       #card {
         background-color: #ffffff;
-        padding: 8px;
+        padding: 16px;
+        width: 100%;
+        box-sizing: border-box;
+        --paper-card-header-text: {
+          color: var(--app-secondary-header-color);
+          padding: 0 4px;
+          font-size: var(--app-header-1-font-size);
+        };
       }
-      #details {
-
+      #card > .card-content {
+        padding: 0;
       }
       #details .detail {
         margin: 8px;
@@ -57,6 +65,7 @@
         color: var(--app-icon-color);
       }
       #map-material {
+        margin-top: 16px;
         border-radius: 0;
       }
       #map {
@@ -76,41 +85,43 @@
     <!-- Layout -->
     <gt-location-selector id="location-selector" global-cities="[[app.data.cities]]" location="{{_location}}" on-location-changed="_locationChanged"></gt-location-selector>
 
-    <template is="dom-if" if="[[isDefined(_venue)]]">
-      <div id="content" hidden$="[[_hideContent]]">
-        <paper-material id="card">
-          <div id="details">
-            <div class="detail" hidden$="[[!isDefined(_venue.contactNumber)]]">
-              <span class="label"><iron-icon icon="phone"></iron-icon><span>Phone:</span></span><span class="content">[[_venue.contactNumber]]</span>
+    <div id="content" hidden$="[[_hideContent]]">
+      <template is="dom-if" if="[[isDefined(_venue)]]">
+        <paper-card id="card" heading="[[_location.name]] Venue">
+          <div class="card-content">
+            <div id="details">
+              <div class="detail" hidden$="[[!isDefined(_venue.contactNumber)]]">
+                <span class="label"><iron-icon icon="phone"></iron-icon><span>Phone:</span></span><span class="content">[[_venue.contactNumber]]</span>
+              </div>
+              <div class="detail" hidden$="[[!isDefined(_venue.email)]]">
+                <span class="label"><iron-icon icon="email"></iron-icon><span>Email:</span></span><span class="content">[[_venue.email]]</span>
+              </div>
+              <div class="detail" hidden$="[[!isDefined(_venue.address)]]">
+                <span class="label"><iron-icon icon="location"></iron-icon><span>Address:</span></span><span class="content"><html-echo html="[[_venue.address]]"></html-echo></span>
+              </div>
             </div>
-            <div class="detail" hidden$="[[!isDefined(_venue.email)]]">
-              <span class="label"><iron-icon icon="email"></iron-icon><span>Email:</span></span><span class="content">[[_venue.email]]</span>
-            </div>
-            <div class="detail" hidden$="[[!isDefined(_venue.address)]]">
-              <span class="label"><iron-icon icon="location"></iron-icon><span>Address:</span></span><span class="content"><html-echo html="[[_venue.address]]"></html-echo></span>
-            </div>
-          </div>
 
-          <template is="dom-if" if="[[isDefined(pageData.mapConfig.apiKey)]]">
-            <paper-material id="map-material" elevation="3">
-              <google-map id="map"
-                api-key="[[pageData.mapConfig.apiKey]]"
-                latitude="[[_venue.location.latitude]]"
-                longitude="[[_venue.location.longitude]]"
-                zoom="[[pageData.mapConfig.zoom]]"
-                min-zoom="10">
-                <google-map-marker
+            <template is="dom-if" if="[[isDefined(pageData.mapConfig.apiKey)]]">
+              <paper-material id="map-material" elevation="3">
+                <google-map id="map"
+                  api-key="[[pageData.mapConfig.apiKey]]"
                   latitude="[[_venue.location.latitude]]"
                   longitude="[[_venue.location.longitude]]"
-                  title="[[app.data.company.name]]">
-                  <div>[[_venue.info]]</div>
-                </google-map-marker>
-              </google-map>
-            <paper-material>
-          </template>
-        </paper-material>
-      </div>
-    </template>
+                  zoom="[[pageData.mapConfig.zoom]]"
+                  min-zoom="10">
+                  <google-map-marker
+                    latitude="[[_venue.location.latitude]]"
+                    longitude="[[_venue.location.longitude]]"
+                    title="[[app.data.company.name]]">
+                    <div>[[_venue.info]]</div>
+                  </google-map-marker>
+                </google-map>
+              <paper-material>
+            </template>
+          </div>
+        </paper-card>
+      </template>
+    </div>
 
   </template>
 
@@ -153,7 +164,7 @@
             return {
               showContent: {
                 name: 'scale-up-and-fade-in-animation',
-                node: this.$.card,
+                node: this.$.content,
                 transformOrigin: '50% 50%',
                 timing: {
                   delay: 0,
