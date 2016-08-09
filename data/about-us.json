@@ -12,8 +12,8 @@
       "contactNumber": "(04) 499-2211",
       "email": "ed@grandtraining.co.nz",
       "location": {
-        "latitude": 0,
-        "longitude": 0
+        "latitude": -41.296603,
+        "longitude": 174.781037
       }
     },
     "2": {
@@ -24,8 +24,8 @@
       "contactNumber": "(09) 488-0787",
       "email": null,
       "location": {
-        "latitude": 0,
-        "longitude": 0
+        "latitude": -36.845383,
+        "longitude": 174.763779
       }
     },
     "3": {
@@ -36,8 +36,8 @@
       "contactNumber": "(09) 488-0787",
       "email": null,
       "location": {
-        "latitude": 0,
-        "longitude": 0
+        "latitude": -36.85896,
+        "longitude": 174.63521
       }
     },
     "4": {
@@ -48,8 +48,8 @@
       "contactNumber": "(09) 488-0787",
       "email": null,
       "location": {
-        "latitude": 0,
-        "longitude": 0
+        "latitude": -36.783776,
+        "longitude": 174.747246
       }
     }
   }
