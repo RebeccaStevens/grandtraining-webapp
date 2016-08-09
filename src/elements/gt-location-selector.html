@@ -50,10 +50,10 @@
           </paper-listbox>
         </paper-dropdown-menu>
 
-        <paper-dropdown-menu id="locationSelector" label="Area" disabled$="[[_disableLocationSelector]]">
-          <paper-listbox class="dropdown-content" on-iron-select="_locationSelected">
-            <template is="dom-repeat" items="[[_locations]]" as="location">
-              <paper-item location-id="[[location.id]]">[[location.name]]</paper-item>
+        <paper-dropdown-menu id="areaSelector" label="Area" disabled$="[[_disableAreaSelector]]">
+          <paper-listbox class="dropdown-content" on-iron-select="_areaSelected">
+            <template is="dom-repeat" items="[[_areas]]" as="area">
+              <paper-item location-id="[[area.id]]">[[area.name]]</paper-item>
             </template>
           </paper-listbox>
         </paper-dropdown-menu>
@@ -109,9 +109,9 @@
         },
 
         /**
-         * A list of the cities the user can choose from.
+         * A list of the areas in the selected city the user can choose from.
          */
-        _locations: {
+        _areas: {
           type: Array,
           value: function() {
             return [];
@@ -119,27 +119,11 @@
         },
 
         /**
-         * States whether or not he LocationSelector should be disabled.
+         * States whether or not he AreaSelector should be disabled.
          */
-        _disableLocationSelector: {
+        _disableAreaSelector: {
           type: Boolean,
           value: true
-        },
-
-        /**
-         * If true, the next time `_city` is changed, `$.locationSelector` will not deselect its current item.
-         */
-        _preventNextLocationSelectorDeselect: {
-          type: Boolean,
-          value: false
-        },
-
-        /**
-         * If true, the next time `location` is changed, `_locationChanged` won't do anything.
-         */
-        _preventNextLocationChangedEvent: {
-          type: Boolean,
-          value: false
         },
 
         /**
@@ -219,7 +203,7 @@
         for (var key in cities) {
           var city = {
             name: key,
-            locations: cities[key]
+            areas: cities[key]
           };
 
           cityArray.push(city);
@@ -231,19 +215,14 @@
        * Called when `_city` changes.
        */
       _cityChanged: function(city) {
-        this._locations = city.locations;
+        this._areas = city.areas;
 
-        if (this._preventNextLocationSelectorDeselect) {
-          this._preventNextLocationSelectorDeselect = false;
-        }
-        else {
-          Polymer.dom(this.$.locationSelector).querySelector('paper-listbox').selected = -1;
+        Polymer.dom(this.$.areaSelector).querySelector('paper-listbox').selected = -1;
 
-          if (city.locations.length === 1) {
-            this.async(function() {
-              Polymer.dom(this.$.locationSelector).querySelector('paper-listbox').selected = 0;
-            }, 0);
-          }
+        if (city.areas.length === 1) {
+          this.async(function() {
+            Polymer.dom(this.$.areaSelector).querySelector('paper-listbox').selected = 0;
+          }, 0);
         }
       },
 
@@ -251,9 +230,7 @@
        * Called when `location` changes.
        */
       _locationChanged: function(location) {
-        // prevent this method from being called from stuff done in this element
-        if (this._preventNextLocationChangedEvent) {
-          this._preventNextLocationChangedEvent = false;
+        if (!location) {
           return;
         }
 
@@ -273,17 +250,17 @@
           i++;
         }
 
-        var areas = cities[city].locations;
-        var j = 0;
-        for (var area in areas) {
-          if (areas[area].id === location.id) {
-            Polymer.dom(this.$.locationSelector).querySelector('paper-listbox').selected = j;
-            break;
+        setTimeout(function() {
+          var areas = cities[city].areas;
+          var j = 0;
+          for (var area in areas) {
+            if (areas[area].id === location.id) {
+              Polymer.dom(this.$.areaSelector).querySelector('paper-listbox').selected = j;
+              break;
+            }
+            j++;
           }
-          j++;
-        }
-
-        this._preventNextLocationSelectorDeselect = true;
+        }.bind(this), 0);
       },
 
       /**
@@ -291,24 +268,23 @@
        */
       _citySelected: function(e) {
         var cityName = e.detail.item.cityName;
-        var locations = [];
+        var areas = [];
         for(var key in this.globalCities[cityName]) {
-          locations.push(this.globalCities[cityName][key]);
+          areas.push(this.globalCities[cityName][key]);
         }
 
         this._city = {
           name: cityName,
-          locations: locations
+          areas: areas
         };
 
-        this._disableLocationSelector = false;
+        this._disableAreaSelector = false;
       },
 
       /**
-       * Called when a location is selected.
+       * Called when an Area is selected.
        */
-      _locationSelected: function(e) {
-        this._preventNextLocationChangedEvent = true;
+      _areaSelected: function(e) {
         var newLocation = this.globalCities[this._city.name][e.detail.item.locationId];
         if (newLocation !== this.location) {
           this.location = newLocation;
