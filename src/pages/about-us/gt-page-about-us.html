@@ -57,7 +57,9 @@
             <google-map-marker
               latitude="[[_venue.location.latitude]]"
               longitude="[[_venue.location.longitude]]"
-              title="[[app.data.company.name]]"></google-map-marker>
+              title="[[app.data.company.name]]">
+              <div>[[_venue.info]]</div>
+            </google-map-marker>
           </google-map>
         </template>
       </paper-material>
@@ -127,6 +129,10 @@
       _updateVenue: function() {
         if (this.app.location) {
           this._venue = this.pageData.venues[this.app.location.id];
+          var marker = Polymer.dom(this.$.card).querySelector('google-map google-map-marker');
+          if (marker) {
+            marker.info.setContent(Polymer.dom(marker).innerHTML);
+          }
         } else {
           this._venue = null;
         }
