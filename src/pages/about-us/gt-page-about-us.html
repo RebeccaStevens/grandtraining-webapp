@@ -56,6 +56,9 @@
         margin-right: 8px;
         color: var(--app-icon-color);
       }
+      #map-material {
+        border-radius: 0;
+      }
       #map {
         height: 500px;
       }
@@ -89,19 +92,21 @@
           </div>
 
           <template is="dom-if" if="[[isDefined(pageData.mapConfig.apiKey)]]">
-            <google-map id="map"
-              api-key="[[pageData.mapConfig.apiKey]]"
-              latitude="[[_venue.location.latitude]]"
-              longitude="[[_venue.location.longitude]]"
-              zoom="[[pageData.mapConfig.zoom]]"
-              min-zoom="10">
-              <google-map-marker
+            <paper-material id="map-material" elevation="3">
+              <google-map id="map"
+                api-key="[[pageData.mapConfig.apiKey]]"
                 latitude="[[_venue.location.latitude]]"
                 longitude="[[_venue.location.longitude]]"
-                title="[[app.data.company.name]]">
-                <div>[[_venue.info]]</div>
-              </google-map-marker>
-            </google-map>
+                zoom="[[pageData.mapConfig.zoom]]"
+                min-zoom="10">
+                <google-map-marker
+                  latitude="[[_venue.location.latitude]]"
+                  longitude="[[_venue.location.longitude]]"
+                  title="[[app.data.company.name]]">
+                  <div>[[_venue.info]]</div>
+                </google-map-marker>
+              </google-map>
+            <paper-material>
           </template>
         </paper-material>
       </div>
