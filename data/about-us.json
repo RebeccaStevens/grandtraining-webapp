@@ -1,4 +1,8 @@
 {
+  "mapConfig": {
+    "apiKey": "AIzaSyAGWyGsY2oQEIkrR9r07gv7sbp4x9blMsQ",
+    "zoom": 15
+  },
   "venues": {
     "1": {
       "id": "1",

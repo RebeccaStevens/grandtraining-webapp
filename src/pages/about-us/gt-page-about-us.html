@@ -2,6 +2,7 @@
 <link rel="import" href="../../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../../bower_components/paper-material/paper-material.html">
 <link rel="import" href="../../../bower_components/neon-animation/neon-animation-runner-behavior.html">
+<link rel="import" href="../../../bower_components/google-map/google-map.html">
 
 <link rel="import" href="../../../styles/gt-styles.html">
 <link rel="import" href="../../../imports/gt.html">
@@ -27,6 +28,9 @@
         background-color: #ffffff;
         padding: 8px;
       }
+      #map {
+        height: 500px;
+      }
     </style>
 
     <!-- Download data -->
@@ -43,7 +47,11 @@
 
     <div id="content" hidden$="[[_hideContent]]">
       <paper-material id="card">
-        About us
+        <template is="dom-if" if="[[_canShowMap(pageData.mapConfig.apiKey, _venue)]]">
+          <google-map id="map" api-key="[[pageData.mapConfig.apiKey]]" latitude="[[_venue.location.latitude]]" longitude="[[_venue.location.longitude]]" zoom="[[pageData.mapConfig.zoom]]">
+            <google-map-marker latitude="[[_venue.location.latitude]]" longitude="[[_venue.location.longitude]]" title="[[app.data.company.name]]"></google-map-marker>
+          </google-map>
+        </template>
       </paper-material>
     </div>
 
@@ -60,6 +68,11 @@
       ],
 
       properties: {
+
+        /**
+         * The venue to show data for.
+         */
+        _venue: Object,
 
         /**
          * Whether or not to hide the content.
@@ -101,6 +114,17 @@
       },
 
       /**
+       * Update the value of `_venue`.
+       */
+      _updateVenue: function() {
+        if (this.app.location) {
+          this._venue = this.pageData.venues[this.app.location.id];
+        } else {
+          this._venue = null;
+        }
+      },
+
+      /**
        * Show all the `gt-class-category` elements.
        */
       _showContent: function() {
@@ -109,7 +133,19 @@
           return;
         }
 
+        this._updateVenue();
         this.playAnimation('showContent');
+      },
+
+      /**
+       * Returns true if the map can be shown.
+       *
+       * @param {String} apiKey
+       * @param {Object} venue
+       * @returns {Boolean}
+       */
+      _canShowMap(apiKey, venue) {
+        return apiKey && venue;
       },
 
       /**
