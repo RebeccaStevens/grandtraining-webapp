@@ -6,6 +6,7 @@
 <link rel="import" href="../../../bower_components/html-echo/html-echo.html">
 <link rel="import" href="../../../bower_components/google-map/google-map.html">
 <link rel="import" href="../../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../../bower_components/iron-image/iron-image.html">
 
 <link rel="import" href="../../../styles/gt-styles.html">
 <link rel="import" href="../../../imports/gt.html">
@@ -131,7 +132,7 @@
               </div>
             </div>
 
-            <template is="dom-if" if="[[isDefined(pageData.mapConfig.apiKey)]]">
+            <template is="dom-if" if="[[isDefined(pageData.mapConfig.apiKey)]]" on-dom-change="_updateMapMarkerInfoWindow">
               <paper-material id="map-material" elevation="3">
                 <google-map id="map"
                   api-key="[[pageData.mapConfig.apiKey]]"
@@ -143,7 +144,11 @@
                     latitude="[[_venue.location.latitude]]"
                     longitude="[[_venue.location.longitude]]"
                     title="[[app.data.company.name]]">
-                    <div>[[_venue.info]]</div>
+                    <div class="marker-infowindow" style="min-width: 375px;">
+                      <iron-image preload fade sizing="contain" width="125" height="125" style="float: left;"></iron-image>
+                      <h1 class="title" style="margin: 0; color: #04519b; margin-left: 140px;"></h1>
+                      <div class="address" style="margin-left: 140px;"></div>
+                    </div>
                   </google-map-marker>
                 </google-map>
               <paper-material>
@@ -221,12 +226,40 @@
       _updateVenue: function() {
         if (this._location) {
           this._venue = this.pageData.venues[this._location.id];
-          var marker = Polymer.dom(this.$.card).querySelector('google-map google-map-marker');
-          if (marker) {
-            marker.info.setContent(Polymer.dom(marker).innerHTML);
-          }
+          this._updateMapMarkerInfoWindow();
         } else {
           this._venue = null;
+        }
+      },
+
+      /**
+       * Update the content's off the map marker's info window.
+       */
+      _updateMapMarkerInfoWindow: function() {
+        var marker = Polymer.dom(this.root).querySelector('google-map google-map-marker');
+
+        if (marker && this._venue) {
+          var address = this._venue.address.split('<br>');
+          var firstLine;
+          var remaining;
+
+          if (address.length >= 2) {
+            firstLine = address[0];
+            remaining = this._venue.address.substring(firstLine.length + 4);
+          } else {
+            firstLine = this.app.data.company.name;
+            remaining = this._venue.address;
+          }
+
+          var markerDom = Polymer.dom(marker);
+          var image = markerDom.querySelector('iron-image');
+          image.setAttribute('src', this.app.data.company.logo.src);
+          image.setAttribute('placeholder', this.app.data.company.logo.placeholder);
+          Polymer.dom(markerDom.querySelector('.title')).innerHTML = firstLine;
+          Polymer.dom(markerDom.querySelector('.address')).innerHTML = remaining;
+          if (marker.info) {
+            marker.info.setContent(markerDom.innerHTML);
+          }
         }
       },
 
