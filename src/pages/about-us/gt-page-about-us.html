@@ -126,6 +126,9 @@
               <div class="detail" hidden$="[[!isDefined(_venue.address)]]">
                 <span class="label"><iron-icon icon="location"></iron-icon><span>Address:</span></span><span class="content"><html-echo html="[[_venue.address]]"></html-echo></span>
               </div>
+              <div class="detail" hidden$="[[!isDefined(_venue.notes)]]">
+                <span class="label"><iron-icon icon="info"></iron-icon><span>Note:</span></span><span class="content"><html-echo html="[[_venue.notes]]"></html-echo></span>
+              </div>
             </div>
 
             <template is="dom-if" if="[[isDefined(pageData.mapConfig.apiKey)]]">

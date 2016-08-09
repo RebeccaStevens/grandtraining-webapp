@@ -11,6 +11,7 @@
       "address": "Grand Training<br>20 Vivian Street<br>Te Aro<br>Wellington",
       "contactNumber": "(04) 499-2211",
       "email": "ed@grandtraining.co.nz",
+      "notes": "Transport from the Hutt Valley is available at a small charge during school holidays. Call for details.",
       "location": {
         "latitude": -41.296603,
         "longitude": 174.781037
@@ -24,6 +25,7 @@
       "address": "Ntec Tertiary Group NZ<br>25 Federal St<br>Corner Swanson and Federal Streets<br>Auckland",
       "contactNumber": "(09) 488-0787",
       "email": null,
+      "notes": null,
       "location": {
         "latitude": -36.845383,
         "longitude": 174.763779
@@ -37,6 +39,7 @@
       "address": "Laidlaw College<br>80 Central Park Drive<br>Henderson<br>Auckland",
       "contactNumber": "(09) 488-0787",
       "email": null,
+      "notes": null,
       "location": {
         "latitude": -36.85896,
         "longitude": 174.63521
@@ -50,6 +53,7 @@
       "address": "Westlake Boys High School<br>30 Forrest Hill Road<br>Forrest Hill<br>Auckland",
       "contactNumber": "(09) 488-0787",
       "email": null,
+      "notes": null,
       "location": {
         "latitude": -36.783776,
         "longitude": 174.747246
