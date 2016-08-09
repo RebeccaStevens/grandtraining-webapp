@@ -1,8 +1,14 @@
 <link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../../../bower_components/neon-animation/neon-animation-runner-behavior.html">
+<link rel="import" href="../../../bower_components/neon-animation/animations/fade-out-animation.html">
 
 <link rel="import" href="../../../styles/gt-styles.html">
 <link rel="import" href="../../../imports/gt.html">
+<link rel="import" href="../../animations/scale-up-and-fade-in-animation.html">
 <link rel="import" href="../../gt-element-common-behavior.html">
+<link rel="import" href="../../elements/gt-location-selector.html">
 <link rel="import" href="../gt-page-behavior.html">
 
 <dom-module id="gt-page-about-us">
@@ -10,8 +16,33 @@
     <style include="gt-styles">
       :host {
         display: block;
+        @apply(--layout-vertical);
+        @apply(--layout-center);
+      }
+      #card {
+        background-color: #ffffff;
+        margin: 0.75em;
+        padding: 8px;
+        width: calc(100% - 1.5em);
+        max-width: 1140px;
       }
     </style>
+
+    <!-- Download data -->
+    <iron-ajax
+      id="pageDataLoader"
+      url="[[app.dataPath]]about-us.json"
+      handle-as="json"
+      last-response="{{pageData}}"
+      on-response="_handleAjaxResponse"
+      on-error="_handleAjaxError"></iron-ajax>
+
+    <!-- Layout -->
+    <gt-location-selector id="location-selector" global-cities="[[app.data.cities]]" location="{{app.location}}" on-location-changed="_locationChanged"></gt-location-selector>
+
+    <paper-material id="card">
+      About us
+    </paper-material>
 
   </template>
 
@@ -21,11 +52,91 @@
 
       behaviors: [
         GT.ElementCommonBehavior,
-        GT.PageBehavior
+        GT.PageBehavior,
+        Polymer.NeonAnimationRunnerBehavior
       ],
 
+      properties: {
+        /**
+         * The animations this element has.
+         */
+        animationConfig: {
+          type: Object,
+          value: function() {
+            return {
+              entry: {
+                name: 'scale-up-and-fade-in-animation',
+                node: this,
+                transformOrigin: '50% 50%',
+                timing: {
+                  delay: 0,
+                  duration: GT.animation.entryDuration
+                }
+              },
+              exit: {
+                name: 'fade-out-animation',
+                node: this,
+                timing: {
+                  delay: 0,
+                  duration: GT.animation.exitDuration
+                }
+              }
+            };
+          }
+        }
+      },
+
+      /**
+       * Called when a location is set.
+       */
+      _locationChanged: function() {
+        if (this.app.location !== undefined) {
+          
+        }
+      },
+
+      /**
+       * Initialise the page.
+       */
+      init: function() {
+        this.$.pageDataLoader.generateRequest();
+      },
+
+      /**
+       * Called when the page is switched back to.
+       */
+      onSwitchBackTo: function() {
+        this.playAnimation('entry');
+      },
+
+      /**
+       * Called when the page is switched away from.
+       */
+      onSwitchFrom: function() {
+        this.playAnimation('exit');
+      },
+
+      /**
+       * Called when the page data loads.
+       */
+      _handleAjaxResponse: function() {
+        if (this.pageData) {
+          this.playAnimation('entry');
+          this.pageReady();
+        } else {
+          this._handleAjaxError();
+        }
+      },
+
+      /**
+       * Called when an error occurs during the ajax request.
+       */
+      _handleAjaxError: function() {
+        this.pageError();
+      },
+
       ready: function() {
-        this.pageReady();
+        this.init();
       }
     });
   </script>
