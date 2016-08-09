@@ -56,7 +56,8 @@
         vertical-align: middle;
       }
       #details .label {
-        width: 200px;
+        width: 40%;
+        min-width: 100px;
       }
       #details iron-icon {
         width: 16px;
@@ -72,11 +73,17 @@
         height: 400px;
       }
       @media (min-width: 640px) {
+        #details .label {
+          width: 125px;
+        }
         #map {
           height: 500px;
         }
       }
       @media (min-width: 1024px) {
+        #details .label {
+          width: 180px;
+        }
         #map {
           height: 600px;
         }
@@ -86,6 +93,10 @@
           height: 700px;
         }
       }
+      @media (min-width: 2560px) {
+        #details .label {
+          width: 200px;
+        }
       }
     </style>
 
