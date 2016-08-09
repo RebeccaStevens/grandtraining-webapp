@@ -2,7 +2,6 @@
 <link rel="import" href="../../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../../bower_components/paper-material/paper-material.html">
 <link rel="import" href="../../../bower_components/neon-animation/neon-animation-runner-behavior.html">
-<link rel="import" href="../../../bower_components/neon-animation/animations/fade-out-animation.html">
 
 <link rel="import" href="../../../styles/gt-styles.html">
 <link rel="import" href="../../../imports/gt.html">
@@ -19,12 +18,14 @@
         @apply(--layout-vertical);
         @apply(--layout-center);
       }
-      #card {
-        background-color: #ffffff;
+      #content {
         margin: 0.75em;
-        padding: 8px;
         width: calc(100% - 1.5em);
         max-width: 1140px;
+      }
+      #card {
+        background-color: #ffffff;
+        padding: 8px;
       }
     </style>
 
@@ -40,9 +41,11 @@
     <!-- Layout -->
     <gt-location-selector id="location-selector" global-cities="[[app.data.cities]]" location="{{app.location}}" on-location-changed="_locationChanged"></gt-location-selector>
 
-    <paper-material id="card">
-      About us
-    </paper-material>
+    <div id="content" hidden$="[[_hideContent]]">
+      <paper-material id="card">
+        About us
+      </paper-material>
+    </div>
 
   </template>
 
@@ -57,6 +60,15 @@
       ],
 
       properties: {
+
+        /**
+         * Whether or not to hide the content.
+         */
+        _hideContent: {
+          type: Boolean,
+          value: true
+        },
+
         /**
          * The animations this element has.
          */
@@ -64,21 +76,13 @@
           type: Object,
           value: function() {
             return {
-              entry: {
+              showContent: {
                 name: 'scale-up-and-fade-in-animation',
                 node: this.$.card,
                 transformOrigin: '50% 50%',
                 timing: {
                   delay: 0,
                   duration: GT.animation.entryDuration
-                }
-              },
-              exit: {
-                name: 'fade-out-animation',
-                node: this.$.card,
-                timing: {
-                  delay: 0,
-                  duration: GT.animation.exitDuration
                 }
               }
             };
@@ -91,8 +95,21 @@
        */
       _locationChanged: function() {
         if (this.app.location !== undefined) {
-
+          this._hideContent = false;
+          this._showContent();
         }
+      },
+
+      /**
+       * Show all the `gt-class-category` elements.
+       */
+      _showContent: function() {
+        // don't play the animation if the class categories are hidden
+        if (this._hideContent) {
+          return;
+        }
+
+        this.playAnimation('showContent');
       },
 
       /**
@@ -106,14 +123,14 @@
        * Called when the page is switched back to.
        */
       onSwitchBackTo: function() {
-        this.playAnimation('entry');
+        this.$['location-selector'].show();
+        this._showContent();
       },
 
       /**
        * Called when the page is switched away from.
        */
       onSwitchFrom: function() {
-        this.playAnimation('exit');
       },
 
       /**
@@ -121,6 +138,10 @@
        */
       _handleAjaxResponse: function() {
         if (this.pageData) {
+          if (this.app.location) {
+            this._hideContent = false;
+            this._showContent();
+          }
           this.playAnimation('entry');
           this.pageReady();
         } else {
