@@ -66,7 +66,7 @@
             return {
               entry: {
                 name: 'scale-up-and-fade-in-animation',
-                node: this,
+                node: this.$.card,
                 transformOrigin: '50% 50%',
                 timing: {
                   delay: 0,
@@ -75,7 +75,7 @@
               },
               exit: {
                 name: 'fade-out-animation',
-                node: this,
+                node: this.$.card,
                 timing: {
                   delay: 0,
                   duration: GT.animation.exitDuration
@@ -91,7 +91,7 @@
        */
       _locationChanged: function() {
         if (this.app.location !== undefined) {
-          
+
         }
       },
 
