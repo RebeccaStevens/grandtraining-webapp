@@ -1,0 +1,52 @@
+{
+  "venues": {
+    "1": {
+      "id": "1",
+      "city": "Wellington",
+      "name": "Wellington CBD",
+      "address": "Grand Training<br>20 Vivian Street<br>Te Aro<br>Wellington",
+      "contactNumber": "(04) 499-2211",
+      "email": "ed@grandtraining.co.nz",
+      "location": {
+        "latitude": 0,
+        "longitude": 0
+      }
+    },
+    "2": {
+      "id": "2",
+      "city": "Auckland",
+      "name": "Auckland CBD",
+      "address": "Ntec Tertiary Group NZ<br>25 Federal St<br>Corner Swanson and Federal Streets<br>Auckland",
+      "contactNumber": "(09) 488-0787",
+      "email": null,
+      "location": {
+        "latitude": 0,
+        "longitude": 0
+      }
+    },
+    "3": {
+      "id": "3",
+      "city": "Auckland",
+      "name": "Henderson",
+      "address": "Laidlaw College<br>80 Central Park Drive<br>Henderson<br>Auckland",
+      "contactNumber": "(09) 488-0787",
+      "email": null,
+      "location": {
+        "latitude": 0,
+        "longitude": 0
+      }
+    },
+    "4": {
+      "id": "4",
+      "city": "Auckland",
+      "name": "North Shore",
+      "address": "Westlake Boys High School<br>30 Forrest Hill Road<br>Forrest Hill<br>Auckland",
+      "contactNumber": "(09) 488-0787",
+      "email": null,
+      "location": {
+        "latitude": 0,
+        "longitude": 0
+      }
+    }
+  }
+}
