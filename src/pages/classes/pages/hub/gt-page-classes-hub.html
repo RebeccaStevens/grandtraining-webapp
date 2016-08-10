@@ -236,6 +236,11 @@
           return;
         }
 
+        var ccs = Polymer.dom(this.$['class-categories']).querySelectorAll('gt-class-category');
+        for (var i = 0; i < ccs.length; i++) {
+          ccs[i].style.visibility = '';
+        }
+
         if (this.animationConfig.showCards.nodes.length > 0) {
           this.playAnimation('showCards');
         }
