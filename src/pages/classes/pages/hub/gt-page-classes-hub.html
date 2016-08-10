@@ -164,7 +164,7 @@
               },{
                 name: 'cascaded-animation',
                 animation: 'scale-down-and-fade-out-animation',
-                nodes: [],  // will be set once the gt-class-categories are stamped out
+                nodes: [],  // set by `setClassCardToAnimateOn`
                 nodeDelay: -1,  // can't use zero as it will default to 50
                 timing: {
                   delay: 0,
@@ -192,6 +192,13 @@
        */
       setClassCardToAnimateOn: function(element) {
         this.sharedElements['class-card'] = element;
+
+        var ccs = Polymer.dom(this.$['class-categories']).querySelectorAll('gt-class-category');
+        var index = ccs.indexOf(element);
+        if (index > -1) {
+          ccs.splice(index, 1);
+      }
+        this.animationConfig.exit[2].nodes = ccs;
       },
 
       /**
@@ -217,7 +224,6 @@
       _ccStamped: function() {
         var ccs = Polymer.dom(this.$['class-categories']).querySelectorAll('gt-class-category');
         this.animationConfig.showCards.nodes = ccs;
-        this.animationConfig.exit[2].nodes = ccs;
         this._showClassCategories();
       },
 
