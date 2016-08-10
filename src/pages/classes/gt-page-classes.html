@@ -137,13 +137,21 @@
           }
           this.importHref(this.resolveUrl('pages/' + shortName + '/' + pageEl.nodeName.toLowerCase() + '.html'), function() {
             pageEl = this.getPageElement();
-            pageEl.init();
+            if (pageEl.tagName === 'GT-PAGE-CLASSES-DETAILS') {
+              pageEl.init(true);
+            } else {
+              pageEl.init();
+            }
           }, null, true);
         }
         // if the page is not initialised.
         else if(!pageEl.isInitialised) {
           this.app.pageLoading = true;
-          pageEl.init();
+          if (pageEl.tagName === 'GT-PAGE-CLASSES-DETAILS') {
+            pageEl.init(true);
+          } else {
+            pageEl.init();
+          }
         }
         // else the page is loaded and read to be display
         else {
@@ -198,7 +206,11 @@
               var shortName = this.pageName === this.mainPageName ? this.mainPageName : 'details';
 
               this.importHref(this.resolveUrl('pages/' + shortName + '/' + pageEl.nodeName.toLowerCase() + '.html'), function() {
-                pageEl.init(true);
+                if (pageEl.tagName === 'GT-PAGE-CLASSES-DETAILS') {
+                  pageEl.init(true);
+                } else {
+                  pageEl.init();
+                }
               }, function() {
                 if (!Polymer.isInstance(this.$.page404)) {
                   this.importHref(this.resolveUrl('../404/gt-page-404.html'), null, null, true);
@@ -301,7 +313,11 @@
         }
         var pageEl = this.getPageElement();
         if (Polymer.isInstance(pageEl)) {
-          pageEl.init();
+          if (pageEl.tagName === 'GT-PAGE-CLASSES-DETAILS' && !pageEl.isInitialised()) {
+            pageEl.init(true);
+          } else {
+            pageEl.init();
+          }
         }
       },
 
