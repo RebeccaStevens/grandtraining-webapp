@@ -275,6 +275,12 @@
        * Called when the page is switched back to.
        */
       onSwitchBackTo: function() {
+        this.$.form.reset();
+
+        // focus the first field
+        this.async(function() {
+          Polymer.dom(this.$.form).querySelector('.field').focus();
+        }, 0);
       },
 
       /**
