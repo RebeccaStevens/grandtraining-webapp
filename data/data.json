@@ -32,6 +32,11 @@
       "title": "About Us",
       "menuTitle": "About Us",
       "url": "/about-us"
+    },
+    "contact-us": {
+      "title": "Contact Us",
+      "menuTitle": "Contact Us",
+      "url": "/contact-us"
     }
   },
   "cities": {
@@ -62,6 +67,6 @@
   },
   "links": {
     "bookclass": "/bookings/booknow/bookclass",
-    "contactus": "/about-us/contact"
+    "contactus": "/contact-us"
   }
 }
