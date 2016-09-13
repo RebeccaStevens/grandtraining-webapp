@@ -14,12 +14,13 @@
   "sources": [
    "src/**/*",
    "images/**/*",
+   "styles/**/*",
+   "scripts/**/*",
    "data/**/*",
    "bower.json"
   ],
   "includeDependencies": [
     "manifest.json",
-    "bower_components/webcomponentsjs/webcomponents-lite.min.js",
-    "styles/main.css"
+    "bower_components/webcomponentsjs/webcomponents-lite.min.js"
   ]
 }
