@@ -1,0 +1,30 @@
+{
+  "locations": [ {
+      "id": "2",
+      "city": "Auckland",
+      "name": "Auckland CBD",
+      "fullname": "Auckland  - CBD"
+    },{
+      "id": "3",
+      "city": "Auckland",
+      "name": "Henderson",
+      "fullname": "Auckland - Henderson"
+    }, {
+      "id": "4",
+      "city": "Auckland",
+      "name": "North Shore",
+      "fullname": "Auckland - North Shore"
+    }, {
+      "id": "1",
+      "city": "Wellington",
+      "name": "Wellington CBD",
+      "fullname": "Wellington - CBD"
+    }, {
+      "id": "0",
+      "city": null,
+      "name": "Elsewhere",
+      "fullname": "Elsewhere"
+  }],
+  "confirmationMessage": "<p>Your message has been sent.</p><p>We will try and respond as soon as possible.</p>",
+  "errorMessage": "<p>Something went wrong, your message was <strong>not</strong> sent.</p>"
+}

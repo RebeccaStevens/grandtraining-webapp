@@ -1,0 +1,303 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../../bower_components/paper-input/paper-textarea.html">
+<link rel="import" href="../../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+<link rel="import" href="../../../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../../../bower_components/html-echo/html-echo.html">
+
+<link rel="import" href="../../../styles/gt-styles.html">
+<link rel="import" href="../../../imports/gt.html">
+<link rel="import" href="../../gt-element-common-behavior.html">
+<link rel="import" href="../gt-page-behavior.html">
+
+<dom-module id="gt-page-contact-us">
+  <template>
+    <style include="gt-styles">
+    :host {
+      display: block;
+      @apply(--layout-vertical);
+      @apply(--layout-center);
+    }
+    #card {
+      background-color: #ffffff;
+      margin: 0.75em;
+      padding: 8px;
+      width: calc(100% - 1.5em);
+      max-width: 1140px;
+      box-sizing: border-box;
+      --paper-card-header-text: {
+        color: var(--app-secondary-header-color);
+        padding: 4px 12px;
+        font-size: var(--app-header-1-font-size);
+      };
+    }
+    #card > .card-content {
+      padding: 0 8px 8px 8px;
+    }
+    .field {
+      --paper-input-container: {
+        padding: 16px 0;
+      };
+      --paper-input-container-label: {
+        font-weight: 400;
+        letter-spacing: 0.75px;
+      };
+      --paper-input-container-label-floating: {
+        transform: translateY(-100%) scale(1);
+      };
+    }
+    .field:first-child {
+      --paper-input-container: {
+        padding: 8px 0;
+      };
+    }
+    .inline.field {
+      width: 100%;
+      max-width: 713px;
+    }
+    paper-dropdown-menu.inline.field {
+      --paper-menu-button-dropdown: {
+        width: 100%;
+        max-width: calc(100% - 1.5em - 32px);
+        transform: initial;
+      };
+    }
+    .send.button {
+      display: block;
+      margin: 0;
+    }
+    .submit-container {
+      @apply(--layout-horizontal);
+      @apply(--layout-center);
+      margin: 16px 0 0 0;
+    }
+    .sending-messgae {
+      @apply(--layout-horizontal);
+      @apply(--layout-center);
+      margin-left: 16px;
+    }
+    #spinner {
+      margin-right: 12px;
+    }
+    @media (min-width: 768px) {
+      paper-dropdown-menu.inline.field {
+        --paper-menu-button-dropdown: {
+          width: 100%;
+          max-width: 689px;
+          transform: translateX(-24px) translateY(24px);
+        };
+      }
+    }
+    </style>
+
+    <!-- Download data -->
+    <iron-ajax
+      id="pageDataLoader"
+      url="[[app.dataPath]]contact-us.json"
+      handle-as="json"
+      last-response="{{pageData}}"
+      on-response="_handleAjaxResponse"
+      on-error="_handleAjaxError"></iron-ajax>
+
+    <paper-card id="card" heading="Send us a Message">
+      <div class="card-content">
+        <form is="iron-form" id="form" method="post" action="[[app.data.pages.contact-us.url]]/formhandler">
+          <paper-input class="inline field"
+            label="Full Name:"
+            tpye="text"
+            always-float-label
+            minlength="2"
+            maxlength="70"
+            required
+            auto-validate
+            error-message="Please provide your full name"
+            autofocus></paper-input>
+          <paper-input class="inline field"
+            label="Phone:"
+            type="tel"
+            minlength="9"
+            maxlength="15"
+            always-float-label
+            required
+            auto-validate
+            allowed-pattern="[0-9]"
+            error-message="Please provide your phone number (inlcude your Area Code)"></paper-input>
+          <paper-input class="inline field"
+            label="Email Address:"
+            type="email"
+            always-float-label
+            required
+            auto-validate
+            error-message="Please provide your email address"></paper-input>
+          <paper-dropdown-menu class="inline field"
+            label="Your Location:"
+            always-float-label
+            required
+            auto-validate
+            error-message="Please select your location">
+            <paper-listbox class="dropdown-content">
+              <template is="dom-repeat" items="[[pageData.locations]]" as="location">
+                <paper-item>[[location.fullname]]</paper-item>
+              </template>
+            </paper-listbox>
+          </paper-dropdown-menu>
+          <paper-input class="inline field"
+            label="Subject:"
+            tpye="text"
+            always-float-label
+            minlength="2"
+            maxlength="128"
+            required
+            auto-validate
+            error-message="Please provide a subject for your message"
+            autofocus></paper-input>
+          <paper-textarea class="field"
+            label="Message:"
+            always-float-label
+            minlength="20"
+            maxlength="2048"
+            char-counter
+            required
+            auto-validate
+            error-message="Please a message of at least 20 characters"></paper-textarea>
+          <div class="submit-container">
+            <paper-button id="send" class="button send" raised disabled="[[_sendingMessage]]" on-tap="_submitForm">Send Message</paper-button>
+            <div class="sending-messgae" hidden$="[[!_sendingMessage]]">
+              <paper-spinner id="spinner" active="[[_sendingMessage]]"></paper-spinner>
+              <span>Sending</span>
+            </div>
+          </div>
+        </form>
+      </div>
+    </paper-card>
+
+    <paper-dialog id="message-sent-dialog" with-backdrop>
+      <h2>Message Sent</h2>
+      <paper-dialog-scrollable>
+        <html-echo html="[[pageData.confirmationMessage]]"></html-echo>
+      </paper-dialog-scrollable>
+      <div class="buttons">
+        <paper-button dialog-confirm autofocus>Close</paper-button>
+      </div>
+    </paper-dialog>
+
+    <paper-dialog id="error-dialog" with-backdrop>
+      <h2>Error</h2>
+      <paper-dialog-scrollable>
+        <html-echo html="[[pageData.errorMessage]]"></html-echo>
+      </paper-dialog-scrollable>
+      <div class="buttons">
+        <paper-button dialog-confirm autofocus>Close</paper-button>
+      </div>
+    </paper-dialog>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'gt-page-contact-us',
+
+      behaviors: [
+        GT.ElementCommonBehavior,
+        GT.PageBehavior,
+      ],
+
+      properties: {
+        /**
+         * True when a messages is being sent.
+         */
+        _sendingMessage: {
+          type: Boolean,
+          value: false
+        }
+      },
+
+      listeners: {
+        'iron-form-error': '_formError',
+        'iron-form-submit': '_formSubmit',
+        'iron-form-response': '_formResponse'
+      },
+
+      /**
+       * Called when the form is submitted.
+       */
+      _submitForm: function() {
+        this.$.form.submit();
+      },
+
+      /**
+       * Called when an error occurs trying to submit the form.
+       */
+      _formError: function() {
+        this._sendingMessage = false;
+        this.$['error-dialog'].open();
+      },
+
+      /**
+       * Called when the form is submitted.
+       */
+      _formSubmit: function() {
+        this._sendingMessage = true;
+      },
+
+      /**
+       * Called when the server response positively to form submition.
+       */
+      _formResponse: function() {
+        this._sendingMessage = false;
+        this.$['message-sent-dialog'].open();
+        this.$.form.reset();
+      },
+
+      /**
+       * Initialise the page.
+       */
+      init: function() {
+        this.$.pageDataLoader.generateRequest();
+      },
+
+      /**
+       * Called when the page is switched back to.
+       */
+      onSwitchBackTo: function() {
+      },
+
+      /**
+       * Called when the page is switched away from.
+       */
+      onSwitchFrom: function() {
+      },
+
+      /**
+       * Called when the page data loads.
+       */
+      _handleAjaxResponse: function() {
+        if (this.pageData) {
+          this.pageReady();
+        } else {
+          this._handleAjaxError();
+        }
+      },
+
+      /**
+       * Called when an error occurs during the ajax request.
+       */
+      _handleAjaxError: function() {
+        this.pageError();
+      },
+
+      ready: function() {
+        this.init();
+      }
+    });
+  </script>
+</dom-module>
