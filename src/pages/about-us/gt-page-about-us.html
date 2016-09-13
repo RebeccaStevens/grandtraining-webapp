@@ -139,6 +139,7 @@
                   latitude="[[_venue.location.latitude]]"
                   longitude="[[_venue.location.longitude]]"
                   zoom="[[pageData.mapConfig.zoom]]"
+                  fit-to-markers
                   min-zoom="10">
                   <google-map-marker
                     latitude="[[_venue.location.latitude]]"
@@ -290,6 +291,9 @@
         this._location = this.app.location;
         this.$['location-selector'].show();
         this._showContent();
+        this.async(function() {
+          Polymer.dom(this.root).querySelector('google-map').resize();
+        }, GT.animation.entryDuration);
       },
 
       /**
