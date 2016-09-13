@@ -44,24 +44,28 @@
       "2": {
         "id": "2",
         "city": "Auckland",
-        "name": "Auckland CBD"
+        "name": "Auckland CBD",
+        "fullname": "Auckland - CBD"
       },
       "3": {
         "id": "3",
         "city": "Auckland",
-        "name": "Henderson"
+        "name": "Henderson",
+        "fullname": "Auckland - Henderson"
       },
       "4": {
         "id": "4",
         "city": "Auckland",
-        "name": "North Shore"
+        "name": "North Shore",
+        "fullname": "Auckland - North Shore"
       }
     },
     "Wellington": {
       "1": {
         "id": "1",
         "city": "Wellington",
-        "name": "Wellington CBD"
+        "name": "Wellington CBD",
+        "fullname": "Wellington - CBD"
       }
     }
   },
