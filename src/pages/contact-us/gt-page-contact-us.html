@@ -13,11 +13,14 @@
 <link rel="import" href="../../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
 <link rel="import" href="../../../bower_components/paper-spinner/paper-spinner.html">
 <link rel="import" href="../../../bower_components/html-echo/html-echo.html">
+<link rel="import" href="../../../bower_components/neon-animation/neon-animation-runner-behavior.html">
+<link rel="import" href="../../../bower_components/neon-animation/animations/fade-out-animation.html">
 
 <link rel="import" href="../../../styles/gt-styles.html">
 <link rel="import" href="../../../imports/gt.html">
 <link rel="import" href="../../../imports/recaptcha.html">
 <link rel="import" href="../../gt-element-common-behavior.html">
+<link rel="import" href="../../animations/scale-up-and-fade-in-animation.html">
 <link rel="import" href="../gt-page-behavior.html">
 
 <dom-module id="gt-page-contact-us">
@@ -223,6 +226,7 @@
       behaviors: [
         GT.ElementCommonBehavior,
         GT.PageBehavior,
+        Polymer.NeonAnimationRunnerBehavior
       ],
 
       properties: {
@@ -232,6 +236,34 @@
         _sendingMessage: {
           type: Boolean,
           value: false
+        },
+
+        /**
+         * The animations this element has.
+         */
+        animationConfig: {
+          type: Object,
+          value: function() {
+            return {
+              entry: {
+                name: 'scale-up-and-fade-in-animation',
+                node: this,
+                transformOrigin: '50% 50%',
+                timing: {
+                  delay: 0,
+                  duration: GT.animation.entryDuration
+                }
+              },
+              exit: {
+                name: 'fade-out-animation',
+                node: this,
+                timing: {
+                  delay: 0,
+                  duration: GT.animation.exitDuration
+                }
+              }
+            };
+          }
         }
       },
 
@@ -320,6 +352,8 @@
        * Called when the page is switched back to.
        */
       onSwitchBackTo: function() {
+        this.playAnimation('entry');
+
         this.$.form.reset();
         if (this._recaptchaEl !== undefined ) {
           this.async(function() {
@@ -340,6 +374,8 @@
        * Called when the page is switched away from.
        */
       onSwitchFrom: function() {
+        this.playAnimation('exit');
+
         if (this._recaptchaEl) {
           this._recaptchaEl.style.display = 'none';
         }
@@ -350,12 +386,15 @@
        */
       _handleAjaxResponse: function() {
         if (this.pageData) {
-          if (window.grecaptcha === undefined) {
-            document.addEventListener('recaptcha-ready', this._createRecaptchaElement.bind(this));
-          } else {
-            this._createRecaptchaElement();
-          }
+          this.async(function() {
+            if (window.grecaptcha === undefined) {
+              document.addEventListener('recaptcha-ready', this._createRecaptchaElement.bind(this));
+            } else {
+              this._createRecaptchaElement();
+            }
+          }, GT.animation.entryDuration);
 
+          this.playAnimation('entry');
           this.pageReady();
         } else {
           this._handleAjaxError();
