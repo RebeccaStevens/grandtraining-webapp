@@ -281,7 +281,7 @@
       _createRecaptchaElement: function() {
         this._recaptchaEl = document.createElement('div');
         document.body.appendChild(this._recaptchaEl);
-        window.grecaptcha.render(this._recaptchaEl, {
+        this._grecaptchaId = window.grecaptcha.render(this._recaptchaEl, {
           sitekey: this.pageData.recaptchaConfig.sitekey,
           theme: 'light',
           callback: function(response) {
@@ -321,6 +321,14 @@
        */
       onSwitchBackTo: function() {
         this.$.form.reset();
+        if (this._recaptchaEl !== undefined ) {
+          this.async(function() {
+            this._recaptchaEl.style.display = 'block';
+          }, GT.animation.entryDuration);
+        }
+        if (window.grecaptcha !== undefined && this._grecaptchaId !== undefined ) {
+          window.grecaptcha.reset(this._grecaptchaId);
+        }
 
         // focus the first field
         this.async(function() {
@@ -332,6 +340,9 @@
        * Called when the page is switched away from.
        */
       onSwitchFrom: function() {
+        if (this._recaptchaEl) {
+          this._recaptchaEl.style.display = 'none';
+        }
       },
 
       /**
