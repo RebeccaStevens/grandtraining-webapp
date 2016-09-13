@@ -70,7 +70,6 @@
     }
   },
   "links": {
-    "bookclass": "/bookings/booknow/bookclass",
-    "contactus": "/contact-us"
+    "bookclass": "/bookings/booknow/bookclass"
   }
 }
