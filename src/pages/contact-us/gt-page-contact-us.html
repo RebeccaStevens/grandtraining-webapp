@@ -154,7 +154,9 @@
             always-float-label
             required
             auto-validate
-            error-message="Please select your location">
+            error-message="Please select your location"
+            on-paper-dropdown-open="_overlayOpened"
+            on-paper-dropdown-close="_overlayClosed">
             <paper-listbox class="dropdown-content">
               <template is="dom-repeat" items="[[pageData.locations]]" as="location">
                 <paper-item>[[location.fullname]]</paper-item>
@@ -238,6 +240,12 @@
           value: false
         },
 
+        _overlayOpen: {
+          type: Boolean,
+          value: false,
+          observer: '_overlayOpenChanged'
+        },
+
         /**
          * The animations this element has.
          */
@@ -305,6 +313,49 @@
       },
 
       /**
+       * Should be called when an overlay is opened.
+       */
+      _overlayOpened: function() {
+        this._overlayOpen = true;
+      },
+
+      /**
+       * Should be called when an overlay is closed.
+       */
+      _overlayClosed: function() {
+        this._overlayOpen = false;
+      },
+
+      /**
+       * Called when `_overlayOpen` changes.
+       */
+      _overlayOpenChanged: function(value) {
+        if (value) {
+          this._hideRecaptcha();
+        } else {
+          this._showRecaptcha();
+        }
+      },
+
+      /**
+       * Hide the Recaptcha Element.
+       */
+      _hideRecaptcha: function() {
+        if (this._recaptchaEl !== undefined) {
+          this._recaptchaEl.style.display = 'none';
+        }
+      },
+
+      /**
+       * Show the Recaptcha Element.
+       */
+      _showRecaptcha: function() {
+        if (this._recaptchaEl !== undefined) {
+          this._recaptchaEl.style.display = 'block';
+        }
+      },
+
+      /**
        * Create the Recaptcha Element.
        *
        * Note that the Recaptcha Element doesn't work inside shadow dom.
@@ -325,6 +376,7 @@
         this.$['recaptcha-spaceholder'].style.width = this._recaptchaEl.clientWidth + 'px';
         this.$['recaptcha-spaceholder'].style.height = this._recaptchaEl.clientHeight + 8 + 'px';
 
+        this._showRecaptcha();
         this._updateRecaptchaPosition();
         window.addEventListener('resize', this._updateRecaptchaPosition.bind(this));
         window.addEventListener('scroll', this._updateRecaptchaPosition.bind(this));
@@ -357,7 +409,7 @@
         this.$.form.reset();
         if (this._recaptchaEl !== undefined ) {
           this.async(function() {
-            this._recaptchaEl.style.display = 'block';
+            this._showRecaptcha();
           }, GT.animation.entryDuration);
         }
         if (window.grecaptcha !== undefined && this._grecaptchaId !== undefined ) {
@@ -377,7 +429,7 @@
         this.playAnimation('exit');
 
         if (this._recaptchaEl) {
-          this._recaptchaEl.style.display = 'none';
+          this._hideRecaptcha();
         }
       },
 
