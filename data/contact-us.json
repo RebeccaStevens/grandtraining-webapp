@@ -1,4 +1,7 @@
 {
+  "recaptchaConfig": {
+    "sitekey": "6LdtBSoTAAAAACYs0PzNlyiYxTihgVwpCCtKC_h4"
+  },
   "locations": [ {
       "id": "2",
       "city": "Auckland",

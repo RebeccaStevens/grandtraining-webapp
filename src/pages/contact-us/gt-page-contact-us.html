@@ -16,6 +16,7 @@
 
 <link rel="import" href="../../../styles/gt-styles.html">
 <link rel="import" href="../../../imports/gt.html">
+<link rel="import" href="../../../imports/recaptcha.html">
 <link rel="import" href="../../gt-element-common-behavior.html">
 <link rel="import" href="../gt-page-behavior.html">
 
@@ -178,6 +179,10 @@
             required
             auto-validate
             error-message="Please a message of at least 20 characters"></paper-textarea>
+          <div id="recaptcha-spaceholder"></div>
+          <input
+            name="g-recaptcha-response"
+            type="hidden">
           <div class="submit-container">
             <paper-button id="send" class="button send" raised disabled="[[_sendingMessage]]" on-tap="_submitForm">Send Message</paper-button>
             <div class="sending-messgae" hidden$="[[!_sendingMessage]]">
@@ -268,6 +273,43 @@
       },
 
       /**
+       * Create the Recaptcha Element.
+       *
+       * Note that the Recaptcha Element doesn't work inside shadow dom.
+       * As a workaround, it is created at the document level and then position to look like it's in this element.
+       */
+      _createRecaptchaElement: function() {
+        this._recaptchaEl = document.createElement('div');
+        document.body.appendChild(this._recaptchaEl);
+        window.grecaptcha.render(this._recaptchaEl, {
+          sitekey: this.pageData.recaptchaConfig.sitekey,
+          theme: 'light',
+          callback: function(response) {
+            Polymer.dom(this.root).querySelector('[name="g-recaptcha-response"]').value = response;
+          }.bind(this)
+        });
+
+        this._recaptchaEl.style.position = 'fixed';
+        this.$['recaptcha-spaceholder'].style.width = this._recaptchaEl.clientWidth + 'px';
+        this.$['recaptcha-spaceholder'].style.height = this._recaptchaEl.clientHeight + 8 + 'px';
+
+        this._updateRecaptchaPosition();
+        window.addEventListener('resize', this._updateRecaptchaPosition.bind(this));
+        window.addEventListener('scroll', this._updateRecaptchaPosition.bind(this));
+      },
+
+      /**
+       * Update the Recaptcha Element's position.
+       */
+      _updateRecaptchaPosition: function() {
+        var bcr = this.$['recaptcha-spaceholder'].getBoundingClientRect();
+        this._recaptchaEl.style.top = bcr.top + 8 + 'px';
+        this._recaptchaEl.style.right = bcr.right + 'px';
+        this._recaptchaEl.style.bottom = bcr.bottom + 'px';
+        this._recaptchaEl.style.left = bcr.left + 'px';
+      },
+
+      /**
        * Initialise the page.
        */
       init: function() {
@@ -297,6 +339,12 @@
        */
       _handleAjaxResponse: function() {
         if (this.pageData) {
+          if (window.grecaptcha === undefined) {
+            document.addEventListener('recaptcha-ready', this._createRecaptchaElement.bind(this));
+          } else {
+            this._createRecaptchaElement();
+          }
+
           this.pageReady();
         } else {
           this._handleAjaxError();
