@@ -378,7 +378,7 @@
 
         this._showRecaptcha();
         this._updateRecaptchaPosition();
-        this.aync(this._updateRecaptchaPosition, 1000); // update the position again after a second incase it wasn't position correctly the first time
+        this.async(this._updateRecaptchaPosition, 1000); // update the position again after a second incase it wasn't position correctly the first time
         window.addEventListener('resize', this._updateRecaptchaPosition.bind(this));
         window.addEventListener('scroll', this._updateRecaptchaPosition.bind(this));
       },
