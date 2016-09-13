@@ -112,6 +112,7 @@
       <div class="card-content">
         <form is="iron-form" id="form" method="post" action="[[app.data.pages.contact-us.url]]/formhandler">
           <paper-input class="inline field"
+            name="name"
             label="Full Name:"
             tpye="text"
             always-float-label
@@ -122,6 +123,7 @@
             error-message="Please provide your full name"
             autofocus></paper-input>
           <paper-input class="inline field"
+            name="phone"
             label="Phone:"
             type="tel"
             minlength="9"
@@ -132,6 +134,7 @@
             allowed-pattern="[0-9]"
             error-message="Please provide your phone number (inlcude your Area Code)"></paper-input>
           <paper-input class="inline field"
+            name="email"
             label="Email Address:"
             type="email"
             always-float-label
@@ -139,6 +142,7 @@
             auto-validate
             error-message="Please provide your email address"></paper-input>
           <paper-dropdown-menu class="inline field"
+            name="location"
             label="Your Location:"
             always-float-label
             required
@@ -151,6 +155,7 @@
             </paper-listbox>
           </paper-dropdown-menu>
           <paper-input class="inline field"
+            name="subject"
             label="Subject:"
             tpye="text"
             always-float-label
@@ -161,6 +166,7 @@
             error-message="Please provide a subject for your message"
             autofocus></paper-input>
           <paper-textarea class="field"
+            name="message"
             label="Message:"
             always-float-label
             minlength="20"
