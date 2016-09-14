@@ -38,12 +38,14 @@
       #main-header-layout app-header {
         background-color: var(--app-primary-color);
         color: #fff;
+        height: 48px;
       }
       app-header paper-icon-button {
         --paper-icon-button-ink-color: white;
       }
 
       #main-header-layout app-header app-toolbar {
+        height: 48px;
         --app-toolbar-font-size: 32px;
       }
 
@@ -55,6 +57,7 @@
       #main-toolbar-small [main-title] {
         z-index: -1;
         padding: 0 60px;
+        font-size: 26px;
         @apply(--layout-fit);
         @apply(--layout-vertical);
         @apply(--layout-center-center);
@@ -63,6 +66,10 @@
       #main-toolbar-large {
         @apply(--layout-horizontal);
         @apply(--layout-center-center);
+      }
+
+      #main-toolbar-large [main-title] {
+        font-size: 28px;
       }
 
       #main-toolbar-large .container {
@@ -117,14 +124,15 @@
       #main-toolbar-large a {
         display: block;
         text-align: center;
-        padding: 0 4px;
+        padding: 0 1px;
         letter-spacing: 0.5px;
         color: var(--paper-grey-300);
+        line-height: 38px;
       }
       #main-toolbar-large .main-menu.drawer-list a {
-        font-size: 18px;
+        font-size: 17px;
         letter-spacing: 0.5px;
-        line-height: 46px;
+        line-height: 34px;
       }
       #main-toolbar-large a:hover {
         color: var(--paper-grey-50);
@@ -146,12 +154,15 @@
         margin-top: -1px;
       }
       #main-toolbar-large .main-menu.drawer-list a.iron-selected {
-        font-size: 20px;
+        font-size: 19px;
       }
       #main-toolbar-large a.iron-selected:focus {
         margin: -2px -1px -1px -1px;
       }
       #main-toolbar-large .main-menu.drawer-list a.subroute {
+      }
+      #main-toolbar-large .main-menu.drawer-list a[name="faq"] {
+        letter-spacing: 2px;
       }
 
       neon-animated-pages {
@@ -791,11 +802,14 @@
         // increase the font size to the large version so the text width is at the larger size
         mainTitle.style.fontWeight = 'bold';
 
+        var style = getComputedStyle(mainTitle);
+
         var text = mainTitle.textContent;                // get the text
-        var font = GT.computeFont(mainTitle);         // compute the font
+        var font = GT.computeFont(mainTitle, style);     // compute the font
+        var letterSpacing = Number.parseFloat(style.letterSpacing);
 
         // calculate the width of the text taking into account the letter spacing and border, then round it up.
-        var textWidth = Math.floor(GT.getTextWidth(text, font) + text.length + 3);
+        var textWidth = Math.floor(GT.getTextWidth(text, font) + ((text.length + 2) * letterSpacing) + 1);
 
         mainTitle.style.minWidth = textWidth + 'px';  // set the element's size
 
@@ -814,11 +828,14 @@
           items[i].style.fontWeight = 'bold';
           items[i].style.fontSize = '20px';
 
-          var text = items[i].textContent;                // get the text
-          var font = GT.computeFont(items[i]);         // compute the font
+          var style = getComputedStyle(items[i]);
+
+          var text = items[i].textContent;             // get the text
+          var font = GT.computeFont(items[i], style);  // compute the font
+          var letterSpacing = Number.parseFloat(style.letterSpacing);
 
           // calculate the width of the text taking into account the letter spacing and border, then round it up.
-          var textWidth = Math.floor(GT.getTextWidth(text, font) + text.length + 3);
+          var textWidth = Math.floor(GT.getTextWidth(text, font) + ((text.length + 2) * letterSpacing) + 1);
 
           items[i].style.minWidth = textWidth + 'px';  // set the element's size
 
