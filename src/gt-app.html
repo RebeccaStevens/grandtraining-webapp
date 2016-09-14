@@ -851,7 +851,10 @@
       _drawerTransitioned: function() {
         // if the drawer was just opened, defocus the currently focused item
         if (this.$.drawer.opened) {
+          document.dispatchEvent(new CustomEvent('drawer-opened'));
           document.activeElement.blur();
+        } else {
+          document.dispatchEvent(new CustomEvent('drawer-closed'));
         }
       },
 
