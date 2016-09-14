@@ -17,6 +17,10 @@
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/paper-styles/color.html">
 <link rel="import" href="../bower_components/polymer-cookie/polymer-cookie.html">
+<link rel="import" href="../bower_components/paper-menu-button/paper-menu-button.html">
+<link rel="import" href="../bower_components/paper-menu/paper-menu.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 
 <link rel="import" href="../styles/gt-styles.html">
 <link rel="import" href="../imports/gt.html">
@@ -163,6 +167,60 @@
       }
       #main-toolbar-large .main-menu.drawer-list a[name="faq"] {
         letter-spacing: 2px;
+      }
+      #main-toolbar-large .container > .dropdown-container {
+        @apply(--layout-horizontal);
+        @apply(--layout-center-center);
+      }
+      #main-toolbar-large .container > .dropdown-container::before {
+        background: rgba(0, 0, 0, .1);
+        content: '';
+        display: block;
+        height: 24px;
+        width: 1px;
+      }
+      #main-toolbar-large .container > .dropdown-container paper-menu-button {
+        width: 48px;
+        height: 48px;
+        box-sizing: border-box;
+        display: block;
+        padding: 4px;
+        --paper-menu-button-dropdown: {
+          margin-top: 52px;
+          margin-left: -200px;
+          width: 248px;
+        };
+      }
+      #main-toolbar-large .container > .dropdown-container paper-menu-button paper-icon-button {
+        display: block;
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        right: 4px;
+        bottom: 4px;
+        width: 40px;
+        height: 40px;
+        padding: 6px;
+        --iron-icon: {
+          display: block;
+          position: absolute;
+          top: 6px;
+          left: 6px;
+          right: 6px;
+          bottom: 6px;
+          width: 28px;
+          height: 28px;
+        };
+      }
+      #main-toolbar-large .container > .dropdown-container paper-menu-button paper-item {
+        font-size: 11pt;
+        min-height: 32px;
+        padding: 0 32px;
+      }
+      #main-toolbar-large .container > .dropdown-container paper-menu-button paper-item iron-icon {
+        width: 16px;
+        height: 16px;
+        margin-right: 12px;
       }
 
       neon-animated-pages {
@@ -318,6 +376,16 @@
                 <a name="about-us" href$="[[data.pages.about-us.url]]">[[data.pages.about-us.menuTitle]]</a>
                 <a name="contact-us" href$="[[data.pages.contact-us.url]]">[[data.pages.contact-us.menuTitle]]</a>
               </iron-selector>
+              <div class="dropdown-container">
+                <paper-menu-button>
+                  <paper-icon-button icon="arrow-drop-down" class="dropdown-trigger"></paper-icon-button>
+                  <paper-menu class="dropdown-content">
+                    <paper-item><iron-icon icon="settings"></iron-icon>Settings</paper-item>
+                    <paper-item><iron-icon icon="lock-opened"></iron-icon>Sign in / Sign up</paper-item>
+                    <paper-item><iron-icon icon="lock-closed"></iron-icon>Log Out</paper-item>
+                  </paper-menu>
+                </paper-menu-button>
+              </div>
             </div>
           </app-toolbar>
           <app-toolbar id="main-toolbar-small" hidden$="[[_viewportWidth.gtoet1024]]">
