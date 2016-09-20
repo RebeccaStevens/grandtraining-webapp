@@ -42,14 +42,14 @@
       #main-header-layout app-header {
         background-color: var(--app-primary-color);
         color: #fff;
-        height: 48px;
+        height: 64px;
       }
       app-header paper-icon-button {
         --paper-icon-button-ink-color: white;
       }
 
       #main-header-layout app-header app-toolbar {
-        height: 48px;
+        height: 64px;
         --app-toolbar-font-size: 32px;
       }
 
@@ -283,6 +283,15 @@
       @media (min-width: 640px) {
         .bottom-rule {
           margin: 1.5em 1.5em 0.5em 1.5em;
+        }
+      }
+
+      @media (min-width: 1024px) {
+        #main-header-layout app-header {
+          height: 48px;
+        }
+        #main-header-layout app-header app-toolbar {
+          height: 48px;
         }
       }
 
