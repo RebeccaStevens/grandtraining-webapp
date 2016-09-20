@@ -37,6 +37,16 @@
       "title": "Contact Us",
       "menuTitle": "Contact Us",
       "url": "/contact-us"
+    },
+    "signin": {
+      "title": "Sign In / Sign Up",
+      "menuTitle": "Sign In / Sign Up",
+      "url": "/signin"
+    },
+    "account": {
+      "title": "Account Settings",
+      "menuTitle": "Account",
+      "url": "/account"
     }
   },
   "cities": {
