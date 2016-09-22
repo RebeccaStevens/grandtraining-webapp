@@ -101,7 +101,7 @@
     </neon-carousel-pages>
 
     <h1 id="title">[[pageData.welcome]]</h1>
-    <h2 id="subtitle">[[subtitle]]</h2>
+    <h2 id="subtitle">[[app.data.company.slogan]]</h2>
 
     <div id="cards">
 
@@ -145,11 +145,6 @@
         pageData: Object,
 
         /**
-         * The subtitle to show on the page.
-         */
-        subtitle: String,
-
-        /**
          * The animations this element has.
          */
         animationConfig: {
@@ -179,7 +174,6 @@
        */
       init: function() {
         this.$.pageDataLoader.generateRequest();
-        this.subtitle = this.app.data.company.slogan;
       },
 
       /**
