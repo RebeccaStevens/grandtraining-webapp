@@ -223,8 +223,7 @@
          */
         _showLocationSelectorOnLoad: {
           type: Boolean,
-          value: false,
-          observer: '_updateShowLocationSelector'
+          value: false
         },
 
         /**
@@ -273,6 +272,10 @@
           }
         }
       },
+
+      observers: [
+        '_updateShowLocationSelector(_showLocationSelectorOnLoad, pageData)'
+      ],
 
       /**
        * Updates whether or not the location selector should be shown.
