@@ -64,8 +64,17 @@
      * Called when the route data's page is changed.
      */
     _routePageChanged: function(pageName) {
-      document.activeElement.blur();
-      this.pageName = pageName || this.mainPageName;
+      var updatePageName = function() {
+        document.activeElement.blur();
+        this.pageName = pageName || this.mainPageName;
+        window.removeEventListener('gt-app-shell-ready', updatePageName);
+      }.bind(this);
+
+      if (GT.app.shellReady) {
+        updatePageName();
+      } else {
+        window.addEventListener('gt-app-shell-ready', updatePageName);
+      }
     },
 
     /**
