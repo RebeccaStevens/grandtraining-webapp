@@ -10,6 +10,7 @@
     "src/pages/faq/gt-page-faq.html",
     "src/pages/about-us/gt-page-about-us.html",
     "src/pages/contact-us/gt-page-contact-us.html",
+    "src/pages/signin/gt-page-signin.html",
     "src/pages/404/gt-page-404.html"
   ],
   "sources": [
