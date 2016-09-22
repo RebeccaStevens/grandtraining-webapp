@@ -1,0 +1,182 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../../bower_components/neon-animation/neon-animation-runner-behavior.html">
+<link rel="import" href="../../../bower_components/neon-animation/animations/cascaded-animation.html">
+
+<link rel="import" href="../../../styles/gt-styles.html">
+<link rel="import" href="../../../imports/gt.html">
+<link rel="import" href="../../animations/scale-up-and-fade-in-animation.html">
+<link rel="import" href="../../gt-element-common-behavior.html">
+<link rel="import" href="../gt-page-behavior.html">
+
+<dom-module id="gt-page-signin">
+  <template>
+    <style include="gt-styles">
+      :host {
+        display: block;
+        @apply(--layout-horizontal);
+        @apply(--layout-start);
+        @apply(--layout-center-justified);
+      }
+      #cards {
+        @apply(--layout-horizontal);
+        @apply(--layout-wrap);
+        @apply(--layout-start);
+        @apply(--layout-around-justified);
+        margin: 0 0.5em;
+        width: calc(100% - 1em);
+        max-width: 1140px;
+      }
+      .card {
+        margin: 0.75em 0.25em 0 0.25em;
+        width: calc(100% - 0.5em);
+        max-width: 400px;
+        box-sizing: border-box;
+      }
+      #signin-card .card-content,
+      #signup-card .card-content {
+        padding: 0 16px 16px 16px;
+      }
+      #signin-card {
+
+      }
+      #signup-card {
+
+      }
+      .card paper-button {
+        margin: 0;
+      }
+      @media (min-width: 640px) {
+        #cards {
+          margin: 0.25em 0.5em 0 0.5em;
+        }
+        .card {
+          min-width: 350px;
+        }
+      }
+      @media (min-width: 1280px) {
+        .card {
+          max-width: 500px;
+        }
+      }
+    </style>
+
+    <!-- Layout -->
+    <div id="cards">
+      <paper-card id="signin-card" class="card" heading="Sign In">
+        <div class="card-content">
+          <paper-input id="signin-email" name="email" type="email" label="Email Address" auto-validate required autofocus></paper-input>
+          <paper-input id="signin-password" name="password" type="password" label="Password" auto-validate required></paper-input>
+        </div>
+        <div class="card-actions">
+          <paper-button raised on-tap="_signin">Sign In</paper-button>
+        </div>
+      </paper-card>
+
+      <paper-card id="signup-card" class="card" heading="Sign Up">
+        <div class="card-content">
+          <paper-input id="signup-email" name="email" type="email" label="Email Address" auto-validate required></paper-input>
+          <paper-input id="signup-password" name="password" type="password" label="Password" auto-validate required></paper-input>
+          <paper-input id="signup-password2" type="password" label="Password Confirm" auto-validate required></paper-input>
+        </div>
+        <div class="card-actions">
+          <paper-button raised on-tap="_signup">Sign Up</paper-button>
+        </div>
+      </paper-card>
+    </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'gt-page-signin',
+
+      behaviors: [
+        GT.ElementCommonBehavior,
+        GT.PageBehavior,
+        Polymer.NeonAnimationRunnerBehavior
+      ],
+
+      properties: {
+
+        /**
+         * The data the page will use.
+         */
+        pageData: Object,
+
+        /**
+         * The animations this element has.
+         */
+         animationConfig: {
+           value: function() {
+             return {
+               entry: {
+                 name: 'cascaded-animation',
+                 animation: 'scale-up-and-fade-in-animation',
+                 nodes: Polymer.dom(this.root).querySelectorAll('paper-card'),
+                 nodeDelay: GT.animation.timingOffset,
+                 timing: {
+                   delay: 0,
+                   duration: GT.animation.entryDuration
+                 }
+               }
+             };
+           }
+         }
+      },
+
+      /**
+       * Called when the signin button is clicked.
+       */
+      _signin: function() {
+        this.$['signin-email'].validate();
+        this.$['signin-password'].validate();
+
+        if (!(this.$['signin-email'].invalid ||
+        this.$['signin-password'].invalid)) {
+          console.log('todo signin')
+        }
+      },
+
+      /**
+       * Called when the signup button is clicked.
+       */
+      _signup: function() {
+        this.$['signup-email'].validate();
+        this.$['signup-password'].validate();
+
+        // make sure the passwords match
+        if (this.$['signup-password'].value !== this.$['signup-password2'].value) {
+          this.$['signup-password'].invalid = true;
+          this.$['signup-password2'].invalid = true;
+        }
+
+        if (!(this.$['signup-email'].invalid ||
+        this.$['signup-password'].invalid)) {
+          console.log('todo signup')
+        }
+      },
+
+      /**
+       * Called when the page is switched back to.
+       */
+      onSwitchBackTo: function() {
+        this.playAnimation('entry');
+      },
+
+      /**
+       * Initialise the page.
+       */
+      init: function() {
+        this.pageReady();
+        this.playAnimation('entry');
+      },
+
+      ready: function() {
+        this.init();
+      }
+    });
+  </script>
+</dom-module>
