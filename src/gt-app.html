@@ -395,7 +395,7 @@
         <app-header reveals="[[!_viewportWidth.gtoet1024]]" fixed="[[_viewportWidth.gtoet1024]]" shadow effects="waterfall">
           <app-toolbar id="main-toolbar-large" hidden$="[[!_viewportWidth.gtoet1024]]">
             <div class="container">
-              <a href$="[[data.pages.home.url]]" class$="[[_getMainTitleClass(pageName, _viewportWidth.gtoet1024, 'toolbar-link')]]"><div main-title>[[data.company.name]]</div></a>
+              <a href$="[[data.pages.home.url]]" class$="toolbar-link [[_getMainTitleClass(pageName, _viewportWidth.gtoet1024)]]"><div main-title>[[data.company.name]]</div></a>
               <span class="flex"></span>
               <iron-selector selected="[[renderedPageName]]" attr-for-selected="name" class="main-menu drawer-list" role="navigation">
                 <a class="toolbar-link" name="classes" href$="[[data.pages.classes.url]]">[[data.pages.classes.menuTitle]]</a>
@@ -855,19 +855,15 @@
        * @param {String} otherClasses
        * @returns String
        */
-      _getMainTitleClass: function(pageName, gtoet1024, otherClasses) {
-        if (otherClasses === undefined) {
-          otherClasses = '';
-        }
-
+      _getMainTitleClass: function(pageName, gtoet1024) {
         if (gtoet1024) {
           if (pageName === this.mainPageName) {
-            return 'iron-selected ' + otherClasses;
+            return 'iron-selected';
           } else {
-            return otherClasses;
+            return '';
           }
         }
-        return otherClasses;
+        return '';
       },
 
       /**
