@@ -118,10 +118,10 @@
           <div class="card-content">
             <div id="details">
               <div class="detail" hidden$="[[!isDefined(_venue.contactNumber)]]">
-                <span class="label"><iron-icon icon="phone"></iron-icon><span>Phone:</span></span><span class="content">[[_venue.contactNumber]]</span>
+                <span class="label"><iron-icon icon="phone"></iron-icon><span>Phone:</span></span><a class="content" href="tel:[[_getInternationalPhoneNumber(_venue.contactNumber)]]">[[_venue.contactNumber]]</a>
               </div>
               <div class="detail" hidden$="[[!isDefined(_venue.email)]]">
-                <span class="label"><iron-icon icon="email"></iron-icon><span>Email:</span></span><span class="content">[[_venue.email]]</span>
+                <span class="label"><iron-icon icon="email"></iron-icon><span>Email:</span></span><a class="content" href="mailto:[[_venue.email]]">[[_venue.email]]</a>
               </div>
               <div class="detail" hidden$="[[!isDefined(_venue.address)]]">
                 <span class="label"><iron-icon icon="location"></iron-icon><span>Address:</span></span><span class="content"><html-echo html="[[_venue.address]]"></html-echo></span>
@@ -274,6 +274,21 @@
 
         this._updateVenue();
         this.playAnimation('showContent');
+      },
+
+      /**
+       * Converts a pretty phone number string into an international phone number string.
+       *
+       * @param {String} phoneNumberString
+       * @returns {String}
+       */
+      _getInternationalPhoneNumber: function(phoneNumberString) {
+        phoneNumberString = phoneNumberString.replace(new RegExp('[^0-9]', 'g'), '');
+        if (phoneNumberString.charAt(0) === '0') {
+          phoneNumberString = phoneNumberString.substring(1);
+        }
+        phoneNumberString = this.app.data.countryCode + '-' + phoneNumberString;
+        return phoneNumberString;
       },
 
       /**

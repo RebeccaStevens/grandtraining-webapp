@@ -81,5 +81,6 @@
   },
   "links": {
     "bookclass": "/bookings/booknow/bookclass"
-  }
+  },
+  "countryCode": "+64"
 }
