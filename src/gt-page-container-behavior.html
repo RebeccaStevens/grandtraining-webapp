@@ -41,6 +41,16 @@
       },
 
       /**
+       * State's whether or not this page container has been succesfully initialised.
+       */
+      isContainerInitialised: {
+        type: Boolean,
+        value: false,
+        notify: true,
+        readOnly: true
+      },
+
+      /**
        * The classes route.
        */
       route: Object,
@@ -61,19 +71,36 @@
     ],
 
     /**
+     * This method must be called once the page container has finished loading.
+     * This will then let the page element itself start loading.
+     */
+    pageContainerReady: function() {
+      this._setIsContainerInitialised(true);
+      this.fire('page-container-loaded');
+    },
+
+    /**
+     * This method should be called if an error occurs while initialising the page.
+     */
+    pageContainerError: function() {
+      this._setIsContainerInitialised(false);
+      this.fire('page-container-error');
+    },
+
+    /**
      * Called when the route data's page is changed.
      */
     _routePageChanged: function(pageName) {
       var updatePageName = function() {
         document.activeElement.blur();
         this.pageName = pageName || this.mainPageName;
-        window.removeEventListener('gt-app-shell-ready', updatePageName);
+        this.removeEventListener('page-container-loaded', updatePageName);
       }.bind(this);
 
-      if (GT.app.shellReady) {
+      if (this.isContainerInitialised) {
         updatePageName();
       } else {
-        window.addEventListener('gt-app-shell-ready', updatePageName);
+        this.addEventListener('page-container-loaded', updatePageName);
       }
     },
 

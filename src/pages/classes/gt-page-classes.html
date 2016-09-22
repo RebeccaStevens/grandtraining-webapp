@@ -181,7 +181,17 @@
       _onRouteActiveChanged: function(active) {
         // if active is false but the router's prefix is the classes url then the main page should be shown.
         if (!active && this.$.router.route.prefix === this.app.data.pages.classes.url) {
-          this.pageName = this.mainPageName;
+          var updatePageName = function() {
+            document.activeElement.blur();
+            this.pageName = this.mainPageName;
+            this.removeEventListener('page-container-loaded', updatePageName);
+          }.bind(this);
+
+          if (this.isContainerInitialised) {
+            updatePageName();
+          } else {
+            this.addEventListener('page-container-loaded', updatePageName);
+          }
         }
       },
 
@@ -292,6 +302,7 @@
       _handleAjaxResponse: function() {
         if (this.pageData) {
           this._ajaxLoaded = true;
+          this.pageContainerReady();
         } else {
           this._handleAjaxError();
         }
@@ -302,6 +313,7 @@
        */
       _handleAjaxError: function() {
         this.pageError();
+        this.pageContainerError();
       },
 
       /**

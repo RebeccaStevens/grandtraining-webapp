@@ -502,16 +502,6 @@
         },
 
         /**
-         * States if the app shelll is ready.
-         */
-        shellReady: {
-          type: Boolean,
-          value: false,
-          readOnly: true,
-          observer: '_shellReadyChanged'
-        },
-
-        /**
          * Whether or not a page is currently loading.
          */
         pageLoading: {
@@ -1034,7 +1024,7 @@
           this._shellLoading = false;
           this._readLocationID();
           this._setFixedWithOnDesktopMainToolbarItems();
-          this._setShellReady(true);
+          this.pageContainerReady();
         } else {
           this._handleAjaxError();
         }
@@ -1046,16 +1036,7 @@
       _handleAjaxError: function() {
         this._shellError = true;
         this._shellLoading = false;
-        this._setShellReady(false);
-      },
-
-      /**
-       * Called when `shellReady` changes.
-       */
-      _shellReadyChanged: function() {
-        if (this.shellReady) {
-          window.dispatchEvent(new CustomEvent('gt-app-shell-ready'));
-        }
+        this.pageContainerError();
       },
 
       /**
