@@ -1,5 +1,4 @@
 <link rel="import" href="../../../../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../../../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../../../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../../../../bower_components/html-echo/html-echo.html">
 <link rel="import" href="../../../../../bower_components/neon-animation/neon-animation-runner-behavior.html">
@@ -64,15 +63,6 @@
         }
       }
     </style>
-
-    <!-- Download data -->
-    <iron-ajax
-      id="pageDataLoader"
-      url="[[app.dataPath]]classes.json"
-      handle-as="json"
-      last-response="{{pageData}}"
-      on-response="_handleAjaxResponse"
-      on-error="_handleAjaxError"></iron-ajax>
 
     <!-- Layout -->
     <gt-location-selector id="location-selector" global-cities="[[app.data.cities]]" location="{{_location}}" on-location-changed="_locationChanged"></gt-location-selector>
@@ -258,33 +248,15 @@
       },
 
       /**
-       * Called when the page data loads.
-       */
-      _handleAjaxResponse: function() {
-        if (this.pageData) {
-          this._location = this.app.location;
-          if (this._location) {
-            this._hideClassCategories = false;
-            this._showClassCategories();
-          }
-          this.pageReady();
-        } else {
-          this._handleAjaxError();
-        }
-      },
-
-      /**
-       * Called when an error occurs during the ajax request.
-       */
-      _handleAjaxError: function() {
-        this.pageError();
-      },
-
-      /**
        * Initialise the page.
        */
       init: function() {
-        this.$.pageDataLoader.generateRequest();
+        this._location = this.app.location;
+        if (this._location) {
+          this._hideClassCategories = false;
+          this._showClassCategories();
+        }
+        this.pageReady();
       },
 
       /**

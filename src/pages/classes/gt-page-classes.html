@@ -43,7 +43,7 @@
       fallback-selection="404"
       on-page-loaded="_pageLoaded"
       on-page-error="_pageErrorOccurred">
-      <gt-page-classes-hub id="pageHub" name="hub"></gt-page-classes-hub>
+      <gt-page-classes-hub id="pageHub" name="hub" page-data="[[pageData]]"></gt-page-classes-hub>
       <template is="dom-repeat" items="[[pageData.class-categories]]" as="cc" on-dom-change="_onPagesStamped">
         <gt-page-classes-details name$="[[_urlToName(cc.url)]]"></gt-page-classes-details>
       </template>
