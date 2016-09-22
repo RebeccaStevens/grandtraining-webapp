@@ -207,12 +207,23 @@
           height: 28px;
         };
       }
-      #main-toolbar-large .container > .dropdown-container paper-menu-button paper-item {
+      #drawer-toolbar-dropdown {
+        position: absolute;
+        right: 4px;
+        --paper-menu-button-dropdown: {
+          margin-top: 52px;
+          margin-left: -192px;
+          width: 248px;
+        };
+      }
+      #toolbar-dropdown paper-item,
+      #drawer-toolbar-dropdown paper-item {
         font-size: 11pt;
         min-height: 32px;
         padding: 0 32px;
       }
-      #main-toolbar-large .container > .dropdown-container paper-menu-button paper-item iron-icon {
+      #toolbar-dropdown paper-item iron-icon,
+      #drawer-toolbar-dropdown paper-item iron-icon {
         width: 16px;
         height: 16px;
         margin-right: 12px;
@@ -355,6 +366,15 @@
           <app-header>
             <app-toolbar>
               <a href$="[[data.pages.home.url]]"><div main-title>[[data.company.name]]</div></a>
+
+              <paper-menu-button id="drawer-toolbar-dropdown">
+                <paper-icon-button icon="settings" class="dropdown-trigger"></paper-icon-button>
+                <paper-menu id="toolbar-dropdown-menu" class="dropdown-content" on-iron-select="_toolbar_dropdown_menu_select">
+                  <a name="account" href$="[[data.pages.account.url]]" hidden$="[[!isUserSignedIn]]"><paper-item><iron-icon icon="account"></iron-icon><span>[[data.pages.account.menuTitle]]</span></paper-item></a>
+                  <a name="signin" href$="[[data.pages.signin.url]]" hidden$="[[isUserSignedIn]]"><paper-item><iron-icon icon="lock-opened"></iron-icon><span>[[data.pages.signin.menuTitle]]</span></paper-item></a>
+                  <a name="logout" href="" hidden$="[[!isUserSignedIn]]"><paper-item><iron-icon icon="lock-closed"></iron-icon><span>Log Out</span></paper-item></a>
+                </paper-menu>
+              </paper-menu-button>
             </app-toolbar>
           </app-header>
 
