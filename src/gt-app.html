@@ -1031,6 +1031,8 @@
        * Called when an error occurs during the ajax request.
        */
       _handleAjaxError: function() {
+        this.pageError = true;
+        this.pageLoading = false;
         this._shellError = true;
         this._shellLoading = false;
         this.pageContainerError();
