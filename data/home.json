@@ -1,5 +1,6 @@
 {
-  "welcome": "Welcome to Grand Training",
+  "heading1": "Welcome to Grand Training",
+  "heading2": "Your home for school holiday computer classes",
   "carouselImages": [
     {
       "src": "/images/home-carousel/slide-1.jpg",
