@@ -25,7 +25,7 @@
     </style>
 
     <html-echo class="content" html="[[content]]"></html-echo>
-    <div class="by"><span class="name">[[by]]</span>, <span class="date">[[date]]</span></div>
+    <div class="by"><span class="name">[[by]]</span>, <span class="date">[[_getFormattedDate(_dateAsDateObject)]]</span></div>
   </template>
 
   <script>
@@ -51,7 +51,29 @@
         /**
          * The date the testimonial was written.
          */
-        date: String
+        date: String,
+
+        /**
+         * The date given as a Date object.
+         */
+        _dateAsDateObject: {
+          type: Date,
+          computed: '_createDateObject(date)'
+        }
+      },
+
+      /**
+       * Creates a Date object from the given date string.
+       */
+      _createDateObject: function(dateString) {
+        return new Date(dateString);
+      },
+
+      /**
+       * Get the date formatted to be displayed.
+       */
+      _getFormattedDate: function(date) {
+        return date.getFullYear();
       }
     });
   </script>
