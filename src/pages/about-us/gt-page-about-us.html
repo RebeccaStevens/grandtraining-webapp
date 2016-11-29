@@ -118,26 +118,26 @@
           <div class="card-content">
             <div id="details">
               <div class="detail" hidden$="[[!isDefined(_venue.contactNumber)]]">
-                <span class="label"><iron-icon icon="phone"></iron-icon><span>Phone:</span></span><a class="content" href="tel:[[_getInternationalPhoneNumber(_venue.contactNumber)]]">[[_venue.contactNumber]]</a>
+                <span class="label"><iron-icon icon="phone"></iron-icon><span>Phone:</span></span><a class="content" href="tel:[[_venue.contactNumber]]">[[_venue.contactNumber]]</a>
               </div>
               <div class="detail" hidden$="[[!isDefined(_venue.email)]]">
                 <span class="label"><iron-icon icon="email"></iron-icon><span>Email:</span></span><a class="content" href="mailto:[[_venue.email]]">[[_venue.email]]</a>
               </div>
               <div class="detail" hidden$="[[!isDefined(_venue.address)]]">
-                <span class="label"><iron-icon icon="location"></iron-icon><span>Address:</span></span><span class="content"><html-echo html="[[_venue.address]]"></html-echo></span>
+                <span class="label"><iron-icon icon="location"></iron-icon><span>Address:</span></span><span class="content"><html-echo html="[[_nlToBr(_venue.address)]]"></html-echo></span>
               </div>
               <div class="detail" hidden$="[[!isDefined(_venue.notes)]]">
                 <span class="label"><iron-icon icon="info"></iron-icon><span>Note:</span></span><span class="content"><html-echo html="[[_venue.notes]]"></html-echo></span>
               </div>
             </div>
 
-            <template is="dom-if" if="[[isDefined(pageData.mapConfig.apiKey)]]" on-dom-change="_updateMapMarkerInfoWindow">
+            <template is="dom-if" if="[[isDefined(app.data.api-configs.map-config.api-key)]]" on-dom-change="_updateMapMarkerInfoWindow">
               <paper-material id="map-material" elevation="3">
                 <google-map id="map"
-                  api-key="[[pageData.mapConfig.apiKey]]"
+                  api-key="[[app.data.api-configs.map-config.api-key]]"
                   latitude="[[_venue.location.latitude]]"
                   longitude="[[_venue.location.longitude]]"
-                  zoom="[[pageData.mapConfig.zoom]]"
+                  zoom="[[app.data.api-configs.map-config.zoom]]"
                   fit-to-markers
                   min-zoom="10">
                   <google-map-marker
@@ -239,7 +239,7 @@
         var marker = Polymer.dom(this.root).querySelector('google-map google-map-marker');
 
         if (marker && this._venue) {
-          var address = this._venue.address.split('<br>');
+          var address = this.isDefined(this._venue.address) ? this._venue.address.split('\n') : '';
           var firstLine;
           var remaining;
 
@@ -264,6 +264,18 @@
       },
 
       /**
+       * Convert new line characters to break tags.
+       *
+       * @param string str
+       * @returns string
+       */
+      _nlToBr: function(str) {
+        str = str.replace(/\r/g, '');
+        str = str.replace(/\n/g, '<br>');
+        return str;
+      },
+
+      /**
        * Show all the `gt-class-category` elements.
        */
       _showContent: function() {
@@ -274,21 +286,6 @@
 
         this._updateVenue();
         this.playAnimation('showContent');
-      },
-
-      /**
-       * Converts a pretty phone number string into an international phone number string.
-       *
-       * @param {String} phoneNumberString
-       * @returns {String}
-       */
-      _getInternationalPhoneNumber: function(phoneNumberString) {
-        phoneNumberString = phoneNumberString.replace(new RegExp('[^0-9]', 'g'), '');
-        if (phoneNumberString.charAt(0) === '0') {
-          phoneNumberString = phoneNumberString.substring(1);
-        }
-        phoneNumberString = this.app.data.countryCode + '-' + phoneNumberString;
-        return phoneNumberString;
       },
 
       /**
