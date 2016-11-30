@@ -706,6 +706,23 @@
       },
 
       /**
+       * Find the page name for the given url.
+       */
+      findPageNameForRoute: function(urlRoute) {
+        // search for the page that has this url
+        for (var index in this.data.pages) {
+          var url = this.data.pages[index].url;
+          url = url.replace(/^[/]+/, '');       // remove slashes from the beginning
+          url = url.replace(/[/]+$/, '');       // remove slashes from the end
+          if (url === urlRoute) {
+            return index;
+          }
+        }
+        // if one was not found, it's a 404
+        return '404';
+      },
+
+      /**
        * Called when the page is supposted to change.
        *
        * @param {String} pageName - the new page name

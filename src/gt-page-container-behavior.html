@@ -90,10 +90,10 @@
     /**
      * Called when the route data's page is changed.
      */
-    _routePageChanged: function(pageName) {
+    _routePageChanged: function(urlRoute) {
       var updatePageName = function() {
         document.activeElement.blur();
-        this.pageName = pageName || this.mainPageName;
+        this.pageName = this.findPageNameForRoute(urlRoute);
         this.removeEventListener('page-container-loaded', updatePageName);
       }.bind(this);
 
@@ -102,6 +102,13 @@
       } else {
         this.addEventListener('page-container-loaded', updatePageName);
       }
+    },
+
+    /**
+     * Find the page name for the given url.
+     */
+    findPageNameForRoute: function(urlRoute) {
+      return urlRoute || this.mainPageName;
     },
 
     /**
