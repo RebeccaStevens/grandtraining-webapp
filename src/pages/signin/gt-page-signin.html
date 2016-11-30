@@ -22,10 +22,8 @@
         @apply(--layout-center-justified);
       }
       #cards {
-        @apply(--layout-horizontal);
-        @apply(--layout-wrap);
-        @apply(--layout-start);
-        @apply(--layout-around-justified);
+        @apply(--layout-vertical);
+        @apply(--layout-center);
         margin: 0 0.5em;
         width: calc(100% - 1em);
         max-width: 1140px;
@@ -40,11 +38,20 @@
       #signup-card .card-content {
         padding: 0 16px 16px 16px;
       }
+      #signin-card .card-actions,
+      #signup-card .card-actions {
+        @apply(--layout-horizontal);
+        @apply(--layout-justified);
+      }
       #signin-card {
 
       }
       #signup-card {
 
+      }
+      .signup-notice {
+        text-align: center;
+        padding-left: 8px;
       }
       .card paper-button {
         margin: 0;
@@ -66,23 +73,25 @@
 
     <!-- Layout -->
     <div id="cards">
-      <paper-card id="signin-card" class="card" heading="Sign In">
+      <paper-card id="signin-card" class="card" heading="Sign In" hidden$="[[!_isVisibleCard('signin', visibleCard)]]">
         <div class="card-content">
           <paper-input id="signin-email" name="email" type="email" label="Email Address" auto-validate required autofocus></paper-input>
           <paper-input id="signin-password" name="password" type="password" label="Password" auto-validate required></paper-input>
         </div>
         <div class="card-actions">
+          <div class="signup-notice">Don't have an account?<br><a href="#" on-tap="_showSignUp">Sign Up</a> now.</div>
           <paper-button raised on-tap="_signin">Sign In</paper-button>
         </div>
       </paper-card>
 
-      <paper-card id="signup-card" class="card" heading="Sign Up">
+      <paper-card id="signup-card" class="card" heading="Sign Up" hidden$="[[!_isVisibleCard('signup', visibleCard)]]">
         <div class="card-content">
           <paper-input id="signup-email" name="email" type="email" label="Email Address" auto-validate required></paper-input>
           <paper-input id="signup-password" name="password" type="password" label="Password" auto-validate required></paper-input>
           <paper-input id="signup-password2" type="password" label="Password Confirm" auto-validate required></paper-input>
         </div>
         <div class="card-actions">
+          <div class="signup-notice">Already have an account?<br><a href="#" on-tap="_showSignIn">Sign In</a> now.</div>
           <paper-button raised on-tap="_signup">Sign Up</paper-button>
         </div>
       </paper-card>
@@ -124,6 +133,14 @@
                }
              };
            }
+         },
+
+         /**
+          * The card that is visible.
+          */
+         visibleCard: {
+           type: String,
+           value: 'signin'
          }
       },
 
@@ -157,6 +174,33 @@
         this.$['signup-password'].invalid)) {
           console.log('todo signup')
         }
+      },
+
+      /**
+       * Test if the given cardName is the active card.
+       *
+       * @param String cardName
+       * @param String activeCardName
+       * @returns Boolean
+       */
+      _isVisibleCard: function(cardName, activeCardName) {
+        return cardName === activeCardName;
+      },
+
+      /**
+       * Show the sign in card.
+       */
+      _showSignIn: function() {
+        this.visibleCard = 'signin';
+        this.$['signin-card'].querySelector('paper-input').focus();
+      },
+
+      /**
+       * Show the sign up card.
+       */
+      _showSignUp: function() {
+        this.visibleCard = 'signup';
+        this.$['signup-card'].querySelector('paper-input').focus();
       },
 
       /**
