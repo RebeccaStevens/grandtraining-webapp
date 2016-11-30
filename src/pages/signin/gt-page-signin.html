@@ -192,7 +192,7 @@
        */
       _showSignIn: function() {
         this.visibleCard = 'signin';
-        this.$['signin-card'].querySelector('paper-input').focus();
+        Polymer.dom(this.$['signin-card']).querySelector('paper-input').focus();
       },
 
       /**
@@ -200,7 +200,7 @@
        */
       _showSignUp: function() {
         this.visibleCard = 'signup';
-        this.$['signup-card'].querySelector('paper-input').focus();
+        Polymer.dom(this.$['signup-card']).querySelector('paper-input').focus();
       },
 
       /**
