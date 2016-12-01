@@ -847,9 +847,9 @@
       _readLocationID: function() {
         var locationID = this.$['locationID-cookie'].readCookie();
 
-        for (var city in this.data.cities) {
-          if (this.data.cities[city][locationID] !== undefined) {
-            this.location = this.data.cities[city][locationID];
+        for (var venue in this.data.venues) {
+          if (this.data.venues[venue][locationID] !== undefined) {
+            this.location = this.data.venues[venue][locationID];
             break;
           }
         }

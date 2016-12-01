@@ -110,7 +110,7 @@
       on-error="_handleAjaxError"></iron-ajax>
 
     <!-- Layout -->
-    <gt-location-selector id="location-selector" global-cities="[[app.data.cities]]" location="{{_location}}" on-location-changed="_locationChanged"></gt-location-selector>
+    <gt-location-selector id="location-selector" global-cities="[[app.data.venues]]" location="{{_location}}" on-location-changed="_locationChanged"></gt-location-selector>
 
     <div id="content" hidden$="[[_hideContent]]">
       <template is="dom-if" if="[[isDefined(_venue)]]">
