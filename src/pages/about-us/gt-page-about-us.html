@@ -118,7 +118,7 @@
           <div class="card-content">
             <div id="details">
               <div class="detail" hidden$="[[!isDefined(_venue.contactNumber)]]">
-                <span class="label"><iron-icon icon="phone"></iron-icon><span>Phone:</span></span><a class="content" href="tel:[[_venue.contactNumber]]">[[_venue.contactNumber]]</a>
+                <span class="label"><iron-icon icon="phone"></iron-icon><span>Phone:</span></span><a class="content" href="tel:[[_venue.contactNumber]]">[[_formatPhoneNumber(_venue.contactNumber)]]</a>
               </div>
               <div class="detail" hidden$="[[!isDefined(_venue.email)]]">
                 <span class="label"><iron-icon icon="email"></iron-icon><span>Email:</span></span><a class="content" href="mailto:[[_venue.email]]">[[_venue.email]]</a>
@@ -273,6 +273,26 @@
         str = str.replace(/\r/g, '');
         str = str.replace(/\n/g, '<br>');
         return str;
+      },
+
+      /**
+       * Format a phone number.
+       *
+       * @param String phoneNumber
+       * @returns String
+       */
+      _formatPhoneNumber: function(phoneNumber) {
+        var openingBracketPos = phoneNumber.indexOf('(');
+        var closingBracketPos = phoneNumber.indexOf(')');
+        var areaCode = phoneNumber.substring(openingBracketPos + 1, closingBracketPos - openingBracketPos)
+
+        var value = phoneNumber.substring(closingBracketPos + 1);
+
+        if (value.length === 7) {
+          value = value.substring(0, 3) + ' ' + value.substring(3);
+        }
+
+        return '(' + areaCode + ') ' + value;
       },
 
       /**
