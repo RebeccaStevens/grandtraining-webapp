@@ -392,6 +392,7 @@
        * @returns {String}
        */
       _getDisplayCurrency: function(amount) {
+        amount = Number.parseFloat(amount);
         return '$' + amount.toFixed(2);
       },
 
