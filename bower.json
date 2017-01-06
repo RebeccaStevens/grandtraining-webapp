@@ -1,24 +1,28 @@
 {
-  "name": "app-drawer-template",
+  "name": "grandtraining-webapp",
   "authors": [
-    "The Polymer Authors"
+    "Rebecca Stevens"
   ],
   "private": true,
   "dependencies": {
-    "app-elements": "polymerelements/app-elements#^0.9.0",
+    "polymer": "polymer/polymer#^1.7.1",
+    "app-elements": "polymerelements/app-elements#^0.10.1",
     "iron-elements": "polymerelements/iron-elements#^1.0.10",
     "paper-elements": "polymerelements/paper-elements#^1.0.7",
-    "polymer": "polymer/polymer#^1.5.0",
+    "neon-animation": "polymerelements/neon-animation#^1.2.4",
     "neon-slideshow": "^1.0.0-alpha.6",
     "html-echo": "^1.0.1",
     "polymer-cookie": "^1.1.1",
-    "google-web-components": "GoogleWebComponents/google-web-components#^1.1.0"
+    "google-web-components": "GoogleWebComponents/google-web-components#^1.1.1"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"
   },
   "resolutions": {
-    "iron-flex-layout": "^1.0.0",
-    "web-animations-js": "^2.2.0"
+    "iron-flex-layout": "^1.3.1",
+    "web-animations-js": "^2.2.0",
+    "iron-overlay-behavior": "^1.8.6",
+    "firebase": "^3.0",
+    "neon-animation": "^1.0.0"
   }
 }
