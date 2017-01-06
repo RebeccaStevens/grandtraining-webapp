@@ -369,7 +369,7 @@
         this._recaptchaEl = document.createElement('div');
         document.body.appendChild(this._recaptchaEl);
         this._grecaptchaId = window.grecaptcha.render(this._recaptchaEl, {
-          sitekey: this.pageData.recaptchaConfig.sitekey,
+          sitekey: GT.app.data['api-configs']['recaptcha-config']['site-key'],
           theme: 'light',
           callback: function(response) {
             Polymer.dom(this.root).querySelector('[name="g-recaptcha-response"]').value = response;
