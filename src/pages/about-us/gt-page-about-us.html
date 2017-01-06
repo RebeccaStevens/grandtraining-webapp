@@ -288,7 +288,7 @@
 
         var value = phoneNumber.substring(closingBracketPos + 1);
 
-        if (value.length === 7) {
+        if (value.length >= 6) {
           value = value.substring(0, 3) + ' ' + value.substring(3);
         }
 
