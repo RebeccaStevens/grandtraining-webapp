@@ -49,6 +49,9 @@
       #signup-card {
 
       }
+      a {
+        cursor: pointer;
+      }
       .signup-notice {
         text-align: center;
         padding-left: 8px;
@@ -79,7 +82,7 @@
           <paper-input id="signin-password" name="password" type="password" label="Password" auto-validate required></paper-input>
         </div>
         <div class="card-actions">
-          <div class="signup-notice">Don't have an account?<br><a href="#" on-tap="_showSignUp">Sign Up</a> now.</div>
+          <div class="signup-notice">Don't have an account?<br><a on-tap="_showSignUp">Sign Up</a> now.</div>
           <paper-button raised on-tap="_signin">[[app.data.pages.signin.tilte]]</paper-button>
         </div>
       </paper-card>
@@ -91,7 +94,7 @@
           <paper-input id="signup-password2" type="password" label="Password Confirm" auto-validate required></paper-input>
         </div>
         <div class="card-actions">
-          <div class="signup-notice">Already have an account?<br><a href="#" on-tap="_showSignIn">[[app.data.pages.signin.tilte]]</a> now.</div>
+          <div class="signup-notice">Already have an account?<br><a on-tap="_showSignIn">[[app.data.pages.signin.tilte]]</a> now.</div>
           <paper-button raised on-tap="_signup">Sign Up</paper-button>
         </div>
       </paper-card>
