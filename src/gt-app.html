@@ -980,6 +980,7 @@
        */
       _setFixedWithOnDesktopMenuItems: function() {
         var items = Polymer.dom(this.$['main-toolbar-large']).querySelectorAll('.main-menu.drawer-list a');
+        var extraPadding = 8;
         for (var i=0; i<items.length; i++) {
           // increase the font size to the large version so the text width is at the larger size
           items[i].style.fontWeight = 'bold';
@@ -994,7 +995,7 @@
           // calculate the width of the text taking into account the letter spacing and border, then round it up.
           var textWidth = Math.floor(GT.getTextWidth(text, font) + ((text.length + 2) * letterSpacing) + 1);
 
-          items[i].style.minWidth = textWidth + 'px';  // set the element's size
+          items[i].style.minWidth = (textWidth + extraPadding) + 'px';  // set the element's size
 
           // clear the font styles that were applied just before
           items[i].style.fontWeight = '';
