@@ -865,7 +865,7 @@
       /**
        * Called when the page title changes.
        */
-      _pageTitleChanged: function(title) {
+      _pageTitleChanged: function() {
         this._updatePageTitleSize();
       },
 
@@ -894,7 +894,7 @@
        * @param {String} subPath
        */
       _showBackButton: function(subPath) {
-        return subPath !== "" && subPath !== "/";
+        return subPath !== '' && subPath !== '/';
       },
 
       /**
