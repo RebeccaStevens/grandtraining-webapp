@@ -14,9 +14,9 @@
     "src/pages/404/gt-page-404.html"
   ],
   "sources": [
-   "src/**/*",
-   "styles/**/*",
-   "scripts/**/*"
+    "src/**/*",
+    "styles/**/*",
+    "scripts/**/*"
   ],
   "includeDependencies": [
     "manifest.json",
