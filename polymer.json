@@ -16,8 +16,7 @@
   "sources": [
    "src/**/*",
    "styles/**/*",
-   "scripts/**/*",
-   "data/**/*"
+   "scripts/**/*"
   ],
   "includeDependencies": [
     "manifest.json",
