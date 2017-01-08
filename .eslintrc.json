@@ -1,0 +1,16 @@
+{
+    "extends": "eslint:recommended",
+    "plugins": [
+        "html"
+    ],
+    "rules": {
+      "quotes": ["error", "single"]
+    },
+    "globals": {
+      "Polymer": true,
+      "GT": true
+    },
+    "env": {
+      "browser": true
+    }
+}

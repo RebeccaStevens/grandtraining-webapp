@@ -1,0 +1,19 @@
+{
+  "name": "grandtraining-webapp",
+  "version": "0.0.0",
+  "author": "Rebecca Stevens",
+  "description": "A web app for Grand Training, children's computer classes.",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RebeccaStevens/grandtraining-webapp.git"
+  },
+  "private": true,
+  "devDependencies": {
+    "eslint": "^3.13.0",
+    "eslint-plugin-html": "^1.7.0"
+  }
+}
