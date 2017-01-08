@@ -15,7 +15,6 @@
   ],
   "sources": [
    "src/**/*",
-   "images/**/*",
    "styles/**/*",
    "scripts/**/*",
    "data/**/*"
