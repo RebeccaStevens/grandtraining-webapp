@@ -76,14 +76,14 @@
 
     <!-- Layout -->
     <div id="cards">
-      <paper-card id="signin-card" class="card" heading="[[app.data.pages.signin.tilte]]" hidden$="[[!_isVisibleCard('signin', visibleCard)]]">
+      <paper-card id="signin-card" class="card" heading="[[app.data.pages.signin.title]]" hidden$="[[!_isVisibleCard('signin', visibleCard)]]">
         <div class="card-content">
           <paper-input id="signin-email" name="email" type="email" label="Email Address" auto-validate required autofocus></paper-input>
           <paper-input id="signin-password" name="password" type="password" label="Password" auto-validate required></paper-input>
         </div>
         <div class="card-actions">
           <div class="signup-notice">Don't have an account?<br><a on-tap="_showSignUp">Sign Up</a> now.</div>
-          <paper-button raised on-tap="_signin">[[app.data.pages.signin.tilte]]</paper-button>
+          <paper-button raised on-tap="_signin">[[app.data.pages.signin.title]]</paper-button>
         </div>
       </paper-card>
 
@@ -94,7 +94,7 @@
           <paper-input id="signup-password2" type="password" label="Password Confirm" auto-validate required></paper-input>
         </div>
         <div class="card-actions">
-          <div class="signup-notice">Already have an account?<br><a on-tap="_showSignIn">[[app.data.pages.signin.tilte]]</a> now.</div>
+          <div class="signup-notice">Already have an account?<br><a on-tap="_showSignIn">[[app.data.pages.signin.title]]</a> now.</div>
           <paper-button raised on-tap="_signup">Sign Up</paper-button>
         </div>
       </paper-card>
