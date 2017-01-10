@@ -23,8 +23,6 @@
     <style include="gt-styles">
       :host {
         display: block;
-        @apply(--layout-vertical);
-        @apply(--layout-center-center);
       }
       #location-selector.float {
         margin: 0 auto;
@@ -119,6 +117,9 @@
         }
       }
       @media (min-width: 2560px) {
+        #card {
+          margin: 0.75em auto;
+        }
         #classes .card-content gt-class {
           min-width: 800px;
           max-width: 1300px;
