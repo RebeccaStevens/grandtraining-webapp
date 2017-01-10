@@ -155,7 +155,7 @@
 
           <paper-card id="classes" heading="Classes">
             <div class="card-content">
-              <template is="dom-repeat" items="[[pageData.classes]]" as="class">
+              <template is="dom-repeat" items="[[pageData.classes]]" sort="_sortClasses" as="class">
                 <gt-class
                   title="[[class.title]]"
                   level="[[class.level]]"
@@ -307,6 +307,41 @@
        */
       _getPageDataUrl: function(dataPath, locationId, name) {
         return dataPath + 'classes/' + locationId + '/' + name + '.json';
+      },
+
+      /**
+       * Used to sort the classes' display order.
+       */
+      _sortClasses: function(a, b) {
+        var aLevel = this._getLevelPrecedence(a.level);
+        var bLevel = this._getLevelPrecedence(b.level);
+
+        if (aLevel !== bLevel) {
+          return aLevel > bLevel;
+        }
+        if (a['min-age'] !== b['min-age']) {
+          return a['min-age'] > b['min-age'];
+        }
+        return a['max-age'] < b['max-age'];
+      },
+
+      /**
+       * Get the precedence of the level.
+       *
+       * @param {String} level - the level to get the precedence of
+       * @returns {Number}
+       */
+      _getLevelPrecedence: function(level) {
+        switch(level) {
+          case 'Beginner':
+            return 1;
+          case 'Intermediate':
+            return 2;
+          case 'Advanced':
+            return 3;
+          default:
+            return 0;
+        }
       },
 
       /**
