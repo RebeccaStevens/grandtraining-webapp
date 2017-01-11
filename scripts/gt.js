@@ -97,4 +97,15 @@ if (window.GT === undefined) {
       var metrics = context.measureText(text);
       return metrics.width;
   };
+
+  /**
+   * When the field is blurred, set the invalid property to false if the field's value if empty.
+   *
+   * @param {Event} e
+   */
+  window.GT.onFieldBlur = function(e) {
+    if (e.target.value === '' || e.target.value === undefined || e.target.value === null) {
+      e.target.invalid = false;
+    }
+  };
 }
