@@ -12,7 +12,7 @@
 <link rel="import" href="../../../../animations/scale-up-and-fade-in-animation.html">
 <link rel="import" href="../../../../animations/scale-down-and-fade-out-animation.html">
 <link rel="import" href="../../../../gt-element-common-behavior.html">
-<link rel="import" href="../../../../elements/gt-location-selector.html">
+<link rel="import" href="../../../../elements/gt-venue-selector.html">
 <link rel="import" href="../../../gt-page-behavior.html">
 <link rel="import" href="gt-class-category.html">
 
@@ -65,7 +65,7 @@
     </style>
 
     <!-- Layout -->
-    <gt-location-selector id="location-selector" global-cities="[[app.data.venues]]" location="{{_location}}" on-location-changed="_locationChanged"></gt-location-selector>
+    <gt-venue-selector id="venue-selector" global-regions="[[app.data.regions]]" venue="{{_venue}}" on-venue-changed="_venueChanged"></gt-venue-selector>
 
     <div id="class-categories" hidden$="[[_hideClassCategories]]">
       <template is="dom-repeat" items="[[pageData.class-categories]]" as="cc" on-dom-change="_ccStamped">
@@ -75,7 +75,7 @@
           href="[[app.data.pages.classes.url]][[cc.url]]"
           image-src="[[cc.image.src]]"
           image-placeholder="[[cc.image.placeholder]]"
-          hidden$="[[!_isAvailableInLocation(cc.locationsAvailable, _location)]]">
+          hidden$="[[!_isAvailableInVenue(cc.venuesAvailable, _venue)]]">
           <html-echo html="[[cc.teaser]]"></html-echo>
         </gt-class-category>
       </template>
@@ -107,9 +107,9 @@
         },
 
         /**
-         * The location that is being shown.
+         * The venue that is being shown.
          */
-        _location: Object,
+        _venue: Object,
 
         /**
          * Whether or not to hide the class categories.
@@ -192,19 +192,19 @@
       },
 
       /**
-       * Called when a location is set.
+       * Called when a venue is set.
        */
-      _locationChanged: function() {
-        this.app.location = this._location;
+      _venueChanged: function() {
+        this.app.venue = this._venue;
         this._hideClassCategories = false;
         this._showClassCategories();
       },
 
       /**
-       * Animate the location selector element in.
+       * Animate the venue selector element in.
        */
-      _animateLocationSelectorIn: function() {
-        var ls = this.$['location-selector'];
+      _animateVenueSelectorIn: function() {
+        var ls = this.$['venue-selector'];
         ls.show();
       },
 
@@ -237,22 +237,22 @@
       },
 
       /**
-       * Returns true if location is in locationsAvailable.
+       * Returns true if venue is in venuesAvailable.
        *
-       * @param {Array} locationsAvailable
-       * @param {Object} location
+       * @param {Array} venuesAvailable
+       * @param {Object} venue
        * @returns {Boolean}
        */
-      _isAvailableInLocation: function(locationsAvailable, location) {
-        return locationsAvailable.includes(location.id);
+      _isAvailableInVenue: function(venuesAvailable, venue) {
+        return venuesAvailable.includes(venue.id);
       },
 
       /**
        * Initialise the page.
        */
       init: function() {
-        this._location = this.app.location;
-        if (this._location) {
+        this._venue = this.app.venue;
+        if (this._venue) {
           this._hideClassCategories = false;
           this._showClassCategories();
         }
@@ -263,8 +263,8 @@
        * Called when the page is switched back to.
        */
       onSwitchBackTo: function() {
-        this._location = this.app.location;
-        this._animateLocationSelectorIn();
+        this._venue = this.app.venue;
+        this._animateVenueSelectorIn();
         this._showClassCategories();
       },
 

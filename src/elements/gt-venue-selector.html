@@ -13,7 +13,7 @@
 <link rel="import" href="../../imports/gt.html">
 <link rel="import" href="../gt-element-common-behavior.html">
 
-<dom-module id="gt-location-selector">
+<dom-module id="gt-venue-selector">
   <template>
     <style include="gt-styles">
       :host {
@@ -40,20 +40,20 @@
       }
     </style>
 
-    <paper-card id="card" heading="Your Location">
+    <paper-card id="card" heading="Venue Selector">
       <div class="card-content">
-        <paper-dropdown-menu id="citySelector" label="City">
-          <paper-listbox class="dropdown-content" on-iron-select="_citySelected">
-            <template is="dom-repeat" items="[[_cities]]" as="city">
-              <paper-item city-name="[[city.name]]">[[city.name]]</paper-item>
+        <paper-dropdown-menu id="regionSelector" label="Region">
+          <paper-listbox class="dropdown-content" on-iron-select="_regionSelected">
+            <template is="dom-repeat" items="[[_regions]]" as="region">
+              <paper-item region-name="[[region.name]]">[[region.name]]</paper-item>
             </template>
           </paper-listbox>
         </paper-dropdown-menu>
 
-        <paper-dropdown-menu id="areaSelector" label="Area" disabled$="[[_disableAreaSelector]]">
-          <paper-listbox class="dropdown-content" on-iron-select="_areaSelected">
-            <template is="dom-repeat" items="[[_areas]]" as="area">
-              <paper-item location-id="[[area.id]]">[[area.name]]</paper-item>
+        <paper-dropdown-menu id="venueSelector" label="Venue" disabled$="[[_disableVenueSelector]]">
+          <paper-listbox class="dropdown-content" on-iron-select="_venueSelected">
+            <template is="dom-repeat" items="[[_venues]]" as="venue">
+              <paper-item venue-id="[[venue.id]]">[[venue.name]]</paper-item>
             </template>
           </paper-listbox>
         </paper-dropdown-menu>
@@ -63,7 +63,7 @@
 
   <script>
     Polymer({
-      is: 'gt-location-selector',
+      is: 'gt-venue-selector',
 
       behaviors: [
         GT.ElementCommonBehavior,
@@ -73,35 +73,35 @@
       properties: {
 
         /**
-         * The gloabel cities object
+         * The gloabel regions object
          */
-        globalCities: {
+        globalRegions: {
           type: Object,
-          observer: '_gloabelCitiesChanged'
+          observer: '_gloabelRegionsChanged'
         },
 
         /**
-         * The selected location.
+         * The selected venue.
          */
-        location: {
-          type: Object,
-          notify: true,
-          observer: '_locationChanged'
-        },
-
-        /**
-         * The selected city.
-         */
-        _city: {
+        venue: {
           type: Object,
           notify: true,
-          observer: '_cityChanged'
+          observer: '_venueChanged'
         },
 
         /**
-         * A list of the cities the user can choose from.
+         * The selected region.
          */
-        _cities: {
+        _region: {
+          type: Object,
+          notify: true,
+          observer: '_regionChanged'
+        },
+
+        /**
+         * A list of the regions the user can choose from.
+         */
+        _regions: {
           type: Array,
           value: function() {
             return [];
@@ -109,9 +109,9 @@
         },
 
         /**
-         * A list of the areas in the selected city the user can choose from.
+         * A list of the venues in the selected region the user can choose from.
          */
-        _areas: {
+        _venues: {
           type: Array,
           value: function() {
             return [];
@@ -119,9 +119,9 @@
         },
 
         /**
-         * States whether or not he AreaSelector should be disabled.
+         * States whether or not he VenueSelector should be disabled.
          */
-        _disableAreaSelector: {
+        _disableVenueSelector: {
           type: Boolean,
           value: true
         },
@@ -196,66 +196,66 @@
       },
 
       /**
-       * Called when `app.data.venues` changes.
+       * Called when `app.data.regions` changes.
        */
-      _gloabelCitiesChanged: function(cities) {
-        var cityArray = [];
-        for (var key in cities) {
-          var city = {
+      _gloabelRegionsChanged: function(regions) {
+        var regionArray = [];
+        for (var key in regions) {
+          var region = {
             name: key,
-            areas: cities[key]
+            venues: regions[key]
           };
 
-          cityArray.push(city);
+          regionArray.push(region);
         }
-        this.set('_cities', cityArray);
+        this.set('_regions', regionArray);
       },
 
       /**
-       * Called when `_city` changes.
+       * Called when `_region` changes.
        */
-      _cityChanged: function(city) {
-        this._areas = city.areas;
+      _regionChanged: function(region) {
+        this._venues = region.venues;
 
-        Polymer.dom(this.$.areaSelector).querySelector('paper-listbox').selected = -1;
+        Polymer.dom(this.$.venueSelector).querySelector('paper-listbox').selected = -1;
 
-        if (city.areas.length === 1) {
+        if (region.venues.length === 1) {
           this.async(function() {
-            Polymer.dom(this.$.areaSelector).querySelector('paper-listbox').selected = 0;
+            Polymer.dom(this.$.venueSelector).querySelector('paper-listbox').selected = 0;
           }, 0);
         }
       },
 
       /**
-       * Called when `location` changes.
+       * Called when `venue` changes.
        */
-      _locationChanged: function(location) {
-        if (!location) {
+      _venueChanged: function(venue) {
+        if (!venue) {
           return;
         }
 
-        var cities = this._cities;
-
-        if (cities.length === 0) {
+        if (this._regions.length === 0) {
           return;
         }
 
-        var city;
+        var regions = this._regions;
+        var region;
         var i = 0;
-        for (city in cities) {
-          if (cities[city].name === location.city) {
-            Polymer.dom(this.$.citySelector).querySelector('paper-listbox').selected = i;
+        for (region in regions) {
+          if (regions[region].name === venue.region) {
+            Polymer.dom(this.$.regionSelector).querySelector('paper-listbox').selected = i;
             break;
           }
           i++;
         }
 
+        // wait for the venueSelector to be populated
         setTimeout(function() {
-          var areas = cities[city].areas;
+          var venues = regions[region].venues;
           var j = 0;
-          for (var area in areas) {
-            if (areas[area].id === location.id) {
-              Polymer.dom(this.$.areaSelector).querySelector('paper-listbox').selected = j;
+          for (var venue in venues) {
+            if (venues[venue].id === venue.id) {
+              Polymer.dom(this.$.venueSelector).querySelector('paper-listbox').selected = j;
               break;
             }
             j++;
@@ -264,37 +264,37 @@
       },
 
       /**
-       * Called when a city is selected.
+       * Called when a region is selected.
        */
-      _citySelected: function(e) {
-        var cityName = e.detail.item.cityName;
-        var areas = [];
-        for(var key in this.globalCities[cityName]) {
-          areas.push(this.globalCities[cityName][key]);
+      _regionSelected: function(e) {
+        var regionName = e.detail.item.regionName;
+        var venues = [];
+        for(var key in this.globalRegions[regionName]) {
+          venues.push(this.globalRegions[regionName][key]);
         }
 
-        this._city = {
-          name: cityName,
-          areas: areas
+        this._region = {
+          name: regionName,
+          venues: venues
         };
 
-        this._disableAreaSelector = false;
+        this._disableVenueSelector = false;
       },
 
       /**
-       * Called when an Area is selected.
+       * Called when an Venue is selected.
        */
-      _areaSelected: function(e) {
-        var newLocation = this.globalCities[this._city.name][e.detail.item.locationId];
-        if (newLocation !== this.location) {
-          this.location = newLocation;
-          this.fire('location-changed');
+      _venueSelected: function(e) {
+        var newLocation = this.globalRegions[this._region.name][e.detail.item.venueId];
+        if (newLocation !== this.venue) {
+          this.venue = newLocation;
+          this.fire('venue-changed');
         }
       },
 
       ready: function() {
-        if (this.location !== undefined) {
-          this._locationChanged(this.location);
+        if (this.venue !== undefined) {
+          this._venueChanged(this.venue);
         }
         this.playAnimation('entry');
       }

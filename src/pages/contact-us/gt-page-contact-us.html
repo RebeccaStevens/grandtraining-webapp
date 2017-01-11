@@ -158,8 +158,8 @@
             on-paper-dropdown-open="_overlayOpened"
             on-paper-dropdown-close="_overlayClosed">
             <paper-listbox class="dropdown-content">
-              <template is="dom-repeat" items="[[pageData.locations]]" as="location">
-                <paper-item>[[location.fullname]]</paper-item>
+              <template is="dom-repeat" items="[[pageData.venues]]" as="venue">
+                <paper-item>[[venue.fullname]]</paper-item>
               </template>
             </paper-listbox>
           </paper-dropdown-menu>

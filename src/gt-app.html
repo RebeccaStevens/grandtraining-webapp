@@ -353,11 +353,11 @@
       on-response="_handleAjaxResponse"
       on-error="_handleAjaxError"></iron-ajax>
 
-    <!-- location cookie -->
+    <!-- venue cookie -->
     <polymer-cookie
-      id="locationID-cookie"
-      name="locationID"
-      value="[[location.id]]"
+      id="venueID-cookie"
+      name="venueID"
+      value="[[venue.id]]"
       path="/"
       time="-1"></polymer-cookie>
 
@@ -500,11 +500,11 @@
         data: Object,
 
         /**
-         * The location the user has selected.
+         * The venue the user has selected.
          */
-        location: {
+        venue: {
           type: Object,
-          observer: '_locationChanged'
+          observer: '_venueChanged'
         },
 
         /**
@@ -836,31 +836,31 @@
       },
 
       /**
-       * Called when the `location` changes.
+       * Called when the `venue` changes.
        */
-      _locationChanged: function() {
-        this._saveLocationID();
+      _venueChanged: function() {
+        this._saveVenueID();
       },
 
       /**
-       * Read the locationID cookie.
+       * Read the venueID cookie.
        */
-      _readLocationID: function() {
-        var locationID = this.$['locationID-cookie'].readCookie();
+      _readVenueID: function() {
+        var venueID = this.$['venueID-cookie'].readCookie();
 
-        for (var venue in this.data.venues) {
-          if (this.data.venues[venue][locationID] !== undefined) {
-            this.location = this.data.venues[venue][locationID];
+        for (var region in this.data.regions) {
+          if (this.data.regions[region][venueID] !== undefined) {
+            this.venue = this.data.regions[region][venueID];
             break;
           }
         }
       },
 
       /**
-       * Write the locationID cookie.
+       * Write the venueID cookie.
        */
-      _saveLocationID: function() {
-        this.$['locationID-cookie'].createCookie();
+      _saveVenueID: function() {
+        this.$['venueID-cookie'].createCookie();
       },
 
       /**
@@ -1036,13 +1036,13 @@
       },
 
       /**
-       * Called when the page data loads.
+       * Called when the app shell data loads.
        */
       _handleAjaxResponse: function() {
         if (this.data) {
           this._shellError = false;
           this._shellLoading = false;
-          this._readLocationID();
+          this._readVenueID();
           this._setFixedWithOnDesktopMainToolbarItems();
           this.pageContainerReady();
         } else {
@@ -1051,7 +1051,7 @@
       },
 
       /**
-       * Called when an error occurs during the ajax request.
+       * Called when an error occurs during the app shell ajax request.
        */
       _handleAjaxError: function() {
         this.pageError = true;

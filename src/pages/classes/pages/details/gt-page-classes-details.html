@@ -14,7 +14,7 @@
 <link rel="import" href="../../../../../imports/gt.html">
 <link rel="import" href="../../../../gt-element-common-behavior.html">
 <link rel="import" href="../../../../animations/scale-up-and-fade-in-animation.html">
-<link rel="import" href="../../../../elements/gt-location-selector.html">
+<link rel="import" href="../../../../elements/gt-venue-selector.html">
 <link rel="import" href="../../../gt-page-behavior.html">
 <link rel="import" href="gt-class.html">
 
@@ -24,7 +24,7 @@
       :host {
         display: block;
       }
-      #location-selector.float {
+      #venue-selector.float {
         margin: 0 auto;
         z-index: 1;
         position: absolute;
@@ -133,19 +133,19 @@
     <!-- Download data -->
     <iron-ajax
       id="pageDataLoader"
-      url="[[_getPageDataUrl(app.dataPath, _location.id, name)]]"
+      url="[[_getPageDataUrl(app.dataPath, _venue.id, name)]]"
       handle-as="json"
       last-response="{{pageData}}"
       on-response="_handleAjaxResponse"
       on-error="_handleAjaxError"></iron-ajax>
 
     <!-- Layout -->
-    <gt-location-selector
-      id="location-selector"
-      global-cities="[[app.data.venues]]"
-      location="{{_location}}"
-      on-location-changed="_locationChanged"
-      hidden$="[[!_showLocationSelector]]"></gt-location-selector>
+    <gt-venue-selector
+      id="venue-selector"
+      global-regions="[[app.data.regions]]"
+      venue="{{_venue}}"
+      on-venue-changed="_venueChanged"
+      hidden$="[[!_showVenueSelector]]"></gt-venue-selector>
 
     <paper-card id="card" heading="[[pageData.title]]" hidden$="[[!_showCard]]">
       <div class="card-content">
@@ -173,7 +173,7 @@
         <template is="dom-if" if="[[!doesArrayHaveValues(pageData.classes)]]">
           <paper-card id="no-classes" heading="No Classes Available">
             <div class="card-content">
-              <p>Unfortunatly, we are not currently offering any [[pageData.title]] classes in [[_location.name]].</p>
+              <p>Unfortunatly, we are not currently offering any [[pageData.title]] classes in [[_venue.name]].</p>
               <p>If you wish to arange one, please <a href="[[app.data.links.contactus]]">contact us</a> and we'll see what we can do.</p>
             </div>
           </paper-card>
@@ -197,7 +197,7 @@
       properties: {
 
         /**
-         * Stores cashed page data for each location id.
+         * Stores cashed page data for each venue id.
          */
         _cashedPageData: {
           type: Object,
@@ -207,22 +207,22 @@
         },
 
         /**
-         * The location that is being shown.
+         * The venue that is being shown.
          */
-        _location: Object,
+        _venue: Object,
 
         /**
-         * Whether to show the location selector or not.
+         * Whether to show the venue selector or not.
          */
-        _showLocationSelector: {
+        _showVenueSelector: {
           type: Boolean,
           value: false
         },
 
         /**
-         * Whether to show the location selector on load.
+         * Whether to show the venue selector on load.
          */
-        _showLocationSelectorOnLoad: {
+        _showVenueSelectorOnLoad: {
           type: Boolean,
           value: false
         },
@@ -275,27 +275,27 @@
       },
 
       observers: [
-        '_updateShowLocationSelector(_showLocationSelectorOnLoad, pageData)'
+        '_updateShowVenueSelector(_showVenueSelectorOnLoad, pageData)'
       ],
 
       /**
-       * Updates whether or not the location selector should be shown.
+       * Updates whether or not the venue selector should be shown.
        */
-      _updateShowLocationSelector: function() {
+      _updateShowVenueSelector: function() {
         var hasClasses = false;
         if (this.pageData) {
           hasClasses = this.doesArrayHaveValues(this.pageData.classes);
         }
-        this._showLocationSelector = this._showLocationSelectorOnLoad || !hasClasses;
+        this._showVenueSelector = this._showVenueSelectorOnLoad || !hasClasses;
       },
 
       /**
-       * Called when the location is changed.
+       * Called when the venue is changed.
        */
-      _locationChanged: function() {
-        this.app.location = this._location;
+      _venueChanged: function() {
+        this.app.venue = this._venue;
 
-        if (this._showLocationSelector) {
+        if (this._showVenueSelector) {
           this.app.pageLoading = true;
           this.$.pageDataLoader.generateRequest();
         }
@@ -306,8 +306,8 @@
        *
        * @returns {String} - The URL
        */
-      _getPageDataUrl: function(dataPath, locationId, name) {
-        return dataPath + 'classes/' + locationId + '/' + name + '.json';
+      _getPageDataUrl: function(dataPath, venueId, name) {
+        return dataPath + 'classes/' + venueId + '/' + name + '.json';
       },
 
       /**
@@ -350,17 +350,17 @@
        */
       _handleAjaxResponse: function() {
         if (this.pageData) {
-          this._location = this.app.location;
-          this._cashedPageData[this._location.id] = this.cloneObject(this.pageData);
-          if (this._showLocationSelectorOnLoad || this._playShowCardAnimationOnLoad) {
+          this._venue = this.app.venue;
+          this._cashedPageData[this._venue.id] = this.cloneObject(this.pageData);
+          if (this._showVenueSelectorOnLoad || this._playShowCardAnimationOnLoad) {
             this._showCard = true;
             this._playShowCardAnimationOnLoad = false;
             this.playAnimation('showCard');
           }
           if (this.doesArrayHaveValues(this.pageData.classes)) {
-            // if there are classes, hide the location selector
-            this.$['location-selector'].toggleClass('float', true); // float the location-selector so it does interfear with the showCard animation
-            this.$['location-selector'].hide();
+            // if there are classes, hide the venue selector
+            this.$['venue-selector'].toggleClass('float', true); // float the venue-selector so it does interfear with the showCard animation
+            this.$['venue-selector'].hide();
           }
           this.pageReady();
         } else {
@@ -380,7 +380,7 @@
        */
       close: function() {
         window.history.pushState({}, null, this.app.data.pages.classes.url);
-        window.dispatchEvent(new CustomEvent('location-changed'));
+        window.dispatchEvent(new CustomEvent('venue-changed'));
       },
 
       /**
@@ -389,20 +389,20 @@
        * @param {Boolean} useOwnEnteryAnimation - if true, the `showCard` animation will play when the card is ready
        */
       init: function(useOwnEnteryAnimation) {
-        this._location = this.app.location;
-        this._showCard = this.isDefined(this._location);
-        this._showLocationSelectorOnLoad = !this._showCard;
+        this._venue = this.app.venue;
+        this._showCard = this.isDefined(this._venue);
+        this._showVenueSelectorOnLoad = !this._showCard;
 
         if (useOwnEnteryAnimation) {
           this._playShowCardAnimationOnLoad = true;
         }
 
-        if (this._showLocationSelectorOnLoad) {
+        if (this._showVenueSelectorOnLoad) {
           this.pageReady();
         } else {
           // if the data is already cashed
-          if (this._cashedPageData[this._location.id]) {
-            this.pageData = this._cashedPageData[this._location.id];
+          if (this._cashedPageData[this._venue.id]) {
+            this.pageData = this._cashedPageData[this._venue.id];
             this.pageReady();
           } else {
             this.$.pageDataLoader.generateRequest();
@@ -414,9 +414,9 @@
        * Called when the page is switched back to.
        */
       onSwitchBackTo: function() {
-        this._location = this.app.location;
+        this._venue = this.app.venue;
 
-        if (!this._location) {
+        if (!this._venue) {
           this.app.pageLoading = true;
           this.init();
           return false; // the page is not ready to be displayed

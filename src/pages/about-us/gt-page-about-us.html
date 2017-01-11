@@ -12,7 +12,7 @@
 <link rel="import" href="../../../imports/gt.html">
 <link rel="import" href="../../animations/scale-up-and-fade-in-animation.html">
 <link rel="import" href="../../gt-element-common-behavior.html">
-<link rel="import" href="../../elements/gt-location-selector.html">
+<link rel="import" href="../../elements/gt-venue-selector.html">
 <link rel="import" href="../../gt-icons.html">
 <link rel="import" href="../gt-page-behavior.html">
 
@@ -110,23 +110,23 @@
       on-error="_handleAjaxError"></iron-ajax>
 
     <!-- Layout -->
-    <gt-location-selector id="location-selector" global-cities="[[app.data.venues]]" location="{{_location}}" on-location-changed="_locationChanged"></gt-location-selector>
+    <gt-venue-selector id="venue-selector" global-regions="[[app.data.regions]]" venue="{{_venue}}" on-venue-changed="_venueChanged"></gt-venue-selector>
 
     <div id="content" hidden$="[[_hideContent]]">
-      <template is="dom-if" if="[[isDefined(_venue)]]">
-        <paper-card id="card" heading="[[_location.fullname]]">
+      <template is="dom-if" if="[[isDefined(_venueData)]]">
+        <paper-card id="card" heading="[[_venue.fullname]]">
           <div class="card-content">
             <div id="details">
-              <div class="detail" hidden$="[[!isDefined(_venue.contactNumber)]]">
+              <div class="detail" hidden$="[[!isDefined(_venueData.contactNumber)]]">
                 <span class="label"><iron-icon icon="phone"></iron-icon><span>Phone:</span></span><a class="content" href="tel:[[_venue.contactNumber]]">[[_formatPhoneNumber(_venue.contactNumber)]]</a>
               </div>
-              <div class="detail" hidden$="[[!isDefined(_venue.email)]]">
+              <div class="detail" hidden$="[[!isDefined(_venueData.email)]]">
                 <span class="label"><iron-icon icon="email"></iron-icon><span>Email:</span></span><a class="content" href="mailto:[[_venue.email]]">[[_venue.email]]</a>
               </div>
-              <div class="detail" hidden$="[[!isDefined(_venue.address)]]">
-                <span class="label"><iron-icon icon="location"></iron-icon><span>Address:</span></span><span class="content"><html-echo html="[[_nlToBr(_venue.address)]]"></html-echo></span>
+              <div class="detail" hidden$="[[!isDefined(_venueData.address)]]">
+                <span class="label"><iron-icon icon="venue"></iron-icon><span>Address:</span></span><span class="content"><html-echo html="[[_nlToBr(_venue.address)]]"></html-echo></span>
               </div>
-              <div class="detail" hidden$="[[!isDefined(_venue.notes)]]">
+              <div class="detail" hidden$="[[!isDefined(_venueData.notes)]]">
                 <span class="label"><iron-icon icon="info"></iron-icon><span>Note:</span></span><span class="content"><html-echo html="[[_venue.notes]]"></html-echo></span>
               </div>
             </div>
@@ -135,14 +135,14 @@
               <paper-material id="map-material" elevation="3">
                 <google-map id="map"
                   api-key="[[app.data.api-configs.map-config.api-key]]"
-                  latitude="[[_venue.location.latitude]]"
-                  longitude="[[_venue.location.longitude]]"
+                  latitude="[[_venueData.location.latitude]]"
+                  longitude="[[_venueData.location.longitude]]"
                   zoom="[[app.data.api-configs.map-config.zoom]]"
                   fit-to-markers
                   min-zoom="10">
                   <google-map-marker
-                    latitude="[[_venue.location.latitude]]"
-                    longitude="[[_venue.location.longitude]]"
+                    latitude="[[_venueData.location.latitude]]"
+                    longitude="[[_venueData.location.longitude]]"
                     title="[[app.data.company.name]]">
                     <div class="marker-infowindow" style="min-width: 375px;">
                       <iron-image preload fade sizing="contain" width="125" height="125" style="float: left;"></iron-image>
@@ -173,14 +173,14 @@
       properties: {
 
         /**
-         * The location that is being shown.
-         */
-        _location: Object,
-
-        /**
-         * The venue to show data for.
+         * The venue that is being shown.
          */
         _venue: Object,
+
+        /**
+         * The venue data loaded via ajax.
+         */
+        _venueData: Object,
 
         /**
          * Whether or not to hide the content.
@@ -212,23 +212,23 @@
       },
 
       /**
-       * Called when a location is set.
+       * Called when a venue is set.
        */
-      _locationChanged: function() {
-        this.app.location = this._location;
+      _venueChanged: function() {
+        this.app.venue = this._venue;
         this._hideContent = false;
         this._showContent();
       },
 
       /**
-       * Update the value of `_venue`.
+       * Update the value of `_venueData`.
        */
       _updateVenue: function() {
-        if (this._location) {
-          this._venue = this.pageData.venues[this._location.id];
+        if (this._venue) {
+          this._venueData = this.pageData.venues[this._venue.id];
           this._updateMapMarkerInfoWindow();
         } else {
-          this._venue = null;
+          this._venueData = null;
         }
       },
 
@@ -238,17 +238,17 @@
       _updateMapMarkerInfoWindow: function() {
         var marker = Polymer.dom(this.root).querySelector('google-map google-map-marker');
 
-        if (marker && this._venue) {
-          var address = this.isDefined(this._venue.address) ? this._venue.address.split('\n') : '';
+        if (marker && this._venueData) {
+          var address = this.isDefined(this._venueData.address) ? this._venueData.address.split('\n') : '';
           var firstLine;
           var remaining;
 
           if (address.length >= 2) {
             firstLine = address[0];
-            remaining = this._venue.address.substring(firstLine.length + 4);
+            remaining = this._venueData.address.substring(firstLine.length + 4);
           } else {
             firstLine = this.app.data.company.name;
-            remaining = this._venue.address;
+            remaining = this._venueData.address;
           }
 
           var markerDom = Polymer.dom(marker);
@@ -325,8 +325,8 @@
        * Called when the page is switched back to.
        */
       onSwitchBackTo: function() {
-        this._location = this.app.location;
-        this.$['location-selector'].show();
+        this._venue = this.app.venue;
+        this.$['venue-selector'].show();
         this._showContent();
         this.async(function() {
           Polymer.dom(this.root).querySelector('google-map').resize();
@@ -344,8 +344,8 @@
        */
       _handleAjaxResponse: function() {
         if (this.pageData) {
-          this._location = this.app.location;
-          if (this._location) {
+          this._venue = this.app.venue;
+          if (this._venue) {
             this._hideContent = false;
             this._showContent();
           }
