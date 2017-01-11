@@ -357,7 +357,7 @@
        */
       close: function() {
         window.history.pushState({}, null, this.app.data.pages.classes.url);
-        window.dispatchEvent(new CustomEvent('venue-changed'));
+        window.dispatchEvent(new CustomEvent('location-changed'));
       },
 
       /**
