@@ -155,6 +155,7 @@
             required
             auto-validate
             error-message="Please select your location"
+            on-selected-item-changed="_dropdownItemChanged"
             on-paper-dropdown-open="_overlayOpened"
             on-paper-dropdown-close="_overlayClosed">
             <paper-listbox class="dropdown-content">
@@ -310,6 +311,19 @@
         this._sendingMessage = false;
         this.$['message-sent-dialog'].open();
         this.$.form.reset();
+      },
+
+      /**
+       * Called when a drop down's selected item changes.
+       */
+      _dropdownItemChanged: function(e) {
+        setTimeout(function() {
+          e.target.validate();
+        }, 0);
+      },
+
+      _dropdownListBlur: function(e) {
+        Polymer.dom(e.target).parent.validate();
       },
 
       /**
