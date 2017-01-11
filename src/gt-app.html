@@ -208,7 +208,7 @@
         };
       }
       #main-toolbar-large .toolbar-link.etrain-link {
-        font-size: var(--app-small-text-font-size);
+        font-size: 13px;
         max-width: 110px;
         line-height: normal;
         padding: 0 8px;
@@ -332,6 +332,32 @@
         }
         neon-animated-pages > .iron-selected {
           min-height: calc(100vh - 150px);
+        }
+        #main-header-layout app-header {
+          height: 56px;
+        }
+        #main-header-layout app-header app-toolbar {
+          height: 56px;
+        }
+        .overlay {
+          top: 56px;
+        }
+        #main-toolbar-large [main-title] {
+          font-size: 32px;
+        }
+        #main-toolbar-large .container {
+          max-width: 1440px;
+        }
+        #main-toolbar-large a.toolbar-link {
+          padding: 0 8px;
+        }
+        #main-toolbar-large .main-menu.drawer-list a.toolbar-link {
+          font-size: 20px;
+          line-height: 40px;
+        }
+        #main-toolbar-large .toolbar-link.etrain-link {
+          max-width: 130px;
+          font-size: 15px;
         }
       }
     </style>
