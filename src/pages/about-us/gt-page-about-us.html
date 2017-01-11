@@ -118,16 +118,16 @@
           <div class="card-content">
             <div id="details">
               <div class="detail" hidden$="[[!isDefined(_venueData.contactNumber)]]">
-                <span class="label"><iron-icon icon="phone"></iron-icon><span>Phone:</span></span><a class="content" href="tel:[[_venue.contactNumber]]">[[_formatPhoneNumber(_venue.contactNumber)]]</a>
+                <span class="label"><iron-icon icon="phone"></iron-icon><span>Phone:</span></span><a class="content" href="tel:[[_venueData.contactNumber]]">[[_formatPhoneNumber(_venueData.contactNumber)]]</a>
               </div>
               <div class="detail" hidden$="[[!isDefined(_venueData.email)]]">
-                <span class="label"><iron-icon icon="email"></iron-icon><span>Email:</span></span><a class="content" href="mailto:[[_venue.email]]">[[_venue.email]]</a>
+                <span class="label"><iron-icon icon="email"></iron-icon><span>Email:</span></span><a class="content" href="mailto:[[_venueData.email]]">[[_venueData.email]]</a>
               </div>
               <div class="detail" hidden$="[[!isDefined(_venueData.address)]]">
-                <span class="label"><iron-icon icon="venue"></iron-icon><span>Address:</span></span><span class="content"><html-echo html="[[_nlToBr(_venue.address)]]"></html-echo></span>
+                <span class="label"><iron-icon icon="venue"></iron-icon><span>Address:</span></span><span class="content"><html-echo html="[[_nlToBr(_venueData.address)]]"></html-echo></span>
               </div>
               <div class="detail" hidden$="[[!isDefined(_venueData.notes)]]">
-                <span class="label"><iron-icon icon="info"></iron-icon><span>Note:</span></span><span class="content"><html-echo html="[[_venue.notes]]"></html-echo></span>
+                <span class="label"><iron-icon icon="info"></iron-icon><span>Note:</span></span><span class="content"><html-echo html="[[_venueData.notes]]"></html-echo></span>
               </div>
             </div>
 
