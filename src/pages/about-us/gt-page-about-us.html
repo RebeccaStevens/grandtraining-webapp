@@ -270,6 +270,9 @@
        * @returns string
        */
       _nlToBr: function(str) {
+        if (!str) {
+          return '';
+        }
         str = str.replace(/\r/g, '');
         str = str.replace(/\n/g, '<br>');
         return str;
@@ -282,6 +285,9 @@
        * @returns String
        */
       _formatPhoneNumber: function(phoneNumber) {
+        if (!phoneNumber) {
+          return '';
+        }
         var openingBracketPos = phoneNumber.indexOf('(');
         var closingBracketPos = phoneNumber.indexOf(')');
         var areaCode = phoneNumber.substring(openingBracketPos + 1, closingBracketPos - openingBracketPos)
