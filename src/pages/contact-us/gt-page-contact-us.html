@@ -480,6 +480,13 @@
 
       ready: function() {
         this.init();
+        Polymer.dom(this.root).querySelectorAll('.field').forEach(function(e) {
+          e.onblur = function() {
+            if (e.value === '' || e.value === undefined) {
+              e.invalid = false;
+            }
+          }
+        });
       }
     });
   </script>
