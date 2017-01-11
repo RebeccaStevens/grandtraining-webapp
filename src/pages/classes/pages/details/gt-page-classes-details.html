@@ -220,14 +220,6 @@
         },
 
         /**
-         * Whether to show the venue selector on load.
-         */
-        _showVenueSelectorOnLoad: {
-          type: Boolean,
-          value: false
-        },
-
-        /**
          * The animations this element has.
          */
         animationConfig: {
@@ -272,21 +264,6 @@
             };
           }
         }
-      },
-
-      observers: [
-        '_updateShowVenueSelector(_showVenueSelectorOnLoad, pageData)'
-      ],
-
-      /**
-       * Updates whether or not the venue selector should be shown.
-       */
-      _updateShowVenueSelector: function() {
-        var hasClasses = false;
-        if (this.pageData) {
-          hasClasses = this.doesArrayHaveValues(this.pageData.classes);
-        }
-        this._showVenueSelector = this._showVenueSelectorOnLoad || !hasClasses;
       },
 
       /**
@@ -352,7 +329,7 @@
         if (this.pageData) {
           this._venue = this.app.venue;
           this._cashedPageData[this._venue.id] = this.cloneObject(this.pageData);
-          if (this._showVenueSelectorOnLoad || this._playShowCardAnimationOnLoad) {
+          if (this._showVenueSelector || this._playShowCardAnimationOnLoad) {
             this._showCard = true;
             this._playShowCardAnimationOnLoad = false;
             this.playAnimation('showCard');
@@ -391,13 +368,13 @@
       init: function(useOwnEnteryAnimation) {
         this._venue = this.app.venue;
         this._showCard = this.isDefined(this._venue);
-        this._showVenueSelectorOnLoad = !this._showCard;
+        this._showVenueSelector = !this._showCard;
 
         if (useOwnEnteryAnimation) {
           this._playShowCardAnimationOnLoad = true;
         }
 
-        if (this._showVenueSelectorOnLoad) {
+        if (this._showVenueSelector) {
           this.pageReady();
         } else {
           // if the data is already cashed
