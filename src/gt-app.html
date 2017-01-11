@@ -207,6 +207,12 @@
           height: 28px;
         };
       }
+      #main-toolbar-large .toolbar-link.etrain-link {
+        font-size: var(--app-small-text-font-size);
+        max-width: 110px;
+        line-height: normal;
+        padding: 0 8px;
+      }
       #drawer-toolbar-dropdown {
         position: absolute;
         right: 4px;
@@ -408,6 +414,7 @@
                 <a class="toolbar-link" name="about-us" href$="[[data.pages.about-us.url]]">[[data.pages.about-us.menuTitle]]</a>
                 <a class="toolbar-link" name="contact-us" href$="[[data.pages.contact-us.url]]">[[data.pages.contact-us.menuTitle]]</a>
               </iron-selector>
+              <a class="toolbar-link etrain-link" name="etrain" title="[[data.etrain.title]]" href$="[[data.etrain.url]]">[[data.etrain.menuTitle]]</a>
               <div class="dropdown-container">
                 <paper-menu-button id="toolbar-dropdown">
                   <paper-icon-button icon="arrow-drop-down" class="dropdown-trigger"></paper-icon-button>
