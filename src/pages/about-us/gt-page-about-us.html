@@ -110,7 +110,11 @@
       on-error="_handleAjaxError"></iron-ajax>
 
     <!-- Layout -->
-    <gt-venue-selector id="venue-selector" global-regions="[[app.data.regions]]" venue="{{_venue}}" on-venue-changed="_venueChanged"></gt-venue-selector>
+    <gt-venue-selector
+      id="venue-selector"
+      global-regions="[[app.data.regions]]"
+      venue="[[_venue]]"
+      on-venue-changed="_venueChanged"></gt-venue-selector>
 
     <div id="content" hidden$="[[_hideContent]]">
       <template is="dom-if" if="[[isDefined(_venueData)]]">
@@ -167,6 +171,7 @@
       behaviors: [
         GT.ElementCommonBehavior,
         GT.PageBehavior,
+        GT.ReduxBehavior,
         Polymer.NeonAnimationRunnerBehavior
       ],
 
@@ -175,7 +180,10 @@
         /**
          * The venue that is being shown.
          */
-        _venue: Object,
+        _venue: {
+          type: Object,
+          statePath: 'venue'
+        },
 
         /**
          * The venue data loaded via ajax.
@@ -215,7 +223,6 @@
        * Called when a venue is set.
        */
       _venueChanged: function() {
-        this.app.venue = this._venue;
         this._hideContent = false;
         this._showContent();
       },
@@ -325,7 +332,6 @@
        * Called when the page is switched back to.
        */
       onSwitchBackTo: function() {
-        this._venue = this.app.venue;
         this.$['venue-selector'].show();
         this._showContent();
         this.async(function() {
@@ -344,7 +350,6 @@
        */
       _handleAjaxResponse: function() {
         if (this.pageData) {
-          this._venue = this.app.venue;
           if (this._venue) {
             this._hideContent = false;
             this._showContent();

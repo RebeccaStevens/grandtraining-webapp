@@ -24,6 +24,7 @@
 
 <link rel="import" href="../styles/gt-styles.html">
 <link rel="import" href="../imports/gt.html">
+<link rel="import" href="redux-store.html">
 <link rel="import" href="animations/main-page-entry-animation.html">
 <link rel="import" href="animations/main-page-exit-animation.html">
 <link rel="import" href="gt-page-container-behavior.html">
@@ -514,7 +515,8 @@
 
       behaviors: [
         GT.ElementCommonBehavior,
-        GT.PageContainerBehavior
+        GT.PageContainerBehavior,
+        GT.ReduxBehavior
       ],
 
       properties: {
@@ -538,7 +540,8 @@
          */
         venue: {
           type: Object,
-          observer: '_venueChanged'
+          observer: '_venueChanged',
+          statePath: 'venue'
         },
 
         /**
@@ -884,7 +887,7 @@
 
         for (var region in this.data.regions) {
           if (this.data.regions[region][venueID] !== undefined) {
-            this.venue = this.data.regions[region][venueID];
+            this.dispatch('setVenue', this.data.regions[region][venueID]);
             break;
           }
         }

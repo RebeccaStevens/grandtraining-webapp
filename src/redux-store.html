@@ -19,6 +19,10 @@
     }
 
     switch (action.type) {
+      case 'SET_VENUE':
+        return Object.assign({}, state, {
+          venue: Object.assign({}, action.venue)
+        });
     }
   };
 

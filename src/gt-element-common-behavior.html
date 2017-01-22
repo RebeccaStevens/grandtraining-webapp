@@ -5,6 +5,15 @@
 
   GT.ElementCommonBehavior = {
 
+    actions: {
+      setVenue: function(venue) {
+        return {
+          type: 'SET_VENUE',
+          venue: venue
+        };
+      }
+    },
+
     properties: {
 
       /**

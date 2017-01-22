@@ -65,7 +65,11 @@
     </style>
 
     <!-- Layout -->
-    <gt-venue-selector id="venue-selector" global-regions="[[app.data.regions]]" venue="{{_venue}}" on-venue-changed="_venueChanged"></gt-venue-selector>
+    <gt-venue-selector
+      id="venue-selector"
+      global-regions="[[app.data.regions]]"
+      venue="[[_venue]]"
+      on-venue-changed="_venueChanged"></gt-venue-selector>
 
     <div id="class-categories" hidden$="[[_hideClassCategories]]">
       <template is="dom-repeat" items="[[pageData.class-categories]]" as="cc" on-dom-change="_ccStamped">
@@ -89,6 +93,7 @@
       behaviors: [
         GT.ElementCommonBehavior,
         GT.PageBehavior,
+        GT.ReduxBehavior,
         Polymer.NeonAnimationRunnerBehavior,
         Polymer.NeonSharedElementAnimatableBehavior
       ],
@@ -109,7 +114,10 @@
         /**
          * The venue that is being shown.
          */
-        _venue: Object,
+        _venue: {
+          type: Object,
+          statePath: 'venue'
+        },
 
         /**
          * Whether or not to hide the class categories.
@@ -195,7 +203,6 @@
        * Called when a venue is set.
        */
       _venueChanged: function() {
-        this.app.venue = this._venue;
         this._hideClassCategories = false;
         this._showClassCategories();
       },
@@ -251,7 +258,6 @@
        * Initialise the page.
        */
       init: function() {
-        this._venue = this.app.venue;
         if (this._venue) {
           this._hideClassCategories = false;
           this._showClassCategories();
@@ -263,7 +269,6 @@
        * Called when the page is switched back to.
        */
       onSwitchBackTo: function() {
-        this._venue = this.app.venue;
         this._animateVenueSelectorIn();
         this._showClassCategories();
       },

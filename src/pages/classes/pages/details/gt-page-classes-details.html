@@ -143,7 +143,7 @@
     <gt-venue-selector
       id="venue-selector"
       global-regions="[[app.data.regions]]"
-      venue="{{_venue}}"
+      venue="[[_venue]]"
       on-venue-changed="_venueChanged"
       hidden$="[[!_showVenueSelector]]"></gt-venue-selector>
 
@@ -190,6 +190,7 @@
       behaviors: [
         GT.ElementCommonBehavior,
         GT.PageBehavior,
+        GT.ReduxBehavior,
         Polymer.NeonAnimationRunnerBehavior,
         Polymer.NeonSharedElementAnimatableBehavior
       ],
@@ -209,7 +210,10 @@
         /**
          * The venue that is being shown.
          */
-        _venue: Object,
+        _venue: {
+          type: Object,
+          statePath: 'venue'
+        },
 
         /**
          * Whether to show the venue selector or not.
@@ -270,8 +274,6 @@
        * Called when the venue is changed.
        */
       _venueChanged: function() {
-        this.app.venue = this._venue;
-
         if (this._showVenueSelector) {
           this.app.pageLoading = true;
           this.$.pageDataLoader.generateRequest();
@@ -327,7 +329,6 @@
        */
       _handleAjaxResponse: function() {
         if (this.pageData) {
-          this._venue = this.app.venue;
           this._cashedPageData[this._venue.id] = this.cloneObject(this.pageData);
           if (this._showVenueSelector || this._playShowCardAnimationOnLoad) {
             this._showCard = true;
@@ -366,7 +367,6 @@
        * @param {Boolean} useOwnEnteryAnimation - if true, the `showCard` animation will play when the card is ready
        */
       init: function(useOwnEnteryAnimation) {
-        this._venue = this.app.venue;
         this._showCard = this.isDefined(this._venue);
         this._showVenueSelector = !this._showCard;
 
@@ -391,8 +391,6 @@
        * Called when the page is switched back to.
        */
       onSwitchBackTo: function() {
-        this._venue = this.app.venue;
-
         if (!this._venue) {
           this.app.pageLoading = true;
           this.init();

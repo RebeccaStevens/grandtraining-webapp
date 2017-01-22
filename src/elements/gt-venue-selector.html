@@ -67,6 +67,7 @@
 
       behaviors: [
         GT.ElementCommonBehavior,
+        GT.ReduxBehavior,
         Polymer.NeonAnimationRunnerBehavior
       ],
 
@@ -85,8 +86,8 @@
          */
         venue: {
           type: Object,
-          notify: true,
-          observer: '_venueChanged'
+          observer: '_venueChanged',
+          statePath: 'venue'
         },
 
         /**
@@ -94,7 +95,6 @@
          */
         _region: {
           type: Object,
-          notify: true,
           observer: '_regionChanged'
         },
 
@@ -287,7 +287,7 @@
       _venueSelected: function(e) {
         var newLocation = this.globalRegions[this._region.name][e.detail.item.venueId];
         if (newLocation !== this.venue) {
-          this.venue = newLocation;
+          this.dispatch('setVenue', newLocation);
           this.fire('venue-changed');
         }
       },
