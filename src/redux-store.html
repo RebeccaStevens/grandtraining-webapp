@@ -1,0 +1,30 @@
+<link rel="import" href="../bower_components/polymer-redux/polymer-redux.html">
+<link rel="import" href="../imports/gt.html">
+<script src="../node_modules/redux/dist/redux.js"></script>
+
+<script>
+  /**
+   * The initial state of the app.
+   */
+  var initialState = {
+    venue: undefined
+  };
+
+  /**
+   * Update the state of the application based on the current state and the action just performed.
+   */
+  var reducer = function(state, action) {
+    if (!state) {
+      return initialState;
+    }
+
+    switch (action.type) {
+    }
+  };
+
+  // create the redux store
+  var store = Redux.createStore(reducer);
+
+  // create the Behavior for use in elements
+  GT.ReduxBehavior = PolymerRedux(store);
+</script>
