@@ -379,9 +379,8 @@
 
     <!-- Download data -->
     <iron-ajax id="shellDataLoader"
-      url="[[dataPath]]config.json"
+      url="[[getDataUri('config.json')]]"
       handle-as="json"
-      last-response="{{data}}"
       on-response="_handleAjaxResponse"
       on-error="_handleAjaxError"></iron-ajax>
 
@@ -389,7 +388,7 @@
     <polymer-cookie
       id="venueID-cookie"
       name="venueID"
-      value="[[venue.id]]"
+      value="[[_venue.id]]"
       path="/"
       time="-1"></polymer-cookie>
 
@@ -401,13 +400,13 @@
         <app-header-layout id="drawer-header-layout" has-scrolling-region>
           <app-header>
             <app-toolbar>
-              <a href$="[[data.pages.home.url]]"><div main-title>[[data.company.name]]</div></a>
+              <a href$="[[_data.pages.home.url]]"><div main-title>[[_data.company.name]]</div></a>
 
               <paper-menu-button id="drawer-toolbar-dropdown">
                 <paper-icon-button icon="settings" class="dropdown-trigger"></paper-icon-button>
                 <paper-menu id="toolbar-dropdown-menu" class="dropdown-content" on-iron-select="_toolbar_dropdown_menu_select">
-                  <a name="account" href$="[[data.pages.account.url]]" hidden$="[[!isUserSignedIn]]"><paper-item><iron-icon icon="account"></iron-icon><span>[[data.pages.account.menuTitle]]</span></paper-item></a>
-                  <a name="signin" href$="[[data.pages.signin.url]]" hidden$="[[isUserSignedIn]]"><paper-item><iron-icon icon="lock-opened"></iron-icon><span>[[data.pages.signin.menuTitle]]</span></paper-item></a>
+                  <a name="account" href$="[[_data.pages.account.url]]" hidden$="[[!isUserSignedIn]]"><paper-item><iron-icon icon="account"></iron-icon><span>[[_data.pages.account.menuTitle]]</span></paper-item></a>
+                  <a name="signin" href$="[[_data.pages.signin.url]]" hidden$="[[isUserSignedIn]]"><paper-item><iron-icon icon="lock-opened"></iron-icon><span>[[_data.pages.signin.menuTitle]]</span></paper-item></a>
                   <a name="logout" href="" hidden$="[[!isUserSignedIn]]"><paper-item><iron-icon icon="lock-closed"></iron-icon><span>Log Out</span></paper-item></a>
                 </paper-menu>
               </paper-menu-button>
@@ -415,13 +414,13 @@
           </app-header>
 
           <iron-selector selected="[[renderedPageName]]" attr-for-selected="name" class="main-menu drawer-list" role="navigation">
-            <a name="home" href$="[[data.pages.home.url]]">[[data.pages.home.menuTitle]]</a>
-            <a name="classes" href$="[[data.pages.classes.url]]">[[data.pages.classes.menuTitle]]</a>
-            <a name="bookings" href$="[[data.pages.bookings.url]]">[[data.pages.bookings.menuTitle]]</a>
-            <a name="faq" href$="[[data.pages.faq.url]]">[[data.pages.faq.menuTitle]]</a>
-            <a name="about-us" href$="[[data.pages.about-us.url]]">[[data.pages.about-us.menuTitle]]</a>
-            <a name="contact-us" href$="[[data.pages.contact-us.url]]">[[data.pages.contact-us.menuTitle]]</a>
-            <a class="etrain-link" title="[[data.etrain.title]]" href$="[[data.etrain.url]]">[[data.etrain.menuTitle]]</a>
+            <a name="home" href$="[[_data.pages.home.url]]">[[_data.pages.home.menuTitle]]</a>
+            <a name="classes" href$="[[_data.pages.classes.url]]">[[_data.pages.classes.menuTitle]]</a>
+            <a name="bookings" href$="[[_data.pages.bookings.url]]">[[_data.pages.bookings.menuTitle]]</a>
+            <a name="faq" href$="[[_data.pages.faq.url]]">[[_data.pages.faq.menuTitle]]</a>
+            <a name="about-us" href$="[[_data.pages.about-us.url]]">[[_data.pages.about-us.menuTitle]]</a>
+            <a name="contact-us" href$="[[_data.pages.contact-us.url]]">[[_data.pages.contact-us.menuTitle]]</a>
+            <a class="etrain-link" title$="[[_data.etrain.title]]" href$="[[_data.etrain.url]]">[[_data.etrain.menuTitle]]</a>
           </iron-selector>
         </app-header-layout>
       </app-drawer>
@@ -432,22 +431,22 @@
         <app-header reveals="[[!_viewportWidth.gtoet1024]]" fixed="[[_viewportWidth.gtoet1024]]" shadow effects="waterfall">
           <app-toolbar id="main-toolbar-large" hidden$="[[!_viewportWidth.gtoet1024]]">
             <div class="container">
-              <a href$="[[data.pages.home.url]]" class$="toolbar-link [[_getMainTitleClass(pageName, _viewportWidth.gtoet1024)]]"><div main-title>[[data.company.name]]</div></a>
+              <a href$="[[_data.pages.home.url]]" class$="toolbar-link [[_getMainTitleClass(pageName, _viewportWidth.gtoet1024)]]"><div main-title>[[_data.company.name]]</div></a>
               <span class="flex"></span>
               <iron-selector selected="[[renderedPageName]]" attr-for-selected="name" class="main-menu drawer-list" role="navigation">
-                <a class="toolbar-link" name="classes" href$="[[data.pages.classes.url]]">[[data.pages.classes.menuTitle]]</a>
-                <a class="toolbar-link" name="bookings" href$="[[data.pages.bookings.url]]">[[data.pages.bookings.menuTitle]]</a>
-                <a class="toolbar-link" name="faq" href$="[[data.pages.faq.url]]">[[data.pages.faq.menuTitle]]</a>
-                <a class="toolbar-link" name="about-us" href$="[[data.pages.about-us.url]]">[[data.pages.about-us.menuTitle]]</a>
-                <a class="toolbar-link" name="contact-us" href$="[[data.pages.contact-us.url]]">[[data.pages.contact-us.menuTitle]]</a>
+                <a class="toolbar-link" name="classes" href$="[[_data.pages.classes.url]]">[[_data.pages.classes.menuTitle]]</a>
+                <a class="toolbar-link" name="bookings" href$="[[_data.pages.bookings.url]]">[[_data.pages.bookings.menuTitle]]</a>
+                <a class="toolbar-link" name="faq" href$="[[_data.pages.faq.url]]">[[_data.pages.faq.menuTitle]]</a>
+                <a class="toolbar-link" name="about-us" href$="[[_data.pages.about-us.url]]">[[_data.pages.about-us.menuTitle]]</a>
+                <a class="toolbar-link" name="contact-us" href$="[[_data.pages.contact-us.url]]">[[_data.pages.contact-us.menuTitle]]</a>
               </iron-selector>
-              <a class="toolbar-link etrain-link" name="etrain" title="[[data.etrain.title]]" href$="[[data.etrain.url]]">[[data.etrain.menuTitle]]</a>
+              <a class="toolbar-link etrain-link" name="etrain" title$="[[_data.etrain.title]]" href$="[[_data.etrain.url]]">[[_data.etrain.menuTitle]]</a>
               <div class="dropdown-container">
                 <paper-menu-button id="toolbar-dropdown">
                   <paper-icon-button icon="arrow-drop-down" class="dropdown-trigger"></paper-icon-button>
                   <paper-menu id="toolbar-dropdown-menu" class="dropdown-content" on-iron-select="_toolbar_dropdown_menu_select">
-                    <a name="account" href$="[[data.pages.account.url]]" hidden$="[[!isUserSignedIn]]"><paper-item><iron-icon icon="account"></iron-icon><span>[[data.pages.account.menuTitle]]</span></paper-item></a>
-                    <a name="signin" href$="[[data.pages.signin.url]]" hidden$="[[isUserSignedIn]]"><paper-item><iron-icon icon="lock-opened"></iron-icon><span>[[data.pages.signin.menuTitle]]</span></paper-item></a>
+                    <a name="account" href$="[[_data.pages.account.url]]" hidden$="[[!isUserSignedIn]]"><paper-item><iron-icon icon="account"></iron-icon><span>[[_data.pages.account.menuTitle]]</span></paper-item></a>
+                    <a name="signin" href$="[[_data.pages.signin.url]]" hidden$="[[isUserSignedIn]]"><paper-item><iron-icon icon="lock-opened"></iron-icon><span>[[_data.pages.signin.menuTitle]]</span></paper-item></a>
                     <a name="logout" href="" hidden$="[[!isUserSignedIn]]"><paper-item><iron-icon icon="lock-closed"></iron-icon><span>Log Out</span></paper-item></a>
                   </paper-menu>
                 </paper-menu-button>
@@ -497,7 +496,7 @@
         <hr class="bottom-rule">
 
         <footer>
-          Copyright &copy; [[data.company.name]] [[_currentYear]]
+          Copyright &copy; [[_data.company.name]] [[_currentYear]]
         </footer>
 
       </app-header-layout>
@@ -517,53 +516,54 @@
         GT.PageContainerBehavior
       ],
 
+      actions : {
+        setConfig: function(config) {
+          return {
+            type: 'INIT',
+            config: config
+          };
+        },
+
+        setShellLoading: function(loading) {
+          return {
+            type: 'SET_SHELL_LOADING',
+            loading: loading
+          };
+        },
+
+        setShellError: function(error) {
+          return {
+            type: 'SET_SHELL_ERROR',
+            error: error
+          };
+        }
+      },
+
       properties: {
 
         /**
-         * The path where this app should download data from.
-         * This path should alwasy end with a slash ('/').
+         * The config data this app will use.
          */
-        dataPath: {
-          type: String,
-          value: '/'
+        _data: {
+          type: Object,
+          statePath: 'config'
         },
-
-        /**
-         * The data this app will use.
-         */
-        data: Object,
 
         /**
          * The venue the user has selected.
          */
-        venue: {
+        _venue: {
           type: Object,
-          observer: '_venueChanged'
-        },
-
-        /**
-         * Whether or not a page is currently loading.
-         */
-        pageLoading: {
-          type: Boolean,
-          value: true
-        },
-
-        /**
-         * Whether or not a page loading error has occured.
-         */
-        pageError: {
-          type: Boolean,
-          value: false
+          observer: '_venueChanged',
+          statePath: 'venue'
         },
 
         /**
          * Details about the signed in user.
          */
-        signedInUser: {
+        _signedInUser: {
           type: Object,
-          value: null,
-          readOnly: true
+          statePath: 'signedInUser'
         },
 
         /**
@@ -571,8 +571,24 @@
          */
         _pageTitle: {
           type: String,
-          computed: '_computePageTitle(pageName, data.company.name)',
+          computed: '_computePageTitle(pageName, _data.company.name)',
           observer: '_pageTitleChanged'
+        },
+
+        /**
+         * Whether or not a page is currently loading.
+         */
+        _pageLoading: {
+          type: Boolean,
+          statePath: 'pageLoading'
+        },
+
+        /**
+         * Whether or not a page loading error has occured.
+         */
+        _pageError: {
+          type: Boolean,
+          statePath: 'pageError'
         },
 
         /**
@@ -580,7 +596,7 @@
          */
         _shellLoading: {
           type: Boolean,
-          value: true
+          statePath: 'shellLoading'
         },
 
         /**
@@ -588,7 +604,7 @@
          */
         _shellError: {
           type: Boolean,
-          value: false
+          statePath: 'shellError'
         },
 
         /**
@@ -616,7 +632,7 @@
          */
         isUserSignedIn: {
           type: Boolean,
-          computed: '_computeIsUserSignedIn(signedInUser)'
+          computed: '_computeIsUserSignedIn(_signedInUser)'
         },
 
         /**
@@ -632,7 +648,7 @@
          */
         _hideLoadingOverlay: {
           type: Boolean,
-          computed: '_computeHideLoadingOverlay(pageLoading, _shellLoading)'
+          computed: '_computeHideLoadingOverlay(_shellLoading, _pageLoading)'
         },
 
         /**
@@ -640,7 +656,7 @@
          */
         _hideErrorOverlay: {
           type: Boolean,
-          computed: '_computeHideErrorOverlay(_shellError, pageError)'
+          computed: '_computeHideErrorOverlay(_shellError, _pageError)'
         },
 
         /**
@@ -674,8 +690,8 @@
       /**
        * Compute the value of `_hideLoadingOverlay`.
        */
-      _computeHideLoadingOverlay: function(pageLoading, shellLoading) {
-        return !(pageLoading || shellLoading);
+      _computeHideLoadingOverlay: function(shellLoading, pageLoading) {
+        return !(shellLoading || pageLoading);
       },
 
       /**
@@ -692,7 +708,7 @@
         if (pageName === this.mainPageName) {
           return companyName;
         }
-        var pageData = this.data.pages[pageName];
+        var pageData = this._data.pages[pageName];
         if (pageData) {
           return pageData.title;
         }
@@ -746,8 +762,8 @@
        */
       findPageNameForRoute: function(urlRoute) {
         // search for the page that has this url
-        for (var index in this.data.pages) {
-          var url = this.data.pages[index].url;
+        for (var index in this._data.pages) {
+          var url = this._data.pages[index].url;
           url = url.replace(/^[/]+/, '');       // remove slashes from the beginning
           url = url.replace(/[/]+$/, '');       // remove slashes from the end
           if (url === urlRoute) {
@@ -782,12 +798,12 @@
 
         // load page import if it hasn't alreeady been imported.
         if (!Polymer.isInstance(pageEl)) {
-          this.pageLoading = true;
+          this.dispatch('setPageLoading', true);
           this.importHref(this.resolveUrl('pages/' + pageName + '/gt-page-' + pageName + '.html'), null, null, true);
         }
         // if the page is not initialised.
         else if(!pageEl.isInitialised) {
-          this.pageError = true;
+          this.dispatch('setPageError', true);
           this._reinitPage();
         }
         // else the page is loaded and read to be display
@@ -796,18 +812,18 @@
           if (pageEl.onSwitchBackTo instanceof Function) {
             // if it doesn't return false, the page is ready to be displayed
             if (pageEl.onSwitchBackTo() !== false) {
-              this.pageLoading = false;
+              this.dispatch('setPageLoading', false);
               this.renderedPageName = this.pageName;
               this.scrollToTop();
             }
           } else {
-            this.pageLoading = false;
+            this.dispatch('setPageLoading', false);
             this.renderedPageName = this.pageName;
             this.scrollToTop();
           }
         }
 
-        this.pageError = false;
+        this.dispatch('setPageError', false);
 
         // close the drawer
         if (!this.$.drawer.persistent) {
@@ -820,8 +836,8 @@
        */
       _pageLoaded: function(e) {
         if (e.target === this.getPageElement() || e.target === this.$.page404) {
-          this.pageError = false;
-          this.pageLoading = false;
+          this.dispatch('setPageError', false);
+          this.dispatch('setPageLoading', false);
           this.renderedPageName = this.pageName;
         }
         e.cancelBubble = true;
@@ -832,8 +848,8 @@
        */
       _pageErrorOccurred: function(e) {
         if (e.target === this.getPageElement() || e.target === this.$.page404) {
-          this.pageError = true;
-          this.pageLoading = false;
+          this.dispatch('setPageError', true);
+          this.dispatch('setPageLoading', false);
           this.renderedPageName = this.pageName;
         }
         e.cancelBubble = true;
@@ -846,12 +862,12 @@
         var pageEl = this.getPageElement(true);
 
         if (this._shellError) {
-          this._shellLoading = true;  // turn the loading overlay on
+          this.dispatch('setShellLoading', true);  // turn the loading overlay on
           this.init();
         }
 
-        if (this.pageError) {
-          this.pageLoading = true;  // turn the loading overlay on
+        if (this._pageError) {
+          this.dispatch('setPageLoading', true);  // turn the loading overlay on
 
           // if the page has an init function, call it.
           if (pageEl !== null && pageEl.init instanceof Function) {
@@ -863,7 +879,7 @@
           // otherwise, wait a bit and turn the loading overlay off
           else {
             this.async(function() {
-              this.pageLoading = false;
+              this.dispatch('setPageLoading', false);
             }, 500);
           }
         }
@@ -882,9 +898,9 @@
       _readVenueID: function() {
         var venueID = this.$['venueID-cookie'].readCookie();
 
-        for (var region in this.data.regions) {
-          if (this.data.regions[region][venueID] !== undefined) {
-            this.venue = this.data.regions[region][venueID];
+        for (var region in this._data.regions) {
+          if (this._data.regions[region][venueID] !== undefined) {
+            this.dispatch('setVenue', this._data.regions[region][venueID]);
             break;
           }
         }
@@ -1072,10 +1088,12 @@
       /**
        * Called when the app shell data loads.
        */
-      _handleAjaxResponse: function() {
-        if (this.data) {
-          this._shellError = false;
-          this._shellLoading = false;
+      _handleAjaxResponse: function(e) {
+        var response = e.detail.response;
+        if (response) {
+          this.dispatch('setConfig', response);
+          this.dispatch('setShellError', false);
+          this.dispatch('setShellLoading', false);
           this._readVenueID();
           this._setFixedWithOnDesktopMainToolbarItems();
           this.pageContainerReady();
@@ -1088,10 +1106,10 @@
        * Called when an error occurs during the app shell ajax request.
        */
       _handleAjaxError: function() {
-        this.pageError = true;
-        this.pageLoading = false;
-        this._shellError = true;
-        this._shellLoading = false;
+        this.dispatch('setPageError', true);
+        this.dispatch('setPageLoading', false);
+        this.dispatch('setShellError', true);
+        this.dispatch('setShellLoading', false);
         this.pageContainerError();
       },
 

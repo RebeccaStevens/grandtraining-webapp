@@ -103,14 +103,16 @@
     <!-- Download data -->
     <iron-ajax
       id="pageDataLoader"
-      url="[[app.dataPath]]about-us.json"
+      url="[[getDataUri('about-us.json')]]"
       handle-as="json"
       last-response="{{pageData}}"
       on-response="_handleAjaxResponse"
       on-error="_handleAjaxError"></iron-ajax>
 
     <!-- Layout -->
-    <gt-venue-selector id="venue-selector" global-regions="[[app.data.regions]]" venue="{{_venue}}" on-venue-changed="_venueChanged"></gt-venue-selector>
+    <gt-venue-selector
+      id="venue-selector"
+      on-venue-changed="_venueChanged"></gt-venue-selector>
 
     <div id="content" hidden$="[[_hideContent]]">
       <template is="dom-if" if="[[isDefined(_venueData)]]">
@@ -131,19 +133,19 @@
               </div>
             </div>
 
-            <template is="dom-if" if="[[isDefined(app.data.api-configs.map-config.api-key)]]" on-dom-change="_updateMapMarkerInfoWindow">
+            <template is="dom-if" if="[[isDefined(_appConfig.api-configs.map-config.api-key)]]" on-dom-change="_updateMapMarkerInfoWindow">
               <paper-material id="map-material" elevation="3">
                 <google-map id="map"
-                  api-key="[[app.data.api-configs.map-config.api-key]]"
+                  api-key="[[_appConfig.api-configs.map-config.api-key]]"
                   latitude="[[_venueData.location.latitude]]"
                   longitude="[[_venueData.location.longitude]]"
-                  zoom="[[app.data.api-configs.map-config.zoom]]"
+                  zoom="[[_appConfig.api-configs.map-config.zoom]]"
                   fit-to-markers
                   min-zoom="10">
                   <google-map-marker
                     latitude="[[_venueData.location.latitude]]"
                     longitude="[[_venueData.location.longitude]]"
-                    title="[[app.data.company.name]]">
+                    title="[[_appConfig.company.name]]">
                     <div class="marker-infowindow" style="min-width: 375px;">
                       <iron-image preload fade sizing="contain" width="125" height="125" style="float: left;"></iron-image>
                       <h1 class="title" style="margin: 0; color: #04519b; margin-left: 140px;"></h1>
@@ -173,9 +175,20 @@
       properties: {
 
         /**
+         * The app config data.
+         */
+        _appConfig: {
+          type: Object,
+          statePath: 'config'
+        },
+
+        /**
          * The venue that is being shown.
          */
-        _venue: Object,
+        _venue: {
+          type: Object,
+          statePath: 'venue'
+        },
 
         /**
          * The venue data loaded via ajax.
@@ -215,7 +228,6 @@
        * Called when a venue is set.
        */
       _venueChanged: function() {
-        this.app.venue = this._venue;
         this._hideContent = false;
         this._showContent();
       },
@@ -224,7 +236,7 @@
        * Update the value of `_venueData`.
        */
       _updateVenue: function() {
-        if (this._venue) {
+        if (this._venue && this.pageData) {
           this._venueData = this.pageData.venues[this._venue.id];
           this._updateMapMarkerInfoWindow();
         } else {
@@ -247,14 +259,14 @@
             firstLine = address[0];
             remaining = this._venueData.address.substring(firstLine.length + 4);
           } else {
-            firstLine = this.app.data.company.name;
+            firstLine = this._appConfig.company.name;
             remaining = this._venueData.address;
           }
 
           var markerDom = Polymer.dom(marker);
           var image = markerDom.querySelector('iron-image');
-          image.setAttribute('src', this.app.data.company.logo.src);
-          image.setAttribute('placeholder', this.app.data.company.logo.placeholder);
+          image.setAttribute('src', this._appConfig.company.logo.src);
+          image.setAttribute('placeholder', this._appConfig.company.logo.placeholder);
           Polymer.dom(markerDom.querySelector('.title')).innerHTML = firstLine;
           Polymer.dom(markerDom.querySelector('.address')).innerHTML = remaining;
           if (marker.info) {
@@ -325,11 +337,13 @@
        * Called when the page is switched back to.
        */
       onSwitchBackTo: function() {
-        this._venue = this.app.venue;
         this.$['venue-selector'].show();
         this._showContent();
         this.async(function() {
-          Polymer.dom(this.root).querySelector('google-map').resize();
+          var map = Polymer.dom(this.root).querySelector('google-map');
+          if (map) {
+            map.resize();
+          }
         }, GT.animation.entryDuration);
       },
 
@@ -344,7 +358,6 @@
        */
       _handleAjaxResponse: function() {
         if (this.pageData) {
-          this._venue = this.app.venue;
           if (this._venue) {
             this._hideContent = false;
             this._showContent();

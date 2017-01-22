@@ -59,7 +59,7 @@
     <div class="info">The page you are looking for doesn't seem to exist.<br>
       It may have been moved, deleted, or may never have existed.</div>
     <div id="buttons">
-      <a name="classes" href$="[[app.data.pages.home.url]]" tabindex="-1"><paper-button raised>Back to Home Page</paper-button></a>
+      <a name="classes" href$="[[_appConfig.pages.home.url]]" tabindex="-1"><paper-button raised>Back to Home Page</paper-button></a>
     </div>
   </template>
 
@@ -71,6 +71,17 @@
         GT.ElementCommonBehavior,
         GT.PageBehavior
       ],
+
+      properties: {
+
+        /**
+         * The app config data.
+         */
+        _appConfig: {
+          type: Object,
+          statePath: 'config'
+        }
+      },
 
       ready: function() {
         this.pageReady();

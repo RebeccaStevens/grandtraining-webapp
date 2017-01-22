@@ -133,7 +133,7 @@
     <!-- Download data -->
     <iron-ajax
       id="pageDataLoader"
-      url="[[_getPageDataUrl(app.dataPath, _venue.id, name)]]"
+      url="[[_getPageDataUrl(_venue.id, name)]]"
       handle-as="json"
       last-response="{{pageData}}"
       on-response="_handleAjaxResponse"
@@ -142,8 +142,6 @@
     <!-- Layout -->
     <gt-venue-selector
       id="venue-selector"
-      global-regions="[[app.data.regions]]"
-      venue="{{_venue}}"
       on-venue-changed="_venueChanged"
       hidden$="[[!_showVenueSelector]]"></gt-venue-selector>
 
@@ -174,7 +172,7 @@
           <paper-card id="no-classes" heading="No Classes Available">
             <div class="card-content">
               <p>Unfortunatly, we are not currently offering any [[pageData.title]] classes in [[_venue.name]].</p>
-              <p>If you wish to arange one, please <a href="[[app.data.pages.contact-us.url]]">contact us</a> and we'll see what we can do.</p>
+              <p>If you wish to arange one, please <a href="[[_appConfig.pages.contact-us.url]]">contact us</a> and we'll see what we can do.</p>
             </div>
           </paper-card>
         </template>
@@ -197,6 +195,14 @@
       properties: {
 
         /**
+         * The app config data.
+         */
+        _appConfig: {
+          type: Object,
+          statePath: 'config'
+        },
+
+        /**
          * Stores cashed page data for each venue id.
          */
         _cashedPageData: {
@@ -209,7 +215,10 @@
         /**
          * The venue that is being shown.
          */
-        _venue: Object,
+        _venue: {
+          type: Object,
+          statePath: 'venue'
+        },
 
         /**
          * Whether to show the venue selector or not.
@@ -270,10 +279,8 @@
        * Called when the venue is changed.
        */
       _venueChanged: function() {
-        this.app.venue = this._venue;
-
         if (this._showVenueSelector) {
-          this.app.pageLoading = true;
+          this.dispatch('setPageLoading', true);
           this.$.pageDataLoader.generateRequest();
         }
       },
@@ -283,8 +290,8 @@
        *
        * @returns {String} - The URL
        */
-      _getPageDataUrl: function(dataPath, venueId, name) {
-        return dataPath + 'classes/' + venueId + '/' + name + '.json';
+      _getPageDataUrl: function(venueId, name) {
+        return this.getDataUri('classes/' + venueId + '/' + name + '.json');
       },
 
       /**
@@ -327,7 +334,6 @@
        */
       _handleAjaxResponse: function() {
         if (this.pageData) {
-          this._venue = this.app.venue;
           this._cashedPageData[this._venue.id] = this.cloneObject(this.pageData);
           if (this._showVenueSelector || this._playShowCardAnimationOnLoad) {
             this._showCard = true;
@@ -356,7 +362,7 @@
        * Close this page and return to the class category hub.
        */
       close: function() {
-        window.history.pushState({}, null, this.app.data.pages.classes.url);
+        window.history.pushState({}, null, this._appConfig.pages.classes.url);
         window.dispatchEvent(new CustomEvent('location-changed'));
       },
 
@@ -366,7 +372,6 @@
        * @param {Boolean} useOwnEnteryAnimation - if true, the `showCard` animation will play when the card is ready
        */
       init: function(useOwnEnteryAnimation) {
-        this._venue = this.app.venue;
         this._showCard = this.isDefined(this._venue);
         this._showVenueSelector = !this._showCard;
 
@@ -391,10 +396,8 @@
        * Called when the page is switched back to.
        */
       onSwitchBackTo: function() {
-        this._venue = this.app.venue;
-
         if (!this._venue) {
-          this.app.pageLoading = true;
+          this.dispatch('setPageLoading', true);
           this.init();
           return false; // the page is not ready to be displayed
         }

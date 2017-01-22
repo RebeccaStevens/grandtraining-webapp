@@ -1,22 +1,42 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../imports/gt.html">
+<link rel="import" href="redux-store.html">
 
 <script>
 
-  GT.ElementCommonBehavior = {
+  var ElementCommonBehaviorImpl = {
 
-    properties: {
+    actions: {
+      setVenue: function(venue) {
+        return {
+          type: 'SET_VENUE',
+          venue: venue
+        };
+      },
 
-      /**
-       * A referenceto the main app element.
-       */
-      app: {
-        type: Object,
-        value: function() {
-          return GT.app;
-        },
-        readOnly: true
+      setPageLoading: function(loading) {
+        return {
+          type: 'SET_PAGE_LOADING',
+          loading: loading
+        };
+      },
+
+      setPageError: function(error) {
+        return {
+          type: 'SET_PAGE_ERROR',
+          error: error
+        };
       }
+    },
+
+    /**
+     * Get a data url for the relative path given.
+     *
+     * @param {!String} path
+     * @return {String}
+     */
+    getDataUri: function(path) {
+      return GT.ReduxBehavior.getState().dataPath + path;
     },
 
     /**
@@ -49,4 +69,6 @@
       return JSON.parse(JSON.stringify(obj));
     }
   };
+
+  GT.ElementCommonBehavior = [GT.ReduxBehavior, ElementCommonBehaviorImpl]
 </script>

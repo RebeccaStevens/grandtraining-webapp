@@ -29,7 +29,7 @@
     <!-- Download data -->
     <iron-ajax
       id="pageDataLoader"
-      url="[[app.dataPath]]classes.json"
+      url="[[getDataUri('classes.json')]]"
       handle-as="json"
       last-response="{{pageData}}"
       on-response="_handleAjaxResponse"
@@ -62,6 +62,14 @@
       ],
 
       properties: {
+
+        /**
+         * The app config data.
+         */
+        _appConfig: {
+          type: Object,
+          statePath: 'config'
+        },
 
         /**
          * True if the page's ajax has loaded.
@@ -116,7 +124,7 @@
         // if the page element doesn't exist, the page doesn't exist
         if (pageEl === null) {
           if (!Polymer.isInstance(this.$.page404)) {
-            this.app.pageLoading = true;
+            this.dispatch('setPageLoading', true);
             this.importHref(this.resolveUrl('../404/gt-page-404.html'), null, null, true);
           }
           this.renderedPageName = this.pageName;
@@ -130,7 +138,7 @@
 
         // load page import if it hasn't alreeady been imported.
         if (!Polymer.isInstance(pageEl)) {
-          this.app.pageLoading = true;
+          this.dispatch('setPageLoading', true);
           var shortName = 'details';
           if (this.pageName === this.mainPageName) {
             shortName = this.mainPageName
@@ -146,7 +154,7 @@
         }
         // if the page is not initialised.
         else if(!pageEl.isInitialised) {
-          this.app.pageLoading = true;
+          this.dispatch('setPageLoading', true);
           if (pageEl.tagName === 'GT-PAGE-CLASSES-DETAILS') {
             pageEl.init(true);
           } else {
@@ -159,18 +167,18 @@
           if (pageEl.onSwitchBackTo instanceof Function) {
             // if it doesn't return false, the page is ready to be displayed
             if (pageEl.onSwitchBackTo() !== false) {
-              this.app.pageLoading = false;
+              this.dispatch('setPageLoading', false);
               this.renderedPageName = this.pageName;
               this._scrollToTop();
             }
           } else {
-            this.app.pageLoading = false;
+            this.dispatch('setPageLoading', false);
             this.renderedPageName = this.pageName;
             this._scrollToTop();
           }
         }
 
-        this.app.pageError = false;
+        this.dispatch('setPageError', false);
       },
 
       /**
@@ -180,7 +188,7 @@
        */
       _onRouteActiveChanged: function(active) {
         // if active is false but the router's prefix is the classes url then the main page should be shown.
-        if (!active && this.$.router.route.prefix === this.app.data.pages.classes.url) {
+        if (!active && this.$.router.route.prefix === this._appConfig.pages.classes.url) {
           var updatePageName = function() {
             document.activeElement.blur();
             this.pageName = this.mainPageName;
@@ -204,7 +212,7 @@
 
           if (pageEl === null) {
             if (!Polymer.isInstance(this.$.page404)) {
-              this.app.pageLoading = true;
+              this.dispatch('setPageLoading', true);
               this.importHref(this.resolveUrl('../404/gt-page-404.html'), function() {
                 this.renderedPageName = this.pageName;
                 this._subPageLoaded = true;
@@ -240,8 +248,8 @@
           if (!this.isInitialised) {
             this._subPageLoaded = true;
           }
-          this.app.pageError = false;
-          this.app.pageLoading = false;
+          this.dispatch('setPageError', false);
+          this.dispatch('setPageLoading', false);
           this.renderedPageName = this.pageName;
           this._scrollToTop();
         }
@@ -253,8 +261,8 @@
        */
       _pageErrorOccurred: function(e) {
         if (e.target === this.getPageElement() || e.target === this.$.page404) {
-          this.app.pageError = true;
-          this.app.pageLoading = false;
+          this.dispatch('setPageError', true);
+          this.dispatch('setPageLoading', false);
           this.renderedPageName = this.pageName;
           this._scrollToTop();
         }
@@ -275,10 +283,10 @@
        */
       _scrollToTop: function() {
         if (this.pageName === this.mainPageName) {
-          this.app.scrollToTop();
+          GT.app.scrollToTop();
         }
         else {
-          this.app.scrollToTop(GT.animation.entryDuration);
+          GT.app.scrollToTop(GT.animation.entryDuration);
         }
       },
 

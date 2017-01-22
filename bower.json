@@ -14,7 +14,8 @@
     "html-echo": "^1.0.1",
     "polymer-cookie": "^1.1.1",
     "google-web-components": "GoogleWebComponents/google-web-components#^1.1.1",
-    "paper-card": "RebeccaStevens/paper-card#master"
+    "paper-card": "RebeccaStevens/paper-card#master",
+    "polymer-redux": "^0.3.0"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"

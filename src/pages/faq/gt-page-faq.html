@@ -46,7 +46,7 @@
     <!-- Download data -->
     <iron-ajax
       id="pageDataLoader"
-      url="[[app.dataPath]]faq.json"
+      url="[[getDataUri('faq.json')]]"
       handle-as="json"
       last-response="{{pageData}}"
       on-response="_handleAjaxResponse"
@@ -54,7 +54,7 @@
 
     <iron-media-query query="(min-width: 1024px)" query-matches="{{largeViewport}}"></iron-media-query>
 
-    <paper-card id="card" heading="[[_getCardHeading(app.data.pages.faq.title, largeViewport)]]">
+    <paper-card id="card" heading="[[_getCardHeading(_appConfig.pages.faq.title, largeViewport)]]">
       <div class="card-content">
         <template is="dom-repeat" items="[[pageData.faqs]]" as="faq">
           <gt-faq question="[[faq.question]]" answer="[[faq.answer]]"></gt-faq>
@@ -75,6 +75,15 @@
       ],
 
       properties: {
+
+        /**
+         * The app config data.
+         */
+        _appConfig: {
+          type: Object,
+          statePath: 'config'
+        },
+
         /**
          * The animations this element has.
          */
