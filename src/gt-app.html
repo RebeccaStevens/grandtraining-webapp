@@ -388,7 +388,7 @@
     <polymer-cookie
       id="venueID-cookie"
       name="venueID"
-      value="[[venue.id]]"
+      value="[[_venue.id]]"
       path="/"
       time="-1"></polymer-cookie>
 
@@ -522,6 +522,20 @@
             type: 'INIT',
             config: config
           };
+        },
+
+        setShellLoading: function(loading) {
+          return {
+            type: 'SET_SHELL_LOADING',
+            loading: loading
+          };
+        },
+
+        setShellError: function(error) {
+          return {
+            type: 'SET_SHELL_ERROR',
+            error: error
+          };
         }
       },
 
@@ -538,35 +552,18 @@
         /**
          * The venue the user has selected.
          */
-        venue: {
+        _venue: {
           type: Object,
           observer: '_venueChanged',
           statePath: 'venue'
         },
 
         /**
-         * Whether or not a page is currently loading.
-         */
-        pageLoading: {
-          type: Boolean,
-          value: true
-        },
-
-        /**
-         * Whether or not a page loading error has occured.
-         */
-        pageError: {
-          type: Boolean,
-          value: false
-        },
-
-        /**
          * Details about the signed in user.
          */
-        signedInUser: {
+        _signedInUser: {
           type: Object,
-          value: null,
-          readOnly: true
+          statePath: 'signedInUser'
         },
 
         /**
@@ -579,11 +576,27 @@
         },
 
         /**
+         * Whether or not a page is currently loading.
+         */
+        _pageLoading: {
+          type: Boolean,
+          statePath: 'pageLoading'
+        },
+
+        /**
+         * Whether or not a page loading error has occured.
+         */
+        _pageError: {
+          type: Boolean,
+          statePath: 'pageError'
+        },
+
+        /**
          * Whether or not the shell is currently loading.
          */
         _shellLoading: {
           type: Boolean,
-          value: true
+          statePath: 'shellLoading'
         },
 
         /**
@@ -591,7 +604,7 @@
          */
         _shellError: {
           type: Boolean,
-          value: false
+          statePath: 'shellError'
         },
 
         /**
@@ -619,7 +632,7 @@
          */
         isUserSignedIn: {
           type: Boolean,
-          computed: '_computeIsUserSignedIn(signedInUser)'
+          computed: '_computeIsUserSignedIn(_signedInUser)'
         },
 
         /**
@@ -635,7 +648,7 @@
          */
         _hideLoadingOverlay: {
           type: Boolean,
-          computed: '_computeHideLoadingOverlay(pageLoading, _shellLoading)'
+          computed: '_computeHideLoadingOverlay(_shellLoading, _pageLoading)'
         },
 
         /**
@@ -643,7 +656,7 @@
          */
         _hideErrorOverlay: {
           type: Boolean,
-          computed: '_computeHideErrorOverlay(_shellError, pageError)'
+          computed: '_computeHideErrorOverlay(_shellError, _pageError)'
         },
 
         /**
@@ -677,8 +690,8 @@
       /**
        * Compute the value of `_hideLoadingOverlay`.
        */
-      _computeHideLoadingOverlay: function(pageLoading, shellLoading) {
-        return !(pageLoading || shellLoading);
+      _computeHideLoadingOverlay: function(shellLoading, pageLoading) {
+        return !(shellLoading || pageLoading);
       },
 
       /**
@@ -785,12 +798,12 @@
 
         // load page import if it hasn't alreeady been imported.
         if (!Polymer.isInstance(pageEl)) {
-          this.pageLoading = true;
+          this.dispatch('setPageLoading', true);
           this.importHref(this.resolveUrl('pages/' + pageName + '/gt-page-' + pageName + '.html'), null, null, true);
         }
         // if the page is not initialised.
         else if(!pageEl.isInitialised) {
-          this.pageError = true;
+          this.dispatch('setPageError', true);
           this._reinitPage();
         }
         // else the page is loaded and read to be display
@@ -799,18 +812,18 @@
           if (pageEl.onSwitchBackTo instanceof Function) {
             // if it doesn't return false, the page is ready to be displayed
             if (pageEl.onSwitchBackTo() !== false) {
-              this.pageLoading = false;
+              this.dispatch('setPageLoading', false);
               this.renderedPageName = this.pageName;
               this.scrollToTop();
             }
           } else {
-            this.pageLoading = false;
+            this.dispatch('setPageLoading', false);
             this.renderedPageName = this.pageName;
             this.scrollToTop();
           }
         }
 
-        this.pageError = false;
+        this.dispatch('setPageError', false);
 
         // close the drawer
         if (!this.$.drawer.persistent) {
@@ -823,8 +836,8 @@
        */
       _pageLoaded: function(e) {
         if (e.target === this.getPageElement() || e.target === this.$.page404) {
-          this.pageError = false;
-          this.pageLoading = false;
+          this.dispatch('setPageError', false);
+          this.dispatch('setPageLoading', false);
           this.renderedPageName = this.pageName;
         }
         e.cancelBubble = true;
@@ -835,8 +848,8 @@
        */
       _pageErrorOccurred: function(e) {
         if (e.target === this.getPageElement() || e.target === this.$.page404) {
-          this.pageError = true;
-          this.pageLoading = false;
+          this.dispatch('setPageError', true);
+          this.dispatch('setPageLoading', false);
           this.renderedPageName = this.pageName;
         }
         e.cancelBubble = true;
@@ -849,12 +862,12 @@
         var pageEl = this.getPageElement(true);
 
         if (this._shellError) {
-          this._shellLoading = true;  // turn the loading overlay on
+          this.dispatch('setShellLoading', true);  // turn the loading overlay on
           this.init();
         }
 
-        if (this.pageError) {
-          this.pageLoading = true;  // turn the loading overlay on
+        if (this._pageError) {
+          this.dispatch('setPageLoading', true);  // turn the loading overlay on
 
           // if the page has an init function, call it.
           if (pageEl !== null && pageEl.init instanceof Function) {
@@ -866,7 +879,7 @@
           // otherwise, wait a bit and turn the loading overlay off
           else {
             this.async(function() {
-              this.pageLoading = false;
+              this.dispatch('setPageLoading', false);
             }, 500);
           }
         }
@@ -1079,8 +1092,8 @@
         var response = e.detail.response;
         if (response) {
           this.dispatch('setConfig', response);
-          this._shellError = false;
-          this._shellLoading = false;
+          this.dispatch('setShellError', false);
+          this.dispatch('setShellLoading', false);
           this._readVenueID();
           this._setFixedWithOnDesktopMainToolbarItems();
           this.pageContainerReady();
@@ -1093,10 +1106,10 @@
        * Called when an error occurs during the app shell ajax request.
        */
       _handleAjaxError: function() {
-        this.pageError = true;
-        this.pageLoading = false;
-        this._shellError = true;
-        this._shellLoading = false;
+        this.dispatch('setPageError', true);
+        this.dispatch('setPageLoading', false);
+        this.dispatch('setShellError', true);
+        this.dispatch('setShellLoading', false);
         this.pageContainerError();
       },
 

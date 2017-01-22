@@ -12,6 +12,20 @@
           type: 'SET_VENUE',
           venue: venue
         };
+      },
+
+      setPageLoading: function(loading) {
+        return {
+          type: 'SET_PAGE_LOADING',
+          loading: loading
+        };
+      },
+
+      setPageError: function(error) {
+        return {
+          type: 'SET_PAGE_ERROR',
+          error: error
+        };
       }
     },
 

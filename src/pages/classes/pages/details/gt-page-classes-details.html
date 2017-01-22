@@ -280,7 +280,7 @@
        */
       _venueChanged: function() {
         if (this._showVenueSelector) {
-          this.app.pageLoading = true;
+          this.dispatch('setPageLoading', true);
           this.$.pageDataLoader.generateRequest();
         }
       },
@@ -397,7 +397,7 @@
        */
       onSwitchBackTo: function() {
         if (!this._venue) {
-          this.app.pageLoading = true;
+          this.dispatch('setPageLoading', true);
           this.init();
           return false; // the page is not ready to be displayed
         }
