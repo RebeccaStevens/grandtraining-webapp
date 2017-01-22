@@ -8,7 +8,9 @@
     },
     "globals": {
       "Polymer": true,
-      "GT": true
+      "GT": true,
+      "Redux": true,
+      "PolymerRedux": true
     },
     "env": {
       "browser": true
