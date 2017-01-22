@@ -24,7 +24,6 @@
 
 <link rel="import" href="../styles/gt-styles.html">
 <link rel="import" href="../imports/gt.html">
-<link rel="import" href="redux-store.html">
 <link rel="import" href="animations/main-page-entry-animation.html">
 <link rel="import" href="animations/main-page-exit-animation.html">
 <link rel="import" href="gt-page-container-behavior.html">
@@ -380,9 +379,8 @@
 
     <!-- Download data -->
     <iron-ajax id="shellDataLoader"
-      url="[[dataPath]]config.json"
+      url="[[getDataUri('config.json')]]"
       handle-as="json"
-      last-response="{{data}}"
       on-response="_handleAjaxResponse"
       on-error="_handleAjaxError"></iron-ajax>
 
@@ -402,13 +400,13 @@
         <app-header-layout id="drawer-header-layout" has-scrolling-region>
           <app-header>
             <app-toolbar>
-              <a href$="[[data.pages.home.url]]"><div main-title>[[data.company.name]]</div></a>
+              <a href$="[[_data.pages.home.url]]"><div main-title>[[_data.company.name]]</div></a>
 
               <paper-menu-button id="drawer-toolbar-dropdown">
                 <paper-icon-button icon="settings" class="dropdown-trigger"></paper-icon-button>
                 <paper-menu id="toolbar-dropdown-menu" class="dropdown-content" on-iron-select="_toolbar_dropdown_menu_select">
-                  <a name="account" href$="[[data.pages.account.url]]" hidden$="[[!isUserSignedIn]]"><paper-item><iron-icon icon="account"></iron-icon><span>[[data.pages.account.menuTitle]]</span></paper-item></a>
-                  <a name="signin" href$="[[data.pages.signin.url]]" hidden$="[[isUserSignedIn]]"><paper-item><iron-icon icon="lock-opened"></iron-icon><span>[[data.pages.signin.menuTitle]]</span></paper-item></a>
+                  <a name="account" href$="[[_data.pages.account.url]]" hidden$="[[!isUserSignedIn]]"><paper-item><iron-icon icon="account"></iron-icon><span>[[_data.pages.account.menuTitle]]</span></paper-item></a>
+                  <a name="signin" href$="[[_data.pages.signin.url]]" hidden$="[[isUserSignedIn]]"><paper-item><iron-icon icon="lock-opened"></iron-icon><span>[[_data.pages.signin.menuTitle]]</span></paper-item></a>
                   <a name="logout" href="" hidden$="[[!isUserSignedIn]]"><paper-item><iron-icon icon="lock-closed"></iron-icon><span>Log Out</span></paper-item></a>
                 </paper-menu>
               </paper-menu-button>
@@ -416,13 +414,13 @@
           </app-header>
 
           <iron-selector selected="[[renderedPageName]]" attr-for-selected="name" class="main-menu drawer-list" role="navigation">
-            <a name="home" href$="[[data.pages.home.url]]">[[data.pages.home.menuTitle]]</a>
-            <a name="classes" href$="[[data.pages.classes.url]]">[[data.pages.classes.menuTitle]]</a>
-            <a name="bookings" href$="[[data.pages.bookings.url]]">[[data.pages.bookings.menuTitle]]</a>
-            <a name="faq" href$="[[data.pages.faq.url]]">[[data.pages.faq.menuTitle]]</a>
-            <a name="about-us" href$="[[data.pages.about-us.url]]">[[data.pages.about-us.menuTitle]]</a>
-            <a name="contact-us" href$="[[data.pages.contact-us.url]]">[[data.pages.contact-us.menuTitle]]</a>
-            <a class="etrain-link" title="[[data.etrain.title]]" href$="[[data.etrain.url]]">[[data.etrain.menuTitle]]</a>
+            <a name="home" href$="[[_data.pages.home.url]]">[[_data.pages.home.menuTitle]]</a>
+            <a name="classes" href$="[[_data.pages.classes.url]]">[[_data.pages.classes.menuTitle]]</a>
+            <a name="bookings" href$="[[_data.pages.bookings.url]]">[[_data.pages.bookings.menuTitle]]</a>
+            <a name="faq" href$="[[_data.pages.faq.url]]">[[_data.pages.faq.menuTitle]]</a>
+            <a name="about-us" href$="[[_data.pages.about-us.url]]">[[_data.pages.about-us.menuTitle]]</a>
+            <a name="contact-us" href$="[[_data.pages.contact-us.url]]">[[_data.pages.contact-us.menuTitle]]</a>
+            <a class="etrain-link" title$="[[_data.etrain.title]]" href$="[[_data.etrain.url]]">[[_data.etrain.menuTitle]]</a>
           </iron-selector>
         </app-header-layout>
       </app-drawer>
@@ -433,22 +431,22 @@
         <app-header reveals="[[!_viewportWidth.gtoet1024]]" fixed="[[_viewportWidth.gtoet1024]]" shadow effects="waterfall">
           <app-toolbar id="main-toolbar-large" hidden$="[[!_viewportWidth.gtoet1024]]">
             <div class="container">
-              <a href$="[[data.pages.home.url]]" class$="toolbar-link [[_getMainTitleClass(pageName, _viewportWidth.gtoet1024)]]"><div main-title>[[data.company.name]]</div></a>
+              <a href$="[[_data.pages.home.url]]" class$="toolbar-link [[_getMainTitleClass(pageName, _viewportWidth.gtoet1024)]]"><div main-title>[[_data.company.name]]</div></a>
               <span class="flex"></span>
               <iron-selector selected="[[renderedPageName]]" attr-for-selected="name" class="main-menu drawer-list" role="navigation">
-                <a class="toolbar-link" name="classes" href$="[[data.pages.classes.url]]">[[data.pages.classes.menuTitle]]</a>
-                <a class="toolbar-link" name="bookings" href$="[[data.pages.bookings.url]]">[[data.pages.bookings.menuTitle]]</a>
-                <a class="toolbar-link" name="faq" href$="[[data.pages.faq.url]]">[[data.pages.faq.menuTitle]]</a>
-                <a class="toolbar-link" name="about-us" href$="[[data.pages.about-us.url]]">[[data.pages.about-us.menuTitle]]</a>
-                <a class="toolbar-link" name="contact-us" href$="[[data.pages.contact-us.url]]">[[data.pages.contact-us.menuTitle]]</a>
+                <a class="toolbar-link" name="classes" href$="[[_data.pages.classes.url]]">[[_data.pages.classes.menuTitle]]</a>
+                <a class="toolbar-link" name="bookings" href$="[[_data.pages.bookings.url]]">[[_data.pages.bookings.menuTitle]]</a>
+                <a class="toolbar-link" name="faq" href$="[[_data.pages.faq.url]]">[[_data.pages.faq.menuTitle]]</a>
+                <a class="toolbar-link" name="about-us" href$="[[_data.pages.about-us.url]]">[[_data.pages.about-us.menuTitle]]</a>
+                <a class="toolbar-link" name="contact-us" href$="[[_data.pages.contact-us.url]]">[[_data.pages.contact-us.menuTitle]]</a>
               </iron-selector>
-              <a class="toolbar-link etrain-link" name="etrain" title="[[data.etrain.title]]" href$="[[data.etrain.url]]">[[data.etrain.menuTitle]]</a>
+              <a class="toolbar-link etrain-link" name="etrain" title$="[[_data.etrain.title]]" href$="[[_data.etrain.url]]">[[_data.etrain.menuTitle]]</a>
               <div class="dropdown-container">
                 <paper-menu-button id="toolbar-dropdown">
                   <paper-icon-button icon="arrow-drop-down" class="dropdown-trigger"></paper-icon-button>
                   <paper-menu id="toolbar-dropdown-menu" class="dropdown-content" on-iron-select="_toolbar_dropdown_menu_select">
-                    <a name="account" href$="[[data.pages.account.url]]" hidden$="[[!isUserSignedIn]]"><paper-item><iron-icon icon="account"></iron-icon><span>[[data.pages.account.menuTitle]]</span></paper-item></a>
-                    <a name="signin" href$="[[data.pages.signin.url]]" hidden$="[[isUserSignedIn]]"><paper-item><iron-icon icon="lock-opened"></iron-icon><span>[[data.pages.signin.menuTitle]]</span></paper-item></a>
+                    <a name="account" href$="[[_data.pages.account.url]]" hidden$="[[!isUserSignedIn]]"><paper-item><iron-icon icon="account"></iron-icon><span>[[_data.pages.account.menuTitle]]</span></paper-item></a>
+                    <a name="signin" href$="[[_data.pages.signin.url]]" hidden$="[[isUserSignedIn]]"><paper-item><iron-icon icon="lock-opened"></iron-icon><span>[[_data.pages.signin.menuTitle]]</span></paper-item></a>
                     <a name="logout" href="" hidden$="[[!isUserSignedIn]]"><paper-item><iron-icon icon="lock-closed"></iron-icon><span>Log Out</span></paper-item></a>
                   </paper-menu>
                 </paper-menu-button>
@@ -498,7 +496,7 @@
         <hr class="bottom-rule">
 
         <footer>
-          Copyright &copy; [[data.company.name]] [[_currentYear]]
+          Copyright &copy; [[_data.company.name]] [[_currentYear]]
         </footer>
 
       </app-header-layout>
@@ -515,25 +513,27 @@
 
       behaviors: [
         GT.ElementCommonBehavior,
-        GT.PageContainerBehavior,
-        GT.ReduxBehavior
+        GT.PageContainerBehavior
       ],
+
+      actions : {
+        setConfig: function(config) {
+          return {
+            type: 'INIT',
+            config: config
+          };
+        }
+      },
 
       properties: {
 
         /**
-         * The path where this app should download data from.
-         * This path should alwasy end with a slash ('/').
+         * The config data this app will use.
          */
-        dataPath: {
-          type: String,
-          value: '/'
+        _data: {
+          type: Object,
+          statePath: 'config'
         },
-
-        /**
-         * The data this app will use.
-         */
-        data: Object,
 
         /**
          * The venue the user has selected.
@@ -574,7 +574,7 @@
          */
         _pageTitle: {
           type: String,
-          computed: '_computePageTitle(pageName, data.company.name)',
+          computed: '_computePageTitle(pageName, _data.company.name)',
           observer: '_pageTitleChanged'
         },
 
@@ -695,7 +695,7 @@
         if (pageName === this.mainPageName) {
           return companyName;
         }
-        var pageData = this.data.pages[pageName];
+        var pageData = this._data.pages[pageName];
         if (pageData) {
           return pageData.title;
         }
@@ -749,8 +749,8 @@
        */
       findPageNameForRoute: function(urlRoute) {
         // search for the page that has this url
-        for (var index in this.data.pages) {
-          var url = this.data.pages[index].url;
+        for (var index in this._data.pages) {
+          var url = this._data.pages[index].url;
           url = url.replace(/^[/]+/, '');       // remove slashes from the beginning
           url = url.replace(/[/]+$/, '');       // remove slashes from the end
           if (url === urlRoute) {
@@ -885,9 +885,9 @@
       _readVenueID: function() {
         var venueID = this.$['venueID-cookie'].readCookie();
 
-        for (var region in this.data.regions) {
-          if (this.data.regions[region][venueID] !== undefined) {
-            this.dispatch('setVenue', this.data.regions[region][venueID]);
+        for (var region in this._data.regions) {
+          if (this._data.regions[region][venueID] !== undefined) {
+            this.dispatch('setVenue', this._data.regions[region][venueID]);
             break;
           }
         }
@@ -1075,8 +1075,10 @@
       /**
        * Called when the app shell data loads.
        */
-      _handleAjaxResponse: function() {
-        if (this.data) {
+      _handleAjaxResponse: function(e) {
+        var response = e.detail.response;
+        if (response) {
+          this.dispatch('setConfig', response);
           this._shellError = false;
           this._shellLoading = false;
           this._readVenueID();

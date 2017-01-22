@@ -7,6 +7,8 @@
    * The initial state of the app.
    */
   var initialState = {
+    dataPath: 'http://grandtraining.local/data/', // The path where this app should download data from. This path should alwasy end with a slash ('/').
+    config: undefined,
     venue: undefined
   };
 
@@ -19,6 +21,11 @@
     }
 
     switch (action.type) {
+      case 'INIT':
+        return Object.assign({}, state, {
+          config: Object.assign({}, action.config)
+        });
+
       case 'SET_VENUE':
         return Object.assign({}, state, {
           venue: Object.assign({}, action.venue)

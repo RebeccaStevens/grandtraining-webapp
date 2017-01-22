@@ -88,7 +88,7 @@
     <!-- Download data -->
     <iron-ajax
       id="pageDataLoader"
-      url="[[app.dataPath]]home.json"
+      url="[[getDataUri('home.json')]]"
       handle-as="json"
       last-response="{{pageData}}"
       on-response="_handleAjaxResponse"
@@ -113,7 +113,7 @@
       <paper-card shown heading="[[pageData.classes.heading]]">
         <div class="card-content"><html-echo html="[[pageData.classes.content]]"></html-echo></div>
         <div class="card-actions">
-          <a name="classes" href$="[[app.data.pages.classes.url]]" tabindex="-1"><paper-button raised>Book Now</paper-button></a>
+          <a name="classes" href$="[[_appConfig.pages.classes.url]]" tabindex="-1"><paper-button raised>Book Now</paper-button></a>
         </div>
       </paper-card>
 
@@ -139,6 +139,14 @@
       ],
 
       properties: {
+
+        /**
+         * The app config data.
+         */
+        _appConfig: {
+          type: Object,
+          statePath: 'config'
+        },
 
         /**
          * The data the page will use.

@@ -67,7 +67,6 @@
 
       behaviors: [
         GT.ElementCommonBehavior,
-        GT.ReduxBehavior,
         Polymer.NeonAnimationRunnerBehavior
       ],
 
@@ -76,15 +75,16 @@
         /**
          * The gloabel regions object
          */
-        globalRegions: {
+        _globalRegions: {
           type: Object,
-          observer: '_gloabelRegionsChanged'
+          observer: '_gloabelRegionsChanged',
+          statePath: 'config.regions'
         },
 
         /**
          * The selected venue.
          */
-        venue: {
+        _venue: {
           type: Object,
           observer: '_venueChanged',
           statePath: 'venue'
@@ -196,7 +196,7 @@
       },
 
       /**
-       * Called when `app.data.regions` changes.
+       * Called when `_gloabelRegions` changes.
        */
       _gloabelRegionsChanged: function(regions) {
         var regionArray = [];
@@ -269,8 +269,8 @@
       _regionSelected: function(e) {
         var regionName = e.detail.item.regionName;
         var venues = [];
-        for(var key in this.globalRegions[regionName]) {
-          venues.push(this.globalRegions[regionName][key]);
+        for(var key in this._globalRegions[regionName]) {
+          venues.push(this._globalRegions[regionName][key]);
         }
 
         this._region = {
@@ -285,16 +285,16 @@
        * Called when an Venue is selected.
        */
       _venueSelected: function(e) {
-        var newLocation = this.globalRegions[this._region.name][e.detail.item.venueId];
-        if (newLocation !== this.venue) {
+        var newLocation = this._globalRegions[this._region.name][e.detail.item.venueId];
+        if (newLocation !== this._venue) {
           this.dispatch('setVenue', newLocation);
           this.fire('venue-changed');
         }
       },
 
       ready: function() {
-        if (this.venue !== undefined) {
-          this._venueChanged(this.venue);
+        if (this._venue !== undefined) {
+          this._venueChanged(this._venue);
         }
         this.playAnimation('entry');
       }

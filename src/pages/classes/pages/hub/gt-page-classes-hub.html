@@ -67,8 +67,6 @@
     <!-- Layout -->
     <gt-venue-selector
       id="venue-selector"
-      global-regions="[[app.data.regions]]"
-      venue="[[_venue]]"
       on-venue-changed="_venueChanged"></gt-venue-selector>
 
     <div id="class-categories" hidden$="[[_hideClassCategories]]">
@@ -76,7 +74,7 @@
         <gt-class-category
           parent="[[me]]"
           name="[[cc.name]]"
-          href="[[app.data.pages.classes.url]][[cc.url]]"
+          href="[[_appConfig.pages.classes.url]][[cc.url]]"
           image-src="[[cc.image.src]]"
           image-placeholder="[[cc.image.placeholder]]"
           hidden$="[[!_isAvailableInVenue(cc.venuesAvailable, _venue)]]">
@@ -93,12 +91,19 @@
       behaviors: [
         GT.ElementCommonBehavior,
         GT.PageBehavior,
-        GT.ReduxBehavior,
         Polymer.NeonAnimationRunnerBehavior,
         Polymer.NeonSharedElementAnimatableBehavior
       ],
 
       properties: {
+
+        /**
+         * The app config data.
+         */
+        _appConfig: {
+          type: Object,
+          statePath: 'config'
+        },
 
         /**
          * A reference to this element.

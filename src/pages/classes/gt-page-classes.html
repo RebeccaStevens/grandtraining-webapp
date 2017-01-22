@@ -29,7 +29,7 @@
     <!-- Download data -->
     <iron-ajax
       id="pageDataLoader"
-      url="[[app.dataPath]]classes.json"
+      url="[[getDataUri('classes.json')]]"
       handle-as="json"
       last-response="{{pageData}}"
       on-response="_handleAjaxResponse"
@@ -62,6 +62,14 @@
       ],
 
       properties: {
+
+        /**
+         * The app config data.
+         */
+        _appConfig: {
+          type: Object,
+          statePath: 'config'
+        },
 
         /**
          * True if the page's ajax has loaded.
@@ -180,7 +188,7 @@
        */
       _onRouteActiveChanged: function(active) {
         // if active is false but the router's prefix is the classes url then the main page should be shown.
-        if (!active && this.$.router.route.prefix === this.app.data.pages.classes.url) {
+        if (!active && this.$.router.route.prefix === this._appConfig.pages.classes.url) {
           var updatePageName = function() {
             document.activeElement.blur();
             this.pageName = this.mainPageName;

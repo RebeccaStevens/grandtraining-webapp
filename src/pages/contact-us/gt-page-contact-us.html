@@ -109,7 +109,7 @@
     <!-- Download data -->
     <iron-ajax
       id="pageDataLoader"
-      url="[[app.dataPath]]contact-us.json"
+      url="[[getDataUri('contact-us.json')]]"
       handle-as="json"
       last-response="{{pageData}}"
       on-response="_handleAjaxResponse"
@@ -117,7 +117,7 @@
 
     <paper-card id="card" heading="Send us a Message">
       <div class="card-content">
-        <form is="iron-form" id="form" method="post" action="[[app.data.pages.contact-us.url]]/formhandler">
+        <form is="iron-form" id="form" method="post" action="[[_appConfig.pages.contact-us.url]]/formhandler">
           <paper-input class="inline field"
             name="name"
             label="Full Name:"
@@ -233,6 +233,15 @@
       ],
 
       properties: {
+
+        /**
+         * The app config data.
+         */
+        _appConfig: {
+          type: Object,
+          statePath: 'config'
+        },
+
         /**
          * True when a messages is being sent.
          */
@@ -383,7 +392,7 @@
         this._recaptchaEl = document.createElement('div');
         document.body.appendChild(this._recaptchaEl);
         this._grecaptchaId = window.grecaptcha.render(this._recaptchaEl, {
-          sitekey: GT.app.data['api-configs']['recaptcha-config']['site-key'],
+          sitekey: this._appConfig['api-configs']['recaptcha-config']['site-key'],
           theme: 'light',
           callback: function(response) {
             Polymer.dom(this.root).querySelector('[name="g-recaptcha-response"]').value = response;
