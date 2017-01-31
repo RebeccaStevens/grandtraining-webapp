@@ -326,8 +326,9 @@
        * Called when a drop down's selected item changes.
        */
       _dropdownItemChanged: function(e) {
+        var dropdown = e.target;  // store the target in another variable as the event bubbles
         setTimeout(function() {
-          e.target.validate();
+          dropdown.validate();
         }, 0);
       },
 
