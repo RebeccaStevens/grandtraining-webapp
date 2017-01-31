@@ -53,6 +53,16 @@
     },
 
     /**
+     * Get a form handler url for the relative path given.
+     *
+     * @param {!String} path
+     * @return {String}
+     */
+    getFormHandlerUri: function(path) {
+      return GT.ReduxBehavior.getState().formHandlerPath + path;
+    },
+
+    /**
      * Returns true if the array has any values.
      *
      * @param {Array} arr
