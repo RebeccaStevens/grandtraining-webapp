@@ -10,7 +10,8 @@
       "Polymer": true,
       "GT": true,
       "Redux": true,
-      "PolymerRedux": true
+      "PolymerRedux": true,
+      "grecaptcha": true
     },
     "env": {
       "browser": true

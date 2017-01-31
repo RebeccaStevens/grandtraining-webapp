@@ -304,6 +304,7 @@
       _formError: function() {
         this._sendingMessage = false;
         this.$['error-dialog'].open();
+        grecaptcha.reset(this._grecaptchaId);
       },
 
       /**
@@ -316,10 +317,15 @@
       /**
        * Called when the server response positively to form submition.
        */
-      _formResponse: function() {
-        this._sendingMessage = false;
-        this.$['message-sent-dialog'].open();
-        this.$.form.reset();
+      _formResponse: function(e) {
+        if (!e.detail.response.successful) {
+          this._formError(e);
+        } else {
+          this._sendingMessage = false;
+          this.$['message-sent-dialog'].open();
+          this.$.form.reset();
+          grecaptcha.reset(this._grecaptchaId);
+        }
       },
 
       /**
@@ -392,7 +398,7 @@
       _createRecaptchaElement: function() {
         this._recaptchaEl = document.createElement('div');
         document.body.appendChild(this._recaptchaEl);
-        this._grecaptchaId = window.grecaptcha.render(this._recaptchaEl, {
+        this._grecaptchaId = grecaptcha.render(this._recaptchaEl, {
           sitekey: this._appConfig['api-configs']['recaptcha-config']['site-key'],
           theme: 'light',
           callback: function(response) {
@@ -440,8 +446,8 @@
             this._showRecaptcha();
           }, GT.animation.entryDuration);
         }
-        if (window.grecaptcha !== undefined && this._grecaptchaId !== undefined ) {
-          window.grecaptcha.reset(this._grecaptchaId);
+        if (grecaptcha !== undefined && this._grecaptchaId !== undefined ) {
+          grecaptcha.reset(this._grecaptchaId);
         }
 
         // focus the first field
@@ -467,7 +473,7 @@
       _handleAjaxResponse: function() {
         if (this.pageData) {
           this.async(function() {
-            if (window.grecaptcha === undefined) {
+            if (grecaptcha === undefined) {
               document.addEventListener('recaptcha-ready', this._createRecaptchaElement.bind(this));
             } else {
               this._createRecaptchaElement();

@@ -1,6 +1,6 @@
-<script type="text/javascript">
-  function recaptchaReadyCallback() {
-    document.dispatchEvent(new CustomEvent('recaptcha-ready'));
-  };
+<script>
+function recaptchaReadyCallback() {
+  document.dispatchEvent(new CustomEvent('recaptcha-ready'));
+};
 </script>
 <script src="https://www.google.com/recaptcha/api.js?onload=recaptchaReadyCallback&render=explicit" async defer></script>
