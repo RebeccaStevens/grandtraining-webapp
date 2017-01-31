@@ -26,6 +26,19 @@
           type: 'SET_PAGE_ERROR',
           error: error
         };
+      },
+
+      signIn: function(user) {
+        return {
+          type: 'SIGN_IN',
+          user: user
+        };
+      },
+
+      signOut: function() {
+        return {
+          type: 'SIGN_OUT'
+        };
       }
     },
 

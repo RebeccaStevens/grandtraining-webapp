@@ -407,7 +407,7 @@
                 <paper-menu id="toolbar-dropdown-menu" class="dropdown-content" on-iron-select="_toolbar_dropdown_menu_select">
                   <a name="account" href$="[[_data.pages.account.url]]" hidden$="[[!isUserSignedIn]]"><paper-item><iron-icon icon="account"></iron-icon><span>[[_data.pages.account.menuTitle]]</span></paper-item></a>
                   <a name="signin" href$="[[_data.pages.signin.url]]" hidden$="[[isUserSignedIn]]"><paper-item><iron-icon icon="lock-opened"></iron-icon><span>[[_data.pages.signin.menuTitle]]</span></paper-item></a>
-                  <a name="logout" href="" hidden$="[[!isUserSignedIn]]"><paper-item><iron-icon icon="lock-closed"></iron-icon><span>Log Out</span></paper-item></a>
+                  <a name="signout" href="" hidden$="[[!isUserSignedIn]]"><paper-item><iron-icon icon="lock-closed"></iron-icon><span>Log Out</span></paper-item></a>
                 </paper-menu>
               </paper-menu-button>
             </app-toolbar>
@@ -447,7 +447,7 @@
                   <paper-menu id="toolbar-dropdown-menu" class="dropdown-content" on-iron-select="_toolbar_dropdown_menu_select">
                     <a name="account" href$="[[_data.pages.account.url]]" hidden$="[[!isUserSignedIn]]"><paper-item><iron-icon icon="account"></iron-icon><span>[[_data.pages.account.menuTitle]]</span></paper-item></a>
                     <a name="signin" href$="[[_data.pages.signin.url]]" hidden$="[[isUserSignedIn]]"><paper-item><iron-icon icon="lock-opened"></iron-icon><span>[[_data.pages.signin.menuTitle]]</span></paper-item></a>
-                    <a name="logout" href="" hidden$="[[!isUserSignedIn]]"><paper-item><iron-icon icon="lock-closed"></iron-icon><span>Log Out</span></paper-item></a>
+                    <a name="signout" href="" hidden$="[[!isUserSignedIn]]"><paper-item><iron-icon icon="lock-closed"></iron-icon><span>Log Out</span></paper-item></a>
                   </paper-menu>
                 </paper-menu-button>
               </div>
@@ -741,20 +741,6 @@
             delay: 0
           });
         }
-      },
-
-      /**
-       * Sign the user in.
-       */
-      signin: function() {
-        this._setSignedInUser({});
-      },
-
-      /**
-       * Log the user out.
-       */
-      logout: function() {
-        this._setSignedInUser(null);
       },
 
       /**
@@ -1079,8 +1065,8 @@
        * Called when an item in the dropdown in the toolbar is selected.
        */
       _toolbar_dropdown_menu_select: function(e) {
-        if (e.detail.item.name === 'logout') {
-          this.logout();
+        if (e.detail.item.name === 'signout') {
+          this.dispatch('signOut');
         }
         this.$['toolbar-dropdown-menu'].selected = -1;
       },

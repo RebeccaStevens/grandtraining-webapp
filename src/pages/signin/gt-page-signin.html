@@ -98,6 +98,15 @@
           <paper-button raised on-tap="_signup">Sign Up</paper-button>
         </div>
       </paper-card>
+
+      <paper-card id="signedin-card" class="card" heading="You are now signed in" hidden$="[[!_isVisibleCard('signedin', _visibleCard)]]">
+        <div class="card-content">
+          <span>You are currently signed in as [[_user.name]]</span>
+        </div>
+        <div class="card-actions">
+          <paper-button raised on-tap="_signout">Log Out</paper-button>
+        </div>
+      </paper-card>
     </div>
   </template>
 
@@ -126,12 +135,29 @@
          */
         pageData: Object,
 
+
+        /**
+         * The card that should be shown.
+         */
+        _cardToShow: {
+          type: String,
+          value: 'signin'
+        },
+
         /**
          * The card that is visible.
          */
         _visibleCard: {
           type: String,
-          value: 'signin'
+          computed: '_computeVisibleCard(_cardToShow, _user)'
+        },
+
+        /**
+         * The signed in user
+         */
+        _user: {
+          type: Object,
+          statePath: 'signedInUser'
         },
 
         /**
@@ -164,7 +190,11 @@
 
         if (!(this.$['signin-email'].invalid ||
         this.$['signin-password'].invalid)) {
-          console.log('todo signin')
+          console.log('todo: signin');
+          this.dispatch('signIn', {
+            name: 'Test User'
+          });
+          this.$['signin-password'].value = '';
         }
       },
 
@@ -183,26 +213,43 @@
 
         if (!(this.$['signup-email'].invalid ||
         this.$['signup-password'].invalid)) {
-          console.log('todo signup')
+          console.log('todo: signup');
         }
       },
 
       /**
-       * Test if the given cardName is the active card.
+       * Sign out the user.
+       */
+      _signout: function() {
+        this.dispatch('signOut');
+      },
+
+      /**
+       * Computer the visible card.
+       */
+      _computeVisibleCard: function(cardToShow, user) {
+        if (user === null) {
+          return cardToShow;
+        }
+        return 'signedin';
+      },
+
+      /**
+       * Test if the given cardName is the visible card.
        *
        * @param String cardName
-       * @param String activeCardName
+       * @param String visibleCard
        * @returns Boolean
        */
-      _isVisibleCard: function(cardName, activeCardName) {
-        return cardName === activeCardName;
+      _isVisibleCard: function(cardName, visibleCard) {
+        return cardName === visibleCard;
       },
 
       /**
        * Show the sign in card.
        */
       _showSignIn: function() {
-        this._visibleCard = 'signin';
+        this._cardToShow = 'signin';
         Polymer.dom(this.$['signin-card']).querySelector('paper-input').focus();
       },
 
@@ -210,7 +257,7 @@
        * Show the sign up card.
        */
       _showSignUp: function() {
-        this._visibleCard = 'signup';
+        this._cardToShow = 'signup';
         Polymer.dom(this.$['signup-card']).querySelector('paper-input').focus();
       },
 
@@ -218,6 +265,7 @@
        * Called when the page is switched back to.
        */
       onSwitchBackTo: function() {
+        this._showSignIn();
         this.playAnimation('entry');
       },
 
