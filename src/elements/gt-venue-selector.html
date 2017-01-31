@@ -253,8 +253,8 @@
         setTimeout(function() {
           var venues = regions[region].venues;
           var j = 0;
-          for (var venue in venues) {
-            if (venues[venue].id === venue.id) {
+          for (var v in venues) {
+            if (venues[v].id === venue.id) {
               Polymer.dom(this.$.venueSelector).querySelector('paper-listbox').selected = j;
               break;
             }
