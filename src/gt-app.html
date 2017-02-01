@@ -296,6 +296,37 @@
         text-align: center;
       }
 
+      footer[data-has-social-links] {
+        padding-bottom: 0.4em;
+      }
+
+      [icon="facebook-logo"] {
+        fill: #3B5998;
+      }
+
+      [icon="google-plus-logo"] {
+        fill: #DB4E3F;
+      }
+
+      [icon="twitter-logo"] {
+        fill: #55ACEE;
+      }
+
+      [icon="youtube-logo"] {
+        fill: #E52D27;
+      }
+
+      .social-media paper-icon-button {
+        margin: 0 4px;
+        width: 36px;
+        height: 36px;
+        --iron-icon-fill-color: var(--app-icon-color);
+        --iron-icon: {
+          width: 20px;
+          height: 20px;
+        };
+      }
+
       @media (min-width: 640px) {
         .bottom-rule {
           margin: 1.5em 1.5em 0.5em 1.5em;
@@ -495,8 +526,22 @@
 
         <hr class="bottom-rule">
 
-        <footer>
-          Copyright &copy; [[_data.company.name]] [[_currentYear]]
+        <footer data-has-social-links$="[[_hasSocialMediaLinks(_data.links.social.*)]]">
+          <span>Copyright &copy; [[_data.company.name]] [[_currentYear]]</span>
+          <div>
+            <template is="dom-if" if="[[isDefined(_data.links.social.facebook)]]">
+              <a href="[[_data.links.social.facebook]]" target="_blank" tabindex="-1" class="social-media"><paper-icon-button icon="facebook-logo"></paper-icon-button></a>
+            </template>
+            <template is="dom-if" if="[[isDefined(_data.links.social.google-plus)]]">
+              <a href="[[_data.links.social.google-plus]]" target="_blank" tabindex="-1" class="social-media"><paper-icon-button icon="google-plus-logo"></paper-icon-button></a>
+            </template>
+            <template is="dom-if" if="[[isDefined(_data.links.social.twitter)]]">
+              <a href="[[_data.links.social.twitter]]" target="_blank" tabindex="-1" class="social-media"><paper-icon-button icon="twitter-logo"></paper-icon-button></a>
+            </template>
+            <template is="dom-if" if="[[isDefined(_data.links.social.youtube)]]">
+              <a href="[[_data.links.social.youtube]]" target="_blank" tabindex="-1" class="social-media"><paper-icon-button icon="youtube-logo"></paper-icon-button></a>
+            </template>
+          </div>
         </footer>
 
       </app-header-layout>
@@ -1069,6 +1114,15 @@
           this.dispatch('signOut');
         }
         this.$['toolbar-dropdown-menu'].selected = -1;
+      },
+
+      _hasSocialMediaLinks: function(changeRecord) {
+        for (var i in changeRecord.value) {
+          if (this.isDefined(changeRecord.value[i])) {
+            return true;
+          }
+        }
+        return false;
       },
 
       /**
