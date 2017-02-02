@@ -199,8 +199,15 @@
         var index = ccs.indexOf(element);
         if (index > -1) {
           ccs.splice(index, 1);
-      }
-        this.animationConfig.exit[2].nodes = ccs;
+        }
+        
+        var ccsMod = [];
+        for (var i in ccs) {
+          if (!ccs[i].hidden) {
+            ccsMod.push(ccs[i]);
+          }
+        }
+        this.animationConfig.exit[2].nodes = ccsMod;
       },
 
       /**
