@@ -113,9 +113,9 @@
         },
 
         /**
-         * The parent element of this element.
+         * The classes-hub element this element is apart of.
          */
-        parent: {
+        classesHub: {
           type: Object
         }
       },
@@ -124,7 +124,7 @@
        * Called when the more info button is tapped.
        */
       _onMoreInfoTapped: function() {
-        this.parent.setClassCardToAnimateOn(this);
+        this.classesHub.setClassCardToAnimateOn(this);
       }
     });
   </script>

@@ -70,7 +70,7 @@
     <div id="class-categories" hidden$="[[_hideClassCategories]]">
       <template is="dom-repeat" items="[[pageData.class-categories]]" as="cc" on-dom-change="_ccStamped">
         <gt-class-category
-          parent="[[me]]"
+          classes-hub="[[me]]"
           name="[[cc.name]]"
           href="[[_appConfig.pages.classes.url]][[cc.url]]"
           image-src="[[cc.image.src]]"
