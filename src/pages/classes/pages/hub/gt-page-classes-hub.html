@@ -70,7 +70,8 @@
     <div id="class-categories" hidden$="[[_hideClassCategories]]">
       <template is="dom-repeat" items="[[pageData.class-categories]]" as="cc" on-dom-change="_ccStamped">
         <gt-class-category
-          classes-hub="[[me]]"
+          classes-hub="[[_me]]"
+          details-page="[[_getClassesDetailsPageByUrl(cc.url)]]"
           name="[[cc.name]]"
           href="[[_appConfig.pages.classes.url]][[cc.url]]"
           image-src="[[cc.image.src]]"
@@ -107,7 +108,7 @@
          * A reference to this element.
          * Used for data binding.
          */
-        me: {
+        _me: {
           type: Object,
           value: function() {
             return this;
@@ -129,6 +130,13 @@
         _hideClassCategories: {
           type: Boolean,
           value: true
+        },
+
+        /**
+         * The classes-page this element is apart of.
+         */
+        classesPage: {
+          type: Object
         },
 
         /**
@@ -193,21 +201,26 @@
        * @param {HTMLElement} element - a `gt-class-category` element
        */
       setClassCardToAnimateOn: function(element) {
-        this.sharedElements['class-card'] = element;
+        if (element.detailsPage.isInitialised) {
+          this.sharedElements['class-card'] = element;
 
-        var ccs = Polymer.dom(this.$['class-categories']).querySelectorAll('gt-class-category');
-        var index = ccs.indexOf(element);
-        if (index > -1) {
-          ccs.splice(index, 1);
-        }
-        
-        var ccsMod = [];
-        for (var i in ccs) {
-          if (!ccs[i].hidden) {
-            ccsMod.push(ccs[i]);
+          var ccs = Polymer.dom(this.$['class-categories']).querySelectorAll('gt-class-category');
+          var index = ccs.indexOf(element);
+          if (index > -1) {
+            ccs.splice(index, 1);
           }
+
+          var ccsMod = [];
+          for (var i in ccs) {
+            if (!ccs[i].hidden) {
+              ccsMod.push(ccs[i]);
+            }
+          }
+          this.animationConfig.exit[2].nodes = ccsMod;
+        } else {
+          this.sharedElements['class-card'] = null;
+          this.hidden = true;
         }
-        this.animationConfig.exit[2].nodes = ccsMod;
       },
 
       /**
@@ -232,6 +245,7 @@
        */
       _ccStamped: function() {
         this._updateClassCategoriesForAnimation();
+        this._showClassCategories();
       },
 
       /**
@@ -246,7 +260,6 @@
           }
         }
         this.animationConfig.showCards.nodes = ccsMod;
-        this._showClassCategories();
       },
 
       /**
@@ -280,6 +293,16 @@
       },
 
       /**
+       * Get a classes details page by the url segment given.
+       *
+       * @param {String} url - The url segment of the page to get
+       * @returns {HTMLElement}
+       */
+      _getClassesDetailsPageByUrl: function(url) {
+        return this.classesPage.getClassesDetailsPageByUrl(url);
+      },
+
+      /**
        * Initialise the page.
        */
       init: function() {
@@ -294,6 +317,7 @@
        * Called when the page is switched back to.
        */
       onSwitchBackTo: function() {
+        this.hidden = false;
         this._animateVenueSelectorIn();
         this._showClassCategories();
       },

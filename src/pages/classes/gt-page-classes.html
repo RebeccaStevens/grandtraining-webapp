@@ -43,7 +43,7 @@
       fallback-selection="404"
       on-page-loaded="_pageLoaded"
       on-page-error="_pageErrorOccurred">
-      <gt-page-classes-hub id="pageHub" name="hub" page-data="[[pageData]]"></gt-page-classes-hub>
+      <gt-page-classes-hub id="pageHub" name="hub" classes-page="[[_me]]" page-data="[[pageData]]"></gt-page-classes-hub>
       <template is="dom-repeat" items="[[pageData.class-categories]]" as="cc" on-dom-change="_onPagesStamped">
         <gt-page-classes-details name$="[[_urlToName(cc.url)]]"></gt-page-classes-details>
       </template>
@@ -69,6 +69,17 @@
         _appConfig: {
           type: Object,
           statePath: 'config'
+        },
+
+        /**
+         * A reference to this element.
+         * Used for data binding.
+         */
+        _me: {
+          type: Object,
+          value: function() {
+            return this;
+          }
         },
 
         /**
@@ -291,7 +302,27 @@
       },
 
       /**
-       * Makes this page as ready to be displayed if every thing is ready.
+       * Get a classes details page by the name given.
+       *
+       * @param {String} name - The name of the page to get
+       * @returns {HTMLElement}
+       */
+      getClassesDetailsPageByName: function(name) {
+        return Polymer.dom(this.$.pages).querySelector('[name="' + name + '"]');
+      },
+
+      /**
+       * Get a classes details page by the url segment given.
+       *
+       * @param {String} url - The url segment of the page to get
+       * @returns {HTMLElement}
+       */
+      getClassesDetailsPageByUrl: function(url) {
+        return this.getClassesDetailsPageByName(this._urlToName(url));
+      },
+
+      /**
+       * Marks this page as ready to be displayed if every thing is ready.
        *
        * @param {Boolean} isInitialised - whether this element is initialised
        * @param {Boolean} ajaxLoaded - whether the ajax is loaded
