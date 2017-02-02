@@ -36,6 +36,10 @@
         });
 
       case 'SET_VENUE':
+        // if venue didn't change, don't update the value
+        if (JSON.stringify(state.venue) === JSON.stringify(action.venue)) {
+          return state;
+        }
         return Object.assign({}, state, {
           venue: Object.assign({}, action.venue)
         });
