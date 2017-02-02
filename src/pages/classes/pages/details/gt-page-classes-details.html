@@ -7,7 +7,6 @@
 <link rel="import" href="../../../../../bower_components/neon-animation/neon-shared-element-animatable-behavior.html">
 <link rel="import" href="../../../../../bower_components/neon-animation/animations/hero-animation.html">
 <link rel="import" href="../../../../../bower_components/neon-animation/animations/fade-in-animation.html">
-<link rel="import" href="../../../../../bower_components/neon-animation/animations/fade-out-animation.html">
 <link rel="import" href="../../../../../bower_components/neon-animation/animations/slide-left-animation.html">
 
 <link rel="import" href="../../../../../styles/gt-styles.html">
@@ -142,7 +141,6 @@
     <!-- Layout -->
     <gt-venue-selector
       id="venue-selector"
-      on-venue-changed="_venueChanged"
       hidden$="[[!_showVenueSelector]]"></gt-venue-selector>
 
     <paper-card id="card" heading="[[pageData.title]]" hidden$="[[!_showCard]]">
@@ -217,7 +215,8 @@
          */
         _venue: {
           type: Object,
-          statePath: 'venue'
+          statePath: 'venue',
+          observer: '_venueChanged'
         },
 
         /**
@@ -242,6 +241,14 @@
                 timing: {
                   delay: 0,
                   duration: GT.animation.entryDuration
+                }
+              },{
+                name: 'fade-in-animation',
+                node: undefined,
+                timing: {
+                  delay: 0,
+                  duration: 1.25 * GT.animation.entryDuration,
+                  easing: 'ease-out',
                 }
               }],
               exit: [{
@@ -344,6 +351,9 @@
             // if there are classes, hide the venue selector
             this.$['venue-selector'].toggleClass('float', true); // float the venue-selector so it does interfear with the showCard animation
             this.$['venue-selector'].hide();
+            this.async(function() {
+              this.animationConfig.entry[1].node = Polymer.dom(this.$.card).querySelector('#classes .card-content');
+            }, 0);
           }
           this.pageReady();
         } else {
