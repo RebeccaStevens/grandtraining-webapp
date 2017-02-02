@@ -219,7 +219,6 @@
           this.animationConfig.exit[2].nodes = ccsMod;
         } else {
           this.sharedElements['class-card'] = null;
-          this.hidden = true;
         }
       },
 
@@ -317,7 +316,6 @@
        * Called when the page is switched back to.
        */
       onSwitchBackTo: function() {
-        this.hidden = false;
         this._animateVenueSelectorIn();
         this._showClassCategories();
       },
