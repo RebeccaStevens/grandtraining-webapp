@@ -853,7 +853,7 @@
         }
         // if the page is not initialised.
         else if(!pageEl.isInitialised) {
-          this.dispatch('setPageError', true);
+          this.dispatch('setPageLoading', true);
           this._reinitPage();
           if (oldPageEl) {
             oldPageEl.hidden = true;
