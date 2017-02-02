@@ -240,10 +240,11 @@
       }
 
       neon-animated-pages {
-        min-height: calc(100vh - 138px);
+        min-height: calc(100vh - 48px - 2.5em - 2px - 1em);
       }
-      neon-animated-pages > .iron-selected {
-        min-height: calc(100vh - 138px);
+
+      :host([has-social-media-links]) neon-animated-pages {
+        min-height: calc(100vh - 48px - 2.5em - 36px - 2px - 1em);
       }
 
       .overlay {
@@ -294,10 +295,12 @@
       footer {
         padding: 0.3em 2em 0.7em 2em;
         text-align: center;
+        height: 2.5em;
+        box-sizing: border-box;
       }
 
-      footer[data-has-social-links] {
-        padding-bottom: 0.4em;
+      :host([has-social-media-links]) footer {
+        height: calc(2.5em + 36px);
       }
 
       [icon="facebook-logo"] {
@@ -329,7 +332,13 @@
 
       @media (min-width: 640px) {
         .bottom-rule {
-          margin: 1.5em 1.5em 0.5em 1.5em;
+          margin: 1em 1.5em 0.5em 1.5em;
+        }
+        neon-animated-pages {
+          min-height: calc(100vh - 48px - 2.5em - 2px - 1.5em);
+        }
+        :host([has-social-media-links]) neon-animated-pages {
+          min-height: calc(100vh - 48px - 2.5em - 36px - 2px - 1.5em);
         }
       }
 
@@ -526,7 +535,7 @@
 
         <hr class="bottom-rule">
 
-        <footer data-has-social-links$="[[_hasSocialMediaLinks(_data.links.social.*)]]">
+        <footer>
           <span>Copyright &copy; [[_data.company.name]] [[_currentYear]]</span>
           <div>
             <template is="dom-if" if="[[isDefined(_data.links.social.facebook)]]">
@@ -651,6 +660,12 @@
           type: Boolean,
           statePath: 'shellError'
         },
+
+         hasSocialMediaLinks: {
+           type: Boolean,
+           reflectToAttribute: true,
+           computed: '_hasSocialMediaLinks(_data.links.social.*)'
+         },
 
         /**
          * The width of the view port.
