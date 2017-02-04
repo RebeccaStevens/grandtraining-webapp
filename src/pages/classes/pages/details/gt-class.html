@@ -315,7 +315,7 @@
           dateString += GT.dayLookUp[start.getDay()].short;
           dateString += ' ' + this._getOrdinalOfNumber(start.getDate()).super;
           if (start.getMonth() !== end.getMonth()) {
-            dateString += ' ' + GT.monthLookUp[start.getMonth()].short;
+            dateString += ' ' + GT.monthLookUp[start.getMonth()].long;
           }
           if (start.getFullYear() !== end.getFullYear()) {
             dateString += ' ' + start.getFullYear();
@@ -326,7 +326,7 @@
 
         dateString += GT.dayLookUp[end.getDay()].short;
         dateString += ' ' + this._getOrdinalOfNumber(end.getDate()).super;
-        dateString += ' ' + GT.monthLookUp[end.getMonth()].short;
+        dateString += ' ' + GT.monthLookUp[end.getMonth()].long;
         dateString += ' ' + end.getFullYear();
 
         return dateString;
@@ -354,7 +354,7 @@
                 excludesString += ' and ';
               }
             } else {
-              excludesString +=  ' ' + GT.monthLookUp[date.getMonth()].short;
+              excludesString +=  ' of ' + GT.monthLookUp[date.getMonth()].long;
               if (i + 2 < excludes.length) {
                 excludesString += ', ';
               } else {
@@ -362,7 +362,7 @@
               }
             }
           } else {
-            excludesString +=  ' ' + GT.monthLookUp[date.getMonth()].short;
+            excludesString +=  ' of ' + GT.monthLookUp[date.getMonth()].long;
           }
         }
 
