@@ -371,7 +371,7 @@
         }
         var pageEl = this.getPageElement();
         if (Polymer.isInstance(pageEl)) {
-          if (pageEl.tagName === 'GT-PAGE-CLASSES-DETAILS' && !pageEl.isInitialised()) {
+          if (pageEl.tagName === 'GT-PAGE-CLASSES-DETAILS' && !pageEl.isInitialised) {
             pageEl.init(true);
           } else {
             pageEl.init();
