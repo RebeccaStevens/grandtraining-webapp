@@ -866,6 +866,7 @@
         if (!Polymer.isInstance(pageEl)) {
           this.dispatch('setPageLoading', true);
           this.importHref(this.resolveUrl('pages/' + pageName + '/gt-page-' + pageName + '.html'), null, null, true);
+          pageEl.hidden = false;
           if (oldPageEl) {
             oldPageEl.hidden = true;
           }
@@ -874,6 +875,7 @@
         else if(!pageEl.isInitialised) {
           this.dispatch('setPageLoading', true);
           this._reinitPage();
+          pageEl.hidden = false;
           if (oldPageEl) {
             oldPageEl.hidden = true;
           }
