@@ -286,6 +286,11 @@
        * Called when the venue is changed.
        */
       _venueChanged: function() {
+        if (this._cashedPageData[this._venue.id] === undefined) {
+          this.pageNeedsReinitialising();
+        } else {
+          this.pageData = this._cashedPageData[this._venue.id];
+        }
         if (this._showVenueSelector) {
           this.dispatch('setPageLoading', true);
           this.$.pageDataLoader.generateRequest();

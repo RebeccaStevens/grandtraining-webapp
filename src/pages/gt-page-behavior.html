@@ -43,6 +43,14 @@
     pageError: function() {
       this._setIsInitialised(false);
       this.fire('page-error');
+    },
+
+    /**
+     * This method should be called if the page needs to be reinitialising.
+     */
+    pageNeedsReinitialising: function() {
+      this._setIsInitialised(false);
+      this.fire('page-needs-reinitialising');
     }
   };
 </script>
