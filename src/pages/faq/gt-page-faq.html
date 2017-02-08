@@ -46,7 +46,7 @@
     <!-- Download data -->
     <iron-ajax
       id="pageDataLoader"
-      url="[[getDataUri('faq.json')]]"
+      url="[[getApiUrl('faq.json')]]"
       handle-as="json"
       last-response="{{pageData}}"
       on-response="_handleAjaxResponse"

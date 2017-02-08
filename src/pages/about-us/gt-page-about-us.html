@@ -103,7 +103,7 @@
     <!-- Download data -->
     <iron-ajax
       id="pageDataLoader"
-      url="[[getDataUri('about-us.json')]]"
+      url="[[getApiUrl('about-us.json')]]"
       handle-as="json"
       last-response="{{pageData}}"
       on-response="_handleAjaxResponse"

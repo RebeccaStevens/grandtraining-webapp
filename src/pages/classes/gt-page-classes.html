@@ -29,7 +29,7 @@
     <!-- Download data -->
     <iron-ajax
       id="pageDataLoader"
-      url="[[getDataUri('classes.json')]]"
+      url="[[getApiUrl('classes.json')]]"
       handle-as="json"
       last-response="{{pageData}}"
       on-response="_handleAjaxResponse"

@@ -439,7 +439,7 @@
 
     <!-- Download data -->
     <iron-ajax id="shellDataLoader"
-      url="[[getDataUri('config.json')]]"
+      url="[[getApiUrl('config.json')]]"
       params="[[_getAjaxParams(idToken)]]"
       handle-as="json"
       on-response="_handleAjaxResponse"

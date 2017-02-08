@@ -109,7 +109,7 @@
     <!-- Download data -->
     <iron-ajax
       id="pageDataLoader"
-      url="[[getDataUri('contact-us.json')]]"
+      url="[[getApiUrl('contact-us.json')]]"
       handle-as="json"
       last-response="{{pageData}}"
       on-response="_handleAjaxResponse"
@@ -117,7 +117,7 @@
 
     <paper-card id="card" heading="Send us a Message">
       <div class="card-content">
-        <form is="iron-form" id="form" method="post" action="[[getFormHandlerUri(_appConfig.form-handlers.contact-us)]]">
+        <form is="iron-form" id="form" method="post" action="[[getApiUrl(_appConfig.form-handlers.contact-us)]]">
           <paper-input class="inline field"
             name="name"
             label="Full Name:"

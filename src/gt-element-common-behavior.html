@@ -57,23 +57,13 @@
     },
 
     /**
-     * Get a data url for the relative path given.
+     * Get a url path to the api for the relative path given.
      *
      * @param {!String} path
-     * @return {String}
+     * @returns {String}
      */
-    getDataUri: function(path) {
-      return GT.ReduxBehavior.getState().dataPath + path;
-    },
-
-    /**
-     * Get a form handler url for the relative path given.
-     *
-     * @param {!String} path
-     * @return {String}
-     */
-    getFormHandlerUri: function(path) {
-      return GT.ReduxBehavior.getState().formHandlerPath + path;
+    getApiUrl: function(path) {
+      return GT.ReduxBehavior.getState().apiPath + path;
     },
 
     /**
