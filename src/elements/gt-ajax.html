@@ -1,0 +1,83 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+
+<link rel="import" href="../gt-element-common-behavior.html">
+
+<dom-module id="gt-ajax">
+  <template>
+    <iron-ajax id="ajax"
+      auto="[[auto]]"
+      params="[[_getAjaxParams(useIdToken, idToken, params)]]"
+      url="[[getApiUrl(path)]]"
+      handle-as="json"
+      last-response="{{lastResponse}}"></iron-ajax>
+  </template>
+</dom-module>
+
+<script>
+  Polymer({
+    is: 'gt-ajax',
+
+    behaviors: [
+      GT.ElementCommonBehavior
+    ],
+
+    properties: {
+      ironAjax: {
+        type: Object,
+        readOnly: true,
+        value: function() {
+          return this.$.ajax
+        }
+      },
+
+      auto: {
+        type: Boolean,
+        value: false
+      },
+
+      lastResponse: {
+        type: Object,
+        notify: true
+      },
+
+      path: {
+        type: String,
+        value: ''
+      },
+
+      params: {
+        type: Object,
+        value: {}
+      },
+
+      useIdToken: {
+        type: Boolean,
+        value: false
+      }
+    },
+
+    /**
+     * Performs the AJAX request.
+     *
+     * @returns {!IronRequestElement}
+     */
+    generateRequest: function() {
+      return this.$.ajax.generateRequest();
+    },
+
+    /**
+     * Get the parameters to send in the ajax request
+     */
+    _getAjaxParams: function(useIdToken, idToken, userParams) {
+      var params = {};
+      if (useIdToken) {
+        params['id-token'] = idToken;
+      }
+      if (userParams) {
+        Object.assign(params, userParams);
+      }
+      return params;
+    }
+  });
+</script>

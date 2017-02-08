@@ -1,5 +1,4 @@
 <link rel="import" href="../../../../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../../../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../../../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../../../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../../../../bower_components/html-echo/html-echo.html">
@@ -14,6 +13,7 @@
 <link rel="import" href="../../../../gt-element-common-behavior.html">
 <link rel="import" href="../../../../animations/scale-up-and-fade-in-animation.html">
 <link rel="import" href="../../../../elements/gt-venue-selector.html">
+<link rel="import" href="../../../../elements/gt-ajax.html">
 <link rel="import" href="../../../gt-page-behavior.html">
 <link rel="import" href="gt-class.html">
 
@@ -130,13 +130,12 @@
     </style>
 
     <!-- Download data -->
-    <iron-ajax
+    <gt-ajax
       id="pageDataLoader"
-      url="[[_getPageDataUrl(_venue.id, name)]]"
-      handle-as="json"
+      path="[[_getPageDataUrl(_venue.id, name)]]"
       last-response="{{pageData}}"
       on-response="_handleAjaxResponse"
-      on-error="_handleAjaxError"></iron-ajax>
+      on-error="_handleAjaxError"></gt-ajax>
 
     <!-- Layout -->
     <gt-venue-selector
@@ -303,7 +302,7 @@
        * @returns {String} - The URL
        */
       _getPageDataUrl: function(venueId, name) {
-        return this.getApiUrl('classes/' + venueId + '/' + name + '.json');
+        return 'classes/' + venueId + '/' + name + '.json';
       },
 
       /**

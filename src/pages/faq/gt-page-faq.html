@@ -1,5 +1,4 @@
 <link rel="import" href="../../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../../bower_components/iron-media-query/iron-media-query.html">
 <link rel="import" href="../../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../../bower_components/neon-animation/neon-animation-runner-behavior.html">
@@ -8,6 +7,7 @@
 <link rel="import" href="../../../styles/gt-styles.html">
 <link rel="import" href="../../../imports/gt.html">
 <link rel="import" href="../../animations/scale-up-and-fade-in-animation.html">
+<link rel="import" href="../../elements/gt-ajax.html">
 <link rel="import" href="../../gt-element-common-behavior.html">
 <link rel="import" href="../gt-page-behavior.html">
 <link rel="import" href="gt-faq.html">
@@ -44,13 +44,12 @@
     </style>
 
     <!-- Download data -->
-    <iron-ajax
+    <gt-ajax
       id="pageDataLoader"
-      url="[[getApiUrl('faq.json')]]"
-      handle-as="json"
+      path="faq.json"
       last-response="{{pageData}}"
       on-response="_handleAjaxResponse"
-      on-error="_handleAjaxError"></iron-ajax>
+      on-error="_handleAjaxError"></gt-ajax>
 
     <iron-media-query query="(min-width: 1024px)" query-matches="{{largeViewport}}"></iron-media-query>
 

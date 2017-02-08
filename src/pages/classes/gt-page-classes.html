@@ -1,11 +1,11 @@
 <link rel="import" href="../../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../../bower_components/neon-animation/neon-animated-pages.html">
 <link rel="import" href="../../../bower_components/app-route/app-route.html">
 
 <link rel="import" href="../../../styles/gt-styles.html">
 <link rel="import" href="../../../imports/gt.html">
+<link rel="import" href="../../elements/gt-ajax.html">
 <link rel="import" href="../../gt-element-common-behavior.html">
 <link rel="import" href="../gt-page-behavior.html">
 
@@ -27,13 +27,12 @@
       active="{{_routeActive}}"></app-route>
 
     <!-- Download data -->
-    <iron-ajax
+    <gt-ajax
       id="pageDataLoader"
-      url="[[getApiUrl('classes.json')]]"
-      handle-as="json"
+      path="classes.json"
       last-response="{{pageData}}"
       on-response="_handleAjaxResponse"
-      on-error="_handleAjaxError"></iron-ajax>
+      on-error="_handleAjaxError"></gt-ajax>
 
     <!-- Layout -->
     <neon-animated-pages id="pages"

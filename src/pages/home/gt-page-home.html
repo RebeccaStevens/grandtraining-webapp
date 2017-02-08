@@ -4,7 +4,6 @@
 <link rel="import" href="../../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
-<link rel="import" href="../../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../../bower_components/neon-animation/neon-animation-runner-behavior.html">
 <link rel="import" href="../../../bower_components/neon-animation/animations/cascaded-animation.html">
 <link rel="import" href="../../../bower_components/html-echo/html-echo.html">
@@ -13,6 +12,7 @@
 <link rel="import" href="../../../imports/gt.html">
 <link rel="import" href="../../animations/scale-up-and-fade-in-animation.html">
 <link rel="import" href="../../animations/scale-down-and-fade-out-animation.html">
+<link rel="import" href="../../elements/gt-ajax.html">
 <link rel="import" href="../../gt-element-common-behavior.html">
 <link rel="import" href="../gt-page-behavior.html">
 
@@ -86,13 +86,12 @@
     </style>
 
     <!-- Download data -->
-    <iron-ajax
+    <gt-ajax
       id="pageDataLoader"
-      url="[[getApiUrl('home.json')]]"
-      handle-as="json"
+      path="home.json"
       last-response="{{pageData}}"
       on-response="_handleAjaxResponse"
-      on-error="_handleAjaxError"></iron-ajax>
+      on-error="_handleAjaxError"></gt-ajax>
 
     <!-- Layout -->
     <neon-carousel-pages id="carouselPages" playing delay="12000">

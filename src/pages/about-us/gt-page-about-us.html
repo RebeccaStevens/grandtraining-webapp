@@ -1,5 +1,4 @@
 <link rel="import" href="../../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../../bower_components/paper-material/paper-material.html">
 <link rel="import" href="../../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../../bower_components/neon-animation/neon-animation-runner-behavior.html">
@@ -13,6 +12,7 @@
 <link rel="import" href="../../animations/scale-up-and-fade-in-animation.html">
 <link rel="import" href="../../gt-element-common-behavior.html">
 <link rel="import" href="../../elements/gt-venue-selector.html">
+<link rel="import" href="../../elements/gt-ajax.html">
 <link rel="import" href="../../gt-icons.html">
 <link rel="import" href="../gt-page-behavior.html">
 
@@ -101,13 +101,12 @@
     </style>
 
     <!-- Download data -->
-    <iron-ajax
+    <gt-ajax
       id="pageDataLoader"
-      url="[[getApiUrl('about-us.json')]]"
-      handle-as="json"
+      path="about-us.json"
       last-response="{{pageData}}"
       on-response="_handleAjaxResponse"
-      on-error="_handleAjaxError"></iron-ajax>
+      on-error="_handleAjaxError"></gt-ajax>
 
     <!-- Layout -->
     <gt-venue-selector

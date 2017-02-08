@@ -14,7 +14,6 @@
 <link rel="import" href="../bower_components/neon-animation/neon-animated-pages.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
-<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/paper-styles/color.html">
 <link rel="import" href="../bower_components/polymer-cookie/polymer-cookie.html">
 <link rel="import" href="../bower_components/paper-menu-button/paper-menu-button.html">
@@ -26,6 +25,7 @@
 <link rel="import" href="../imports/gt.html">
 <link rel="import" href="animations/main-page-entry-animation.html">
 <link rel="import" href="animations/main-page-exit-animation.html">
+<link rel="import" href="elements/gt-ajax.html">
 <link rel="import" href="gt-page-container-behavior.html">
 <link rel="import" href="gt-element-common-behavior.html">
 <link rel="import" href="gt-icons.html">
@@ -438,12 +438,11 @@
       tail="{{subroute}}"></app-route>
 
     <!-- Download data -->
-    <iron-ajax id="shellDataLoader"
-      url="[[getApiUrl('config.json')]]"
-      params="[[_getAjaxParams(idToken)]]"
-      handle-as="json"
+    <gt-ajax id="shellDataLoader"
+      path="config.json"
+      use-id-token
       on-response="_handleAjaxResponse"
-      on-error="_handleAjaxError"></iron-ajax>
+      on-error="_handleAjaxError"></gt-ajax>
 
     <!-- venue cookie -->
     <polymer-cookie
