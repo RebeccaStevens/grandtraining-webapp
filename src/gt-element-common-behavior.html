@@ -7,6 +7,13 @@
   var ElementCommonBehaviorImpl = {
 
     actions: {
+      setIDToken: function(idToken) {
+        return {
+          type: 'SET_ID_TOKEN',
+          idToken: idToken
+        };
+      },
+
       setVenue: function(venue) {
         return {
           type: 'SET_VENUE',
@@ -39,6 +46,13 @@
         return {
           type: 'SIGN_OUT'
         };
+      }
+    },
+
+    properties: {
+      idToken: {
+        type: String,
+        statePath: 'idToken'
       }
     },
 

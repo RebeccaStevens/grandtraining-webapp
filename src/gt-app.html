@@ -440,6 +440,7 @@
     <!-- Download data -->
     <iron-ajax id="shellDataLoader"
       url="[[getDataUri('config.json')]]"
+      params="[[_getAjaxParams(idToken)]]"
       handle-as="json"
       on-response="_handleAjaxResponse"
       on-error="_handleAjaxError"></iron-ajax>
@@ -1167,6 +1168,21 @@
           }
         }
         return false;
+      },
+
+      /**
+       * Get the parameters to send with ajax request.
+       */
+      _getAjaxParams: function(idToken) {
+        if (idToken !== undefined && idToken !== null && idToken !== '') {
+          return {
+            'id-token': idToken
+          };
+        } else {
+          return {
+            'create-new-id-token': true
+          };
+        }
       },
 
       /**

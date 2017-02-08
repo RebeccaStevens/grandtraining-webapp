@@ -3,12 +3,47 @@
 <script src="../node_modules/redux/dist/redux.js"></script>
 
 <script>
+
+  /**
+   * Get the id-token from the a cookie.
+   *
+   * @returns {String}
+   */
+  var getIDTokenCookie = function() {
+    var name = 'id-token=';
+    var ca = decodeURIComponent(document.cookie).split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) === ' ') {
+          c = c.substring(1, c.length);
+        }
+        if (c.indexOf(name) === 0) {
+          return c.substring(name.length, c.length);
+        }
+    }
+    return null;
+  };
+
+  /**
+   * Save the id-token into a cookie.
+   *
+   * @param {String} value - The id token
+   */
+  var setIDTokenCookie = function(value) {
+    if (value === null || value === undefined || value === '') {
+      return;
+    }
+    document.cookie = 'id-token=' + value + ';path=/';
+  };
+
   /**
    * The initial state of the app.
    */
   var initialState = {
     dataPath: 'http://api.grandtraining.local/', // The path where this app should download data from. This path should alwasy end with a slash ('/').
     formHandlerPath: 'http://api.grandtraining.local/', // The path to form handlers. This path should alwasy end with a slash ('/').
+
+    idToken: getIDTokenCookie(),
 
     config: undefined,
     venue: undefined,
@@ -31,8 +66,22 @@
 
     switch (action.type) {
       case 'INIT':
+        var config = Object.assign({}, action.config);
+        var idToken = config['id-token'];
+        if (idToken === '') {
+          idToken = null;
+        }
+        delete config['id-token'];
+        setIDTokenCookie(idToken);
         return Object.assign({}, state, {
-          config: Object.assign({}, action.config)
+          config: config,
+          idToken: idToken
+        });
+
+      case 'SET_ID_TOKEN':
+        setIDTokenCookie(action.idToken);
+        return Object.assign({}, state, {
+          idToken: action.idToken
         });
 
       case 'SET_VENUE':
