@@ -7,7 +7,7 @@
   <template>
     <iron-ajax id="ajax"
       auto="[[auto]]"
-      params="[[_getAjaxParams(useIdToken, idToken, params)]]"
+      params="[[_getAjaxParams(useIdToken, idToken, params, cmsPreview)]]"
       url="[[getApiUrl(path)]]"
       handle-as="json"
       last-response="{{lastResponse}}"></iron-ajax>
@@ -69,13 +69,17 @@
     /**
      * Get the parameters to send in the ajax request
      */
-    _getAjaxParams: function(useIdToken, idToken, userParams) {
+    _getAjaxParams: function(useIdToken, idToken, userParams, cmsPreview) {
       var params = {};
-      if (useIdToken) {
+      if (useIdToken || cmsPreview.using) {
         params['id-token'] = idToken;
       }
       if (userParams) {
         Object.assign(params, userParams);
+      }
+      if (cmsPreview.using) {
+        params.previewStage = cmsPreview.stage;
+        params.CMSPreview = 1;
       }
       return params;
     }

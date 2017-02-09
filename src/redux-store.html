@@ -5,6 +5,29 @@
 <script>
 
   /**
+   * Get a query string parameter.
+   *
+   * @param {String} name - the name of the parameter to get
+   * @param {String} [url]=window.location.href - the url to get to parameter from
+   * @returns {String}
+   */
+  var getQueryParameter = function(name, url) {
+    if (!url) {
+      url = window.location.href;
+    }
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
+    var results = regex.exec(url);
+    if (!results) {
+      return null;
+    }
+    if (!results[2]) {
+      return '';
+    }
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+  };
+
+  /**
    * Get the id-token from the a cookie.
    *
    * @returns {String}
@@ -37,12 +60,41 @@
   };
 
   /**
+   * Load the id token.
+   *
+   * @returns {String}
+   */
+  var loadIDToken = function() {
+    var param = getQueryParameter('id-token');
+    if (param) {
+      setIDTokenCookie(param);
+      return param;
+    } else {
+      return getIDTokenCookie();
+    }
+  };
+
+  var idToken = loadIDToken();
+
+  // figer out if this is a cms preview request
+  var usingCMSPreview = getQueryParameter('CMSPreview') && idToken;
+  var cmsPreviewStage = undefined;
+  if (usingCMSPreview) {
+    cmsPreviewStage = getQueryParameter('stage');
+  }
+
+  /**
    * The initial state of the app.
    */
   var initialState = {
     apiPath: 'http://api.grandtraining.local/', // The path to the api this app will use to download and send data. This path should alwasy end with a slash ('/').
 
-    idToken: getIDTokenCookie(),
+    idToken: idToken,
+
+    cmsPreview: {
+      using: usingCMSPreview,
+      stage: cmsPreviewStage
+    },
 
     config: undefined,
     venue: undefined,
