@@ -119,6 +119,8 @@
        * Initialise the page.
        */
       init: function() {
+        this.pageTitle = this.appConfig.pages.faq.title;
+        this.displayPageTitle();
         this.$.pageDataLoader.generateRequest();
       },
 
@@ -126,6 +128,7 @@
        * Called when the page is switched back to.
        */
       onSwitchBackTo: function() {
+        this.displayPageTitle();
         this.playAnimation('entry');
       },
 

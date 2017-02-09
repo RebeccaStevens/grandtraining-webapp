@@ -22,6 +22,14 @@
         value: false,
         notify: true,
         readOnly: true
+      },
+
+      /**
+       * The title of this page.
+       */
+      pageTitle: {
+        type: String,
+        value: ''
       }
     },
 
@@ -51,6 +59,38 @@
     pageNeedsReinitialising: function() {
       this._setIsInitialised(false);
       this.fire('page-needs-reinitialising');
+    },
+
+    /**
+     * Called when the page is switched back to.
+     */
+    onSwitchBackTo: function() {
+      this.displayPageTitle();
+    },
+
+    /**
+     * Called when the page is switched from.
+     */
+    onSwitchFrom: function() {
+    },
+
+    /**
+     * Set the title of this page.
+     *
+     * @param {!String} [title=pageTitle] - the title to set
+     * @param {!Boolean} [withSiteName=true] - include tje name of the site in the title
+     */
+    displayPageTitle: function(title, withSiteName) {
+      if (!title) {
+        title = this.pageTitle;
+      }
+      if (title === '' || title === undefined || title === null) {
+        document.title = this.appConfig.company.name;
+      } else if (withSiteName !== false) {
+        document.title = title + ' - ' + this.appConfig.company.name;
+      } else {
+        document.title = title;
+      }
     }
   };
 </script>

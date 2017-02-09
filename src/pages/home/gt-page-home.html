@@ -173,6 +173,8 @@
        * Initialise the page.
        */
       init: function() {
+        this.pageTitle = this.appConfig.company.name;
+        this.displayPageTitle(this.pageTitle, false);
         this.$.pageDataLoader.generateRequest();
       },
 
@@ -201,6 +203,7 @@
        * Called when the page is switched back to.
        */
       onSwitchBackTo: function() {
+        this.displayPageTitle(this.pageTitle, false);
         this.playAnimation('entry');
       },
 

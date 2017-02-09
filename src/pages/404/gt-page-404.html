@@ -95,6 +95,8 @@
       _handleAjaxResponse: function() {
         if (this.pageData) {
           this.$.message.innerHTML = this.pageData.message;
+          this.pageTitle = this.pageData.title;
+          this.displayPageTitle();
           this.pageReady();
         } else {
           this._handleAjaxError();

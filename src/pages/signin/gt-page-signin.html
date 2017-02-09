@@ -257,6 +257,7 @@
        * Called when the page is switched back to.
        */
       onSwitchBackTo: function() {
+        this.displayPageTitle();
         this._showSignIn();
         this.playAnimation('entry');
       },
@@ -265,6 +266,8 @@
        * Initialise the page.
        */
       init: function() {
+        this.pageTitle = this.appConfig.pages.signin.title;
+        this.displayPageTitle();
         this.pageReady();
         this.playAnimation('entry');
       },

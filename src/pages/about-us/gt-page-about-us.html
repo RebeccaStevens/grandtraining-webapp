@@ -321,6 +321,8 @@
        * Initialise the page.
        */
       init: function() {
+        this.pageTitle = this.appConfig.pages['about-us'].title;
+        this.displayPageTitle();
         this.$.pageDataLoader.generateRequest();
       },
 
@@ -328,6 +330,7 @@
        * Called when the page is switched back to.
        */
       onSwitchBackTo: function() {
+        this.displayPageTitle();
         this.$['venue-selector'].show();
         this._showContent();
         this.async(function() {

@@ -133,8 +133,7 @@
           return;
         }
 
-        // if the old page has an `onSwitchFrom` function, call it.
-        if (oldPageEl !== null && oldPageEl.onSwitchFrom instanceof Function) {
+        if (oldPageEl !== null) {
           oldPageEl.onSwitchFrom();
         }
 
@@ -174,15 +173,8 @@
         // else the page is loaded and read to be display
         else {
           pageEl.hidden = false;
-          // if the page has an `onSwitchBackTo` function, call it.
-          if (pageEl.onSwitchBackTo instanceof Function) {
-            // if it doesn't return false, the page is ready to be displayed
-            if (pageEl.onSwitchBackTo() !== false) {
-              this.dispatch('setPageLoading', false);
-              this.renderedPageName = this.pageName;
-              this._scrollToTop();
-            }
-          } else {
+          // if the onSwitchBackTo method doesn't return false, the page is ready to be displayed
+          if (pageEl.onSwitchBackTo() !== false) {
             this.dispatch('setPageLoading', false);
             this.renderedPageName = this.pageName;
             this._scrollToTop();
@@ -359,6 +351,8 @@
        * Initialise the page.
        */
       init: function() {
+        this.pageTitle = this.appConfig.pages.classes.title;
+        this.displayPageTitle();
         if (!this.isInitialised) {
           this.$.pageDataLoader.generateRequest();
         }
@@ -376,6 +370,7 @@
        * Called when the page is switched back to.
        */
       onSwitchBackTo: function() {
+        this.displayPageTitle();
         this.pageName = this.mainPageName;
         if (this.$.pageHub.onSwitchBackTo instanceof Function) {
           this.$.pageHub.onSwitchBackTo();

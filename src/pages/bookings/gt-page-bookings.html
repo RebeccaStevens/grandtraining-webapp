@@ -24,8 +24,14 @@
         GT.PageBehavior
       ],
 
-      ready: function() {
+      init: function() {
+        this.pageTitle = this.appConfig.pages.bookings.title;
+        this.displayPageTitle();
         this.pageReady();
+      },
+
+      ready: function() {
+        this.init();
       }
     });
   </script>

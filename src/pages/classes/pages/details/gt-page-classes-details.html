@@ -337,6 +337,8 @@
        */
       _handleAjaxResponse: function() {
         if (this.pageData) {
+          this.pageTitle = this.pageData.title;
+          this.displayPageTitle();
           this._cashedPageData[this._venue.id] = this.cloneObject(this.pageData);
           if (this._showVenueSelector || this._playShowCardAnimationOnLoad) {
             this._showCard = true;
@@ -402,6 +404,7 @@
        * Called when the page is switched back to.
        */
       onSwitchBackTo: function() {
+        this.displayPageTitle();
         if (!this._venue) {
           this.dispatch('setPageLoading', true);
           this.init();
