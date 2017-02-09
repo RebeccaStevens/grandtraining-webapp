@@ -15,18 +15,18 @@
         display: block;
         padding: 1em 1.5em 0 1.5em;
       }
-      h1 {
+      #message h1 {
         font-size: 40pt;
         color: var(--paper-red-600);
         margin: 0;
       }
-      h2 {
+      #message h2 {
         font-size: 20pt;
         color: #333;
         text-transform: uppercase;
         margin: 0;
       }
-      .info {
+      #message p {
         margin-top: 0.67em;
         font-size: 9pt;
         color: #999;
@@ -42,22 +42,30 @@
           display: block;
           padding: 2em 3em 0 3em;
         }
-        h1 {
+        #message h1 {
           font-size: 72pt;
         }
-        h2 {
+        #message h2 {
           font-size: 38pt;
         }
-        .info {
+        #message p {
           font-size: 13pt;
         }
       }
     </style>
 
-    <h1>404</h1>
-    <h2>Page not found</h2>
-    <div class="info">The page you are looking for doesn't seem to exist.<br>
-      It may have been moved, deleted, or may never have existed.</div>
+    <gt-ajax
+      id="pageDataLoader"
+      path="error-pages/404.json"
+      last-response="{{pageData}}"
+      on-response="_handleAjaxResponse"
+      on-error="_handleAjaxError"></gt-ajax>
+    <div id="message">
+      <h1>404</h1>
+      <h2>Page not found</h2>
+      <p>The page you are looking for doesn't seem to exist.<br>
+         It may have been moved, deleted, or may never have existed.</p>
+    </div>
     <div id="buttons">
       <a name="classes" href$="[[_appConfig.pages.home.url]]" tabindex="-1"><paper-button raised>Back to Home Page</paper-button></a>
     </div>
@@ -83,8 +91,34 @@
         }
       },
 
+      /**
+       * Called when the page data loads.
+       */
+      _handleAjaxResponse: function() {
+        if (this.pageData) {
+          this.$.message.innerHTML = this.pageData.message;
+          this.pageReady();
+        } else {
+          this._handleAjaxError();
+        }
+      },
+
+      /**
+       * Called when an error occurs during the ajax request.
+       */
+      _handleAjaxError: function() {
+        this.pageReady(); // just use the default message
+      },
+
+      /**
+       * Initialise the page.
+       */
+      init: function() {
+        this.$.pageDataLoader.generateRequest();
+      },
+
       ready: function() {
-        this.pageReady();
+        this.init();
       }
     });
   </script>
