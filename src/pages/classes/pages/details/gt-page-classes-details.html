@@ -169,7 +169,7 @@
           <paper-card id="no-classes" heading="No Classes Available">
             <div class="card-content">
               <p>Unfortunatly, we are not currently offering any [[pageData.title]] classes in [[_venue.name]].</p>
-              <p>If you wish to arange one, please <a href="[[_appConfig.pages.contact-us.url]]">contact us</a> and we'll see what we can do.</p>
+              <p>If you wish to arange one, please <a href="[[appConfig.pages.contact-us.url]]">contact us</a> and we'll see what we can do.</p>
             </div>
           </paper-card>
         </template>
@@ -190,14 +190,6 @@
       ],
 
       properties: {
-
-        /**
-         * The app config data.
-         */
-        _appConfig: {
-          type: Object,
-          statePath: 'config'
-        },
 
         /**
          * Stores cashed page data for each venue id.
@@ -376,7 +368,7 @@
        * Close this page and return to the class category hub.
        */
       close: function() {
-        window.history.pushState({}, null, this._appConfig.pages.classes.url);
+        window.history.pushState({}, null, this.appConfig.pages.classes.url);
         window.dispatchEvent(new CustomEvent('location-changed'));
       },
 

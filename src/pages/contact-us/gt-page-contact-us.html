@@ -116,7 +116,7 @@
 
     <paper-card id="card" heading="Send us a Message">
       <div class="card-content">
-        <form is="iron-form" id="form" method="post" action="[[getApiUrl(_appConfig.form-handlers.contact-us)]]">
+        <form is="iron-form" id="form" method="post" action="[[getApiUrl(appConfig.form-handlers.contact-us)]]">
           <paper-input class="inline field"
             name="name"
             label="Full Name:"
@@ -232,14 +232,6 @@
       ],
 
       properties: {
-
-        /**
-         * The app config data.
-         */
-        _appConfig: {
-          type: Object,
-          statePath: 'config'
-        },
 
         /**
          * True when a messages is being sent.
@@ -398,7 +390,7 @@
         this._recaptchaEl = document.createElement('div');
         document.body.appendChild(this._recaptchaEl);
         this._grecaptchaId = grecaptcha.render(this._recaptchaEl, {
-          sitekey: this._appConfig['api-configs']['recaptcha-config']['site-key'],
+          sitekey: this.appConfig['api-configs']['recaptcha-config']['site-key'],
           theme: 'light',
           callback: function(response) {
             Polymer.dom(this.root).querySelector('[name="g-recaptcha-response"]').value = response;

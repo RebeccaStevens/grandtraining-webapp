@@ -76,7 +76,7 @@
          It may have been moved, deleted, or may never have existed.</p>
     </div>
     <div id="buttons">
-      <a name="classes" href$="[[_appConfig.pages.home.url]]" tabindex="-1"><paper-button raised>Back to Home Page</paper-button></a>
+      <a name="classes" href$="[[appConfig.pages.home.url]]" tabindex="-1"><paper-button raised>Back to Home Page</paper-button></a>
     </div>
   </template>
 
@@ -88,17 +88,6 @@
         GT.ElementCommonBehavior,
         GT.PageBehavior
       ],
-
-      properties: {
-
-        /**
-         * The app config data.
-         */
-        _appConfig: {
-          type: Object,
-          statePath: 'config'
-        }
-      },
 
       /**
        * Called when the page data loads.

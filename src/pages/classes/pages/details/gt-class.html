@@ -221,7 +221,7 @@
         </div>
         <div id="no-bookings-available" hidden$="[[doesArrayHaveValues(dates)]]">
           <h4>This class is currently unavailable to book.</h4>
-          <p>Please check back later or <a href$="[[_appConfig.pages.contact-us.url]]">contact us</a> for more information.</p>
+          <p>Please check back later or <a href$="[[appConfig.pages.contact-us.url]]">contact us</a> for more information.</p>
         </div>
       </div>
     </paper-card>
@@ -236,14 +236,6 @@
       ],
 
       properties: {
-
-        /**
-         * The app config data.
-         */
-        _appConfig: {
-          type: Object,
-          statePath: 'config'
-        },
 
         /**
          * The class title.
@@ -518,7 +510,7 @@
        * Get the link to follow to book this course.
        */
       _getBookNowLink: function(id) {
-        return this._appConfig.links.bookclass + '/' + id;
+        return this.appConfig.links.bookclass + '/' + id;
       },
 
       ready: function() {

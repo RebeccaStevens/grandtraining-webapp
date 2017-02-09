@@ -132,19 +132,19 @@
               </div>
             </div>
 
-            <template is="dom-if" if="[[isDefined(_appConfig.api-configs.map-config.api-key)]]" on-dom-change="_updateMapMarkerInfoWindow">
+            <template is="dom-if" if="[[isDefined(appConfig.api-configs.map-config.api-key)]]" on-dom-change="_updateMapMarkerInfoWindow">
               <paper-material id="map-material" elevation="3">
                 <google-map id="map"
-                  api-key="[[_appConfig.api-configs.map-config.api-key]]"
+                  api-key="[[appConfig.api-configs.map-config.api-key]]"
                   latitude="[[_venueData.location.latitude]]"
                   longitude="[[_venueData.location.longitude]]"
-                  zoom="[[_appConfig.api-configs.map-config.zoom]]"
+                  zoom="[[appConfig.api-configs.map-config.zoom]]"
                   fit-to-markers
                   min-zoom="10">
                   <google-map-marker
                     latitude="[[_venueData.location.latitude]]"
                     longitude="[[_venueData.location.longitude]]"
-                    title="[[_appConfig.company.name]]">
+                    title="[[appConfig.company.name]]">
                     <div class="marker-infowindow" style="min-width: 375px;">
                       <iron-image preload fade sizing="contain" width="125" height="125" style="float: left;"></iron-image>
                       <h1 class="title" style="margin: 0; color: #04519b; margin-left: 140px;"></h1>
@@ -172,14 +172,6 @@
       ],
 
       properties: {
-
-        /**
-         * The app config data.
-         */
-        _appConfig: {
-          type: Object,
-          statePath: 'config'
-        },
 
         /**
          * The venue that is being shown.
@@ -258,14 +250,14 @@
             firstLine = address[0];
             remaining = this._venueData.address.substring(firstLine.length + 4);
           } else {
-            firstLine = this._appConfig.company.name;
+            firstLine = this.appConfig.company.name;
             remaining = this._venueData.address;
           }
 
           var markerDom = Polymer.dom(marker);
           var image = markerDom.querySelector('iron-image');
-          image.setAttribute('src', this._appConfig.company.logo.src);
-          image.setAttribute('placeholder', this._appConfig.company.logo.placeholder);
+          image.setAttribute('src', this.appConfig.company.logo.src);
+          image.setAttribute('placeholder', this.appConfig.company.logo.placeholder);
           Polymer.dom(markerDom.querySelector('.title')).innerHTML = firstLine;
           Polymer.dom(markerDom.querySelector('.address')).innerHTML = remaining;
           if (marker.info) {

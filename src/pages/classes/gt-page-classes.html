@@ -63,14 +63,6 @@
       properties: {
 
         /**
-         * The app config data.
-         */
-        _appConfig: {
-          type: Object,
-          statePath: 'config'
-        },
-
-        /**
          * A reference to this element.
          * Used for data binding.
          */
@@ -207,7 +199,7 @@
        */
       _onRouteActiveChanged: function(active) {
         // if active is false but the router's prefix is the classes url then the main page should be shown.
-        if (!active && this.$.router.route.prefix === this._appConfig.pages.classes.url) {
+        if (!active && this.$.router.route.prefix === this.appConfig.pages.classes.url) {
           var updatePageName = function() {
             document.activeElement.blur();
             this.pageName = this.mainPageName;

@@ -73,7 +73,7 @@
           classes-hub="[[_me]]"
           details-page="[[_getClassesDetailsPageByUrl(cc.url)]]"
           name="[[cc.name]]"
-          href="[[_appConfig.pages.classes.url]][[cc.url]]"
+          href="[[appConfig.pages.classes.url]][[cc.url]]"
           image-src="[[cc.image.src]]"
           image-placeholder="[[cc.image.placeholder]]"
           hidden$="[[!_isAvailableInVenue(cc.locationsAvailable, _venue)]]">
@@ -95,14 +95,6 @@
       ],
 
       properties: {
-
-        /**
-         * The app config data.
-         */
-        _appConfig: {
-          type: Object,
-          statePath: 'config'
-        },
 
         /**
          * A reference to this element.
