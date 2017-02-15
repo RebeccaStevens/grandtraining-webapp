@@ -2,6 +2,7 @@
 <link rel="import" href="../../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../../bower_components/iron-form/iron-form.html">
 <link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../../bower_components/neon-animation/neon-animation-runner-behavior.html">
 <link rel="import" href="../../../bower_components/neon-animation/animations/cascaded-animation.html">
@@ -20,6 +21,11 @@
         @apply(--layout-horizontal);
         @apply(--layout-start);
         @apply(--layout-center-justified);
+      }
+      form {
+        width: 100%;
+        @apply(--layout-horizontal);
+        @apply(--layout-center-center);
       }
       #cards {
         @apply(--layout-vertical);
@@ -59,6 +65,16 @@
       .card paper-button {
         margin: 0;
       }
+      .submit-container {
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        overflow: hidden;
+      }
+      .signingin-messgae {
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        margin-right: 16px;
+      }
       @media (min-width: 640px) {
         #cards {
           margin: 0.25em 0.5em 0 0.5em;
@@ -76,16 +92,23 @@
 
     <!-- Layout -->
     <div id="cards">
-      <paper-card id="signin-card" class="card" heading="[[appConfig.pages.signin.title]]" hidden$="[[!_isVisibleCard('signin', _visibleCard)]]">
-        <div class="card-content">
-          <paper-input id="signin-email" class="field" name="email" type="email" label="Email Address" auto-validate required autofocus></paper-input>
-          <paper-input id="signin-password" class="field" name="password" type="password" label="Password" auto-validate required></paper-input>
-        </div>
-        <div class="card-actions">
-          <div class="signup-notice">Don't have an account?<br><a on-tap="_showSignUp">Sign Up</a> now.</div>
-          <paper-button raised on-tap="_signin">[[appConfig.pages.signin.title]]</paper-button>
-        </div>
-      </paper-card>
+      <form is="iron-form" id="signin-form" method="post" action="[[getApiUrl(appConfig.form-handlers.signin)]]" on-iron-form-submit="_signinFormSubmit" on-iron-form-error="_signinFormError" on-iron-form-response="_signinFormResponse">
+        <paper-card id="signin-card" class="card" heading="[[appConfig.pages.signin.title]]" hidden$="[[!_isVisibleCard('signin', _visibleCard)]]">
+          <div class="card-content">
+            <paper-input id="signin-email" class="field" name="Email" type="email" label="Email Address" auto-validate required autofocus></paper-input>
+            <paper-input id="signin-password" class="field" name="Password" type="password" label="Password" auto-validate required></paper-input>
+          </div>
+          <div class="card-actions">
+            <div class="signup-notice">Don't have an account?<br><a on-tap="_showSignUp">Sign Up</a> now.</div>
+            <div class="submit-container">
+              <div class="signingin-messgae" hidden$="[[!_signingIn]]">
+                <paper-spinner id="spinner" active="[[_signingIn]]"></paper-spinner>
+              </div>
+              <paper-button id="signin" raised disabled="[[_signingIn]]" on-tap="_submitSignInForm">[[appConfig.pages.signin.title]]</paper-button>
+            </div>
+          </div>
+        </paper-card>
+      </form>
 
       <paper-card id="signup-card" class="card" heading="Sign Up" hidden$="[[!_isVisibleCard('signup', _visibleCard)]]">
         <div class="card-content">
@@ -101,7 +124,7 @@
 
       <paper-card id="signedin-card" class="card" heading="You are now signed in" hidden$="[[!_isVisibleCard('signedin', _visibleCard)]]">
         <div class="card-content">
-          <span>You are currently signed in as [[_user.name]]</span>
+          <span>You are currently signed in as [[_user.fullName]]</span>
         </div>
         <div class="card-actions">
           <paper-button raised on-tap="_signout">Log Out</paper-button>
@@ -127,6 +150,13 @@
          */
         pageData: Object,
 
+        /**
+         * True if waiting for the signin request response.
+         */
+        _signingIn: {
+          type: Boolean,
+          value: false
+        },
 
         /**
          * The card that should be shown.
@@ -174,20 +204,41 @@
       },
 
       /**
-       * Called when the signin button is clicked.
+       * Submit the signin form.
        */
-      _signin: function() {
-        this.$['signin-email'].validate();
-        this.$['signin-password'].validate();
+      _submitSignInForm: function() {
+        this.$['signin-form'].submit();
+      },
 
-        if (!(this.$['signin-email'].invalid ||
-        this.$['signin-password'].invalid)) {
-          console.log('todo: signin');
-          this.dispatch('signIn', {
-            name: 'Test User'
-          });
+      /**
+       * Called when the signin form is submitted.
+       */
+      _signinFormSubmit: function() {
+        this._signingIn = true;
+      },
+
+      /**
+       * Called when the server response positively to signin form submition.
+       */
+      _signinFormResponse: function(e) {
+        if (!e.detail.response.successful) {
+          this._signinFormError(e);
+        } else {
+          this._signingIn = false;
+          this.dispatch(
+            'signIn',
+            e.detail.response['new-id-token'],
+            this._createUser(e.detail.response['first-name'], e.detail.response['last-name']));
           this.$['signin-password'].value = '';
         }
+      },
+
+      /**
+       * Called when an error occurs trying to submit the signin form.
+       */
+      _signinFormError: function() {
+        this._signingIn = false;
+        // this.$['signin-error-dialog'].open();
       },
 
       /**
@@ -251,6 +302,28 @@
       _showSignUp: function() {
         this._cardToShow = 'signup';
         Polymer.dom(this.$['signup-card']).querySelector('paper-input').focus();
+      },
+
+      /**
+       * Create the user object.
+       */
+      _createUser: function(firstName, lastName) {
+        var fullName = null;
+        if (firstName && lastName) {
+          fullName = firstName + ' ' + lastName;
+        }
+        else if (firstName) {
+          fullName = firstName;
+        }
+        else if (lastName) {
+          fullName = lastName;
+        }
+
+        return {
+          firstName: firstName,
+          lastName: lastName,
+          fullName: fullName
+        };
       },
 
       /**
