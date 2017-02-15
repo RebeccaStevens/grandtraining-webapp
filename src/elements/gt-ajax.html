@@ -7,7 +7,9 @@
   <template>
     <iron-ajax id="ajax"
       auto="[[auto]]"
-      params="[[_getAjaxParams(useIdToken, idToken, params, cmsPreview)]]"
+      method="[[method]]"
+      params="[[_getAjaxParams(method, useIdToken, idToken, params, cmsPreview)]]"
+      body="[[_getAjaxBody(method, useIdToken, idToken, body)]]"
       url="[[getApiUrl(path)]]"
       handle-as="json"
       last-response="{{lastResponse}}"></iron-ajax>
@@ -36,6 +38,11 @@
         value: false
       },
 
+      method: {
+        type: String,
+        value: 'GET'
+      },
+
       lastResponse: {
         type: Object,
         notify: true
@@ -49,6 +56,12 @@
       params: {
         type: Object,
         value: {}
+      },
+
+      body: {
+        type: Object,
+        value: null,
+        observer: '_onBodyChange'
       },
 
       useIdToken: {
@@ -69,19 +82,46 @@
     /**
      * Get the parameters to send in the ajax request
      */
-    _getAjaxParams: function(useIdToken, idToken, userParams, cmsPreview) {
+    _getAjaxParams: function(method, useIdToken, idToken, userParams, cmsPreview) {
       var params = {};
-      if (useIdToken || cmsPreview.using) {
-        params['id-token'] = idToken;
+      if (method.toUpperCase() === 'GET') {
+        if (useIdToken || cmsPreview.using) {
+          params['id-token'] = idToken;
+        }
+        if (cmsPreview.using) {
+          params.previewStage = cmsPreview.stage;
+          params.CMSPreview = 1;
+        }
       }
       if (userParams) {
         Object.assign(params, userParams);
       }
-      if (cmsPreview.using) {
-        params.previewStage = cmsPreview.stage;
-        params.CMSPreview = 1;
-      }
       return params;
+    },
+
+    /**
+     * Get the body to send in the ajax request
+     */
+    _getAjaxBody: function(method, useIdToken, idToken, userBody) {
+      var body = {};
+      if (useIdToken && method.toUpperCase() === 'POST') {
+        body['id-token'] = idToken;
+      }
+      if (userBody) {
+        Object.assign(body, userBody);
+      }
+      return body;
+    },
+
+    /**
+     * Set the content-type of the body for the form based on what the body is.
+     */
+    _onBodyChange: function() {
+      if (this.body) {
+        this.$.ajax.contentType = 'application/x-www-form-urlencoded';
+      } else {
+        this.$.ajax.contentType = null;
+      }
     }
   });
 </script>
