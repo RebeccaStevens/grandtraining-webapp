@@ -35,9 +35,10 @@
         };
       },
 
-      signIn: function(user) {
+      signIn: function(newIdToken, user) {
         return {
           type: 'SIGN_IN',
+          newIdToken: newIdToken,
           user: user
         };
       },

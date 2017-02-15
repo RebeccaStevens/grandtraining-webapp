@@ -165,8 +165,10 @@
         });
 
       case 'SIGN_IN':
+        setIDTokenCookie(action.newIdToken);
         return Object.assign({}, state, {
-          signedInUser: Object.assign({}, action.user)
+          signedInUser: Object.assign({}, action.user),
+          idToken: action.newIdToken
         });
 
       case 'SIGN_OUT':
