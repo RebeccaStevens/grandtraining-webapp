@@ -60,6 +60,13 @@
   };
 
   /**
+   * Delete the id-token cookie.
+   */
+  var unsetIDTokenCookie = function() {
+    document.cookie = 'id-token=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+  };
+
+  /**
    * Load the id token.
    *
    * @returns {String}
@@ -172,6 +179,7 @@
         });
 
       case 'SIGN_OUT':
+        unsetIDTokenCookie();
         return Object.assign({}, state, {
           signedInUser: null
         });
