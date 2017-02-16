@@ -1,8 +1,4 @@
 <link rel="import" href="../../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../../../bower_components/paper-card/paper-card.html">
-<link rel="import" href="../../../bower_components/paper-input/paper-input.html">
-<link rel="import" href="../../../bower_components/iron-form/iron-form.html">
 <link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../../bower_components/neon-animation/neon-animation-runner-behavior.html">
 <link rel="import" href="../../../bower_components/neon-animation/animations/cascaded-animation.html">
@@ -13,6 +9,10 @@
 <link rel="import" href="../../gt-element-common-behavior.html">
 <link rel="import" href="../gt-page-behavior.html">
 
+<link rel="import" href="gt-signin-card.html">
+<link rel="import" href="gt-signup-card.html">
+<link rel="import" href="gt-signedin-card.html">
+
 <dom-module id="gt-page-signin">
   <template>
     <style include="gt-styles">
@@ -21,11 +21,6 @@
         @apply(--layout-horizontal);
         @apply(--layout-start);
         @apply(--layout-center-justified);
-      }
-      form {
-        width: 100%;
-        @apply(--layout-horizontal);
-        @apply(--layout-center-center);
       }
       #cards {
         @apply(--layout-vertical);
@@ -39,41 +34,6 @@
         width: calc(100% - 0.5em);
         max-width: 400px;
         box-sizing: border-box;
-      }
-      #signin-card .card-content,
-      #signup-card .card-content {
-        padding: 0 16px 16px 16px;
-      }
-      #signin-card .card-actions,
-      #signup-card .card-actions {
-        @apply(--layout-horizontal);
-        @apply(--layout-justified);
-      }
-      #signin-card {
-
-      }
-      #signup-card {
-
-      }
-      a {
-        cursor: pointer;
-      }
-      .signup-notice {
-        text-align: center;
-        padding-left: 8px;
-      }
-      .card paper-button {
-        margin: 0;
-      }
-      .submit-container {
-        @apply(--layout-horizontal);
-        @apply(--layout-center);
-        overflow: hidden;
-      }
-      .signingin-messgae {
-        @apply(--layout-horizontal);
-        @apply(--layout-center);
-        margin-right: 16px;
       }
       @media (min-width: 640px) {
         #cards {
@@ -92,44 +52,9 @@
 
     <!-- Layout -->
     <div id="cards">
-      <form is="iron-form" id="signin-form" method="post" action="[[getApiUrl(appConfig.form-handlers.signin)]]" on-iron-form-submit="_signinFormSubmit" on-iron-form-error="_signinFormError" on-iron-form-response="_signinFormResponse">
-        <paper-card id="signin-card" class="card" heading="[[appConfig.pages.signin.title]]" hidden$="[[!_isVisibleCard('signin', _visibleCard)]]">
-          <div class="card-content">
-            <paper-input id="signin-email" class="field" name="Email" type="email" label="Email Address" auto-validate required autofocus></paper-input>
-            <paper-input id="signin-password" class="field" name="Password" type="password" label="Password" auto-validate required></paper-input>
-          </div>
-          <div class="card-actions">
-            <div class="signup-notice">Don't have an account?<br><a on-tap="_showSignUp">Sign Up</a> now.</div>
-            <div class="submit-container">
-              <div class="signingin-messgae" hidden$="[[!_signingIn]]">
-                <paper-spinner id="spinner" active="[[_signingIn]]"></paper-spinner>
-              </div>
-              <paper-button id="signin" raised disabled="[[_signingIn]]" on-tap="_submitSignInForm">[[appConfig.pages.signin.title]]</paper-button>
-            </div>
-          </div>
-        </paper-card>
-      </form>
-
-      <paper-card id="signup-card" class="card" heading="Sign Up" hidden$="[[!_isVisibleCard('signup', _visibleCard)]]">
-        <div class="card-content">
-          <paper-input id="signup-email" class="field" name="email" type="email" label="Email Address" auto-validate required></paper-input>
-          <paper-input id="signup-password" class="field" name="password" type="password" label="Password" auto-validate required></paper-input>
-          <paper-input id="signup-password2" class="field" type="password" label="Password Confirm" auto-validate required></paper-input>
-        </div>
-        <div class="card-actions">
-          <div class="signup-notice">Already have an account?<br><a on-tap="_showSignIn">[[appConfig.pages.signin.title]]</a> now.</div>
-          <paper-button raised on-tap="_signup">Sign Up</paper-button>
-        </div>
-      </paper-card>
-
-      <paper-card id="signedin-card" class="card" heading="You are now signed in" hidden$="[[!_isVisibleCard('signedin', _visibleCard)]]">
-        <div class="card-content">
-          <span>You are currently signed in as [[_user.fullName]]</span>
-        </div>
-        <div class="card-actions">
-          <paper-button raised on-tap="_signout">Log Out</paper-button>
-        </div>
-      </paper-card>
+      <gt-signin-card id="signin" class="card" page="[[_me]]" hidden$="[[!_isVisibleCard('signin', _visibleCard)]]"></gt-signin-card>
+      <gt-signup-card id="signup" class="card" page="[[_me]]" hidden$="[[!_isVisibleCard('signup', _visibleCard)]]"></gt-signup-card>
+      <gt-signedin-card id="signedin" class="card" page="[[_me]]" hidden$="[[!_isVisibleCard('signedin', _visibleCard)]]"></gt-signedin-card>
     </div>
   </template>
 
@@ -146,16 +71,27 @@
       properties: {
 
         /**
+         * A reference to this element.
+         * Used for data binding.
+         */
+        _me: {
+          type: Object,
+          value: function() {
+            return this;
+          }
+        },
+
+        /**
          * The data the page will use.
          */
         pageData: Object,
 
         /**
-         * True if waiting for the signin request response.
+         * The signed in user
          */
-        _signingIn: {
-          type: Boolean,
-          value: false
+        _user: {
+          type: Object,
+          statePath: 'signedInUser'
         },
 
         /**
@@ -175,96 +111,24 @@
         },
 
         /**
-         * The signed in user
-         */
-        _user: {
-          type: Object,
-          statePath: 'signedInUser'
-        },
-
-        /**
          * The animations this element has.
          */
-         animationConfig: {
-           value: function() {
-             return {
-               entry: {
-                 name: 'cascaded-animation',
-                 animation: 'scale-up-and-fade-in-animation',
-                 nodes: Polymer.dom(this.root).querySelectorAll('paper-card'),
-                 nodeDelay: GT.animation.timingOffset,
-                 timing: {
-                   delay: 0,
-                   duration: GT.animation.entryDuration
-                 }
-               }
-             };
-           }
-         }
-      },
-
-      /**
-       * Submit the signin form.
-       */
-      _submitSignInForm: function() {
-        this.$['signin-form'].submit();
-      },
-
-      /**
-       * Called when the signin form is submitted.
-       */
-      _signinFormSubmit: function() {
-        this._signingIn = true;
-      },
-
-      /**
-       * Called when the server response positively to signin form submition.
-       */
-      _signinFormResponse: function(e) {
-        if (!e.detail.response.successful) {
-          this._signinFormError(e);
-        } else {
-          this._signingIn = false;
-          this.dispatch(
-            'signIn',
-            e.detail.response['new-id-token'],
-            this._createUser(e.detail.response['first-name'], e.detail.response['last-name']));
-          this.$['signin-password'].value = '';
+        animationConfig: {
+          value: function() {
+            return {
+              entry: {
+                name: 'cascaded-animation',
+                animation: 'scale-up-and-fade-in-animation',
+                nodes: Polymer.dom(this.root).querySelectorAll('.card'),
+                nodeDelay: 0,
+                timing: {
+                  delay: 0,
+                  duration: GT.animation.entryDuration
+                }
+              }
+            };
+          }
         }
-      },
-
-      /**
-       * Called when an error occurs trying to submit the signin form.
-       */
-      _signinFormError: function() {
-        this._signingIn = false;
-        // this.$['signin-error-dialog'].open();
-      },
-
-      /**
-       * Called when the signup button is clicked.
-       */
-      _signup: function() {
-        this.$['signup-email'].validate();
-        this.$['signup-password'].validate();
-
-        // make sure the passwords match
-        if (this.$['signup-password'].value !== this.$['signup-password2'].value) {
-          this.$['signup-password'].invalid = true;
-          this.$['signup-password2'].invalid = true;
-        }
-
-        if (!(this.$['signup-email'].invalid ||
-        this.$['signup-password'].invalid)) {
-          console.log('todo: signup');
-        }
-      },
-
-      /**
-       * Sign out the user.
-       */
-      _signout: function() {
-        this.dispatch('signOut');
       },
 
       /**
@@ -291,39 +155,17 @@
       /**
        * Show the sign in card.
        */
-      _showSignIn: function() {
+      showSignInCard: function() {
         this._cardToShow = 'signin';
-        Polymer.dom(this.$['signin-card']).querySelector('paper-input').focus();
+        this.$.signin.focus();
       },
 
       /**
        * Show the sign up card.
        */
-      _showSignUp: function() {
+      showSignUpCard: function() {
         this._cardToShow = 'signup';
-        Polymer.dom(this.$['signup-card']).querySelector('paper-input').focus();
-      },
-
-      /**
-       * Create the user object.
-       */
-      _createUser: function(firstName, lastName) {
-        var fullName = null;
-        if (firstName && lastName) {
-          fullName = firstName + ' ' + lastName;
-        }
-        else if (firstName) {
-          fullName = firstName;
-        }
-        else if (lastName) {
-          fullName = lastName;
-        }
-
-        return {
-          firstName: firstName,
-          lastName: lastName,
-          fullName: fullName
-        };
+        this.$.signup.focus();
       },
 
       /**
@@ -331,7 +173,7 @@
        */
       onSwitchBackTo: function() {
         this.displayPageTitle();
-        this._showSignIn();
+        this.showSignInCard();
         this.playAnimation('entry');
       },
 
@@ -347,9 +189,6 @@
 
       ready: function() {
         this.init();
-        Polymer.dom(this.root).querySelectorAll('.field').forEach(function(e) {
-          e.onblur = GT.onFieldBlur;
-        });
       }
     });
   </script>

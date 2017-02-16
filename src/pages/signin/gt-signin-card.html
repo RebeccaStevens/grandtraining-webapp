@@ -1,0 +1,183 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+
+<link rel="import" href="../../../styles/gt-styles.html">
+<link rel="import" href="../../../imports/gt.html">
+<link rel="import" href="../../gt-element-common-behavior.html">
+
+<dom-module id="gt-signin-card">
+  <template>
+    <style include="gt-styles">
+      :host {
+        display: block;
+      }
+      form {
+        width: 100%;
+        @apply(--layout-horizontal);
+        @apply(--layout-center-center);
+      }
+      a {
+        cursor: pointer;
+      }
+      paper-button {
+        margin: 0;
+      }
+      #card {
+        width: 100%;
+      }
+      #card .card-content {
+        padding: 0 16px 16px 16px;
+      }
+      #card .card-actions {
+        @apply(--layout-horizontal);
+        @apply(--layout-justified);
+      }
+      #notice {
+        text-align: center;
+        padding-left: 8px;
+      }
+      #submit-container {
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        overflow: hidden;
+      }
+      #submit-container .messgae {
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        margin-right: 16px;
+      }
+    </style>
+
+    <!-- Layout -->
+    <form is="iron-form"
+      id="form"
+      method="post"
+      action="[[getApiUrl(appConfig.form-handlers.signin)]]"
+      on-iron-form-submit="_formSubmit"
+      on-iron-form-error="_formError"
+      on-iron-form-response="_formResponse">
+      <paper-card id="card" heading="[[appConfig.pages.signin.title]]">
+        <div class="card-content">
+          <paper-input id="email" class="field" name="Email" type="email" label="Email Address" auto-validate required autofocus></paper-input>
+          <paper-input id="password" class="field" name="Password" type="password" label="Password" auto-validate required></paper-input>
+        </div>
+        <div class="card-actions">
+          <div id="notice">Don't have an account?<br><a on-tap="_showSignUpCard">Sign Up</a> now.</div>
+          <div id="submit-container">
+            <div class="messgae" hidden$="[[!_signingIn]]">
+              <paper-spinner id="spinner" active="[[_signingIn]]"></paper-spinner>
+            </div>
+            <paper-button id="signin" raised disabled="[[_signingIn]]" on-tap="_submitForm">[[appConfig.pages.signin.title]]</paper-button>
+          </div>
+        </div>
+      </paper-card>
+    </form>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'gt-signin-card',
+
+      behaviors: [
+        GT.ElementCommonBehavior
+      ],
+
+      properties: {
+
+        /**
+         * The page this card is on.
+         */
+        page: Object,
+
+        /**
+         * True if waiting for the signin request response.
+         */
+        _signingIn: {
+          type: Boolean,
+          value: false
+        }
+      },
+
+      /**
+       * Submit the signin form.
+       */
+      _submitForm: function() {
+        this.$.form.submit();
+      },
+
+      /**
+       * Called when the signin form is submitted.
+       */
+      _formSubmit: function() {
+        this._signingIn = true;
+      },
+
+      /**
+       * Called when the server response positively to signin form submition.
+       */
+      _formResponse: function(e) {
+        if (!e.detail.response.successful) {
+          this._formError(e);
+        } else {
+          this._signingIn = false;
+          this.dispatch(
+            'signIn',
+            e.detail.response['new-id-token'],
+            this._createUser(e.detail.response['first-name'], e.detail.response['last-name']));
+          this.$.password.value = '';
+        }
+      },
+
+      /**
+       * Called when an error occurs trying to submit the signin form.
+       */
+      _formError: function() {
+        this._signingIn = false;
+        // this.$['signin-error-dialog'].open();
+      },
+
+      /**
+       * Show the sign up card.
+       */
+      _showSignUpCard: function() {
+        this.page.showSignUpCard();
+      },
+
+      /**
+       * Create the user object.
+       */
+      _createUser: function(firstName, lastName) {
+        var fullName = null;
+        if (firstName && lastName) {
+          fullName = firstName + ' ' + lastName;
+        }
+        else if (firstName) {
+          fullName = firstName;
+        }
+        else if (lastName) {
+          fullName = lastName;
+        }
+
+        return {
+          firstName: firstName,
+          lastName: lastName,
+          fullName: fullName
+        };
+      },
+
+      focus: function() {
+        this.$.email.focus();
+      },
+
+      ready: function() {
+        Polymer.dom(this.root).querySelectorAll('.field').forEach(function(e) {
+          e.onblur = GT.onFieldBlur;
+        });
+      }
+    });
+  </script>
+</dom-module>

@@ -1,0 +1,73 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../../bower_components/paper-card/paper-card.html">
+
+<link rel="import" href="../../../styles/gt-styles.html">
+<link rel="import" href="../../../imports/gt.html">
+<link rel="import" href="../../gt-element-common-behavior.html">
+
+<dom-module id="gt-signedin-card">
+  <template>
+    <style include="gt-styles">
+      :host {
+        display: block;
+      }
+      paper-button {
+        margin: 0;
+      }
+      #card {
+        width: 100%;
+      }
+      #card .card-content {
+        padding: 16px;
+      }
+      #card .card-actions {
+        @apply(--layout-horizontal);
+        @apply(--layout-justified);
+      }
+    </style>
+
+    <!-- Layout -->
+    <paper-card id="card" heading="You are now signed in">
+      <div class="card-content">
+        <span>You are currently signed in as [[_user.fullName]]</span>
+      </div>
+      <div class="card-actions">
+        <paper-button raised on-tap="_signout">Log Out</paper-button>
+      </div>
+    </paper-card>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'gt-signedin-card',
+
+      behaviors: [
+        GT.ElementCommonBehavior
+      ],
+
+      properties: {
+
+        /**
+         * The page this card is on.
+         */
+        page: Object,
+
+        /**
+         * The signed in user
+         */
+        _user: {
+          type: Object,
+          statePath: 'signedInUser'
+        }
+      },
+
+      /**
+       * Sign out the user.
+       */
+      _signout: function() {
+        this.dispatch('signOut');
+      }
+    });
+  </script>
+</dom-module>
