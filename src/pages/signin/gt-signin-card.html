@@ -4,6 +4,7 @@
 <link rel="import" href="../../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../../bower_components/iron-form/iron-form.html">
 <link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../../bower_components/iron-a11y-keys-behavior/iron-a11y-keys-behavior.html">
 
 <link rel="import" href="../../../styles/gt-styles.html">
 <link rel="import" href="../../../imports/gt.html">
@@ -83,8 +84,13 @@
       is: 'gt-signin-card',
 
       behaviors: [
-        GT.ElementCommonBehavior
+        GT.ElementCommonBehavior,
+        Polymer.IronA11yKeysBehavior
       ],
+
+      keyBindings: {
+        'enter': '_onEnter'
+      },
 
       properties: {
 
@@ -167,6 +173,10 @@
           lastName: lastName,
           fullName: fullName
         };
+      },
+
+      _onEnter: function() {
+        this._submitForm();
       },
 
       focus: function() {
