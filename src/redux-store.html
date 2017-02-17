@@ -126,16 +126,8 @@
 
     switch (action.type) {
       case 'INIT':
-        var config = Object.assign({}, action.config);
-        var idToken = config['id-token'];
-        if (idToken === '') {
-          idToken = null;
-        }
-        delete config['id-token'];
-        setIDTokenCookie(idToken);
         return Object.assign({}, state, {
-          config: config,
-          idToken: idToken
+          config: Object.assign({}, action.config)
         });
 
       case 'SET_ID_TOKEN':

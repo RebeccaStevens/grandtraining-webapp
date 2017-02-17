@@ -1187,7 +1187,16 @@
       _handleAjaxResponse: function(e) {
         var response = e.detail.response;
         if (response) {
-          this.dispatch('setConfig', response);
+          this.dispatch('setConfig', {
+            'api-configs':    response['api-configs'],
+            'company':        response['company'],
+            'etrain':         response['etrain'],
+            'form-handlers':  response['form-handlers'],
+            'links':          response['links'],
+            'pages':          response['pages'],
+            'regions':        response['regions']
+          });
+          this.dispatch('setIDToken', response['id-token']);
           this.dispatch('setShellError', false);
           this.dispatch('setShellLoading', false);
           this._readVenueID();
