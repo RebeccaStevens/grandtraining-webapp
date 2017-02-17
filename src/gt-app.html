@@ -1167,21 +1167,6 @@
       },
 
       /**
-       * Get the parameters to send with ajax request.
-       */
-      _getAjaxParams: function(idToken) {
-        if (idToken !== undefined && idToken !== null && idToken !== '') {
-          return {
-            'id-token': idToken
-          };
-        } else {
-          return {
-            'create-new-id-token': true
-          };
-        }
-      },
-
-      /**
        * Called when the app shell data loads.
        */
       _handleAjaxResponse: function(e) {

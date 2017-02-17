@@ -8,8 +8,8 @@
     <iron-ajax id="ajax"
       auto="[[auto]]"
       method="[[method]]"
-      params="[[_getAjaxParams(method, useIdToken, idToken, params, cmsPreview)]]"
-      body="[[_getAjaxBody(method, useIdToken, idToken, body)]]"
+      params="[[_getAjaxParams(method, useIdToken, idToken, requestNewIdToken, params, cmsPreview)]]"
+      body="[[_getAjaxBody(method, useIdToken, idToken, requestNewIdToken, body)]]"
       url="[[getApiUrl(path)]]"
       handle-as="json"
       last-response="{{lastResponse}}"></iron-ajax>
@@ -67,6 +67,11 @@
       useIdToken: {
         type: Boolean,
         value: false
+      },
+
+      requestNewIdToken: {
+        type: Boolean,
+        value: false
       }
     },
 
@@ -82,11 +87,14 @@
     /**
      * Get the parameters to send in the ajax request
      */
-    _getAjaxParams: function(method, useIdToken, idToken, userParams, cmsPreview) {
+    _getAjaxParams: function(method, useIdToken, idToken, requestNewIdToken, userParams, cmsPreview) {
       var params = {};
       if (method.toUpperCase() === 'GET') {
         if (useIdToken || cmsPreview.using) {
           params['id-token'] = idToken;
+        }
+        if (requestNewIdToken) {
+          params['create-new-id-token'] = true;
         }
         if (cmsPreview.using) {
           params.previewStage = cmsPreview.stage;
@@ -102,10 +110,13 @@
     /**
      * Get the body to send in the ajax request
      */
-    _getAjaxBody: function(method, useIdToken, idToken, userBody) {
+    _getAjaxBody: function(method, useIdToken, idToken, requestNewIdToken, userBody) {
       var body = {};
       if (useIdToken && method.toUpperCase() === 'POST') {
         body['id-token'] = idToken;
+      }
+      if (requestNewIdToken) {
+        body['create-new-id-token'] = true;
       }
       if (userBody) {
         Object.assign(body, userBody);
