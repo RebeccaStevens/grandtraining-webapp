@@ -28,35 +28,58 @@
   };
 
   /**
-   * Get the id-token from the a cookie.
+   * Get a cookie by value.
    *
+   * @param {String} name
    * @returns {String}
    */
-  var getIDTokenCookie = function() {
-    var name = 'id-token=';
+  var getCookie = function(name) {
+    var nameEq = name + '=';
     var ca = decodeURIComponent(document.cookie).split(';');
     for (var i = 0; i < ca.length; i++) {
         var c = ca[i];
         while (c.charAt(0) === ' ') {
           c = c.substring(1, c.length);
         }
-        if (c.indexOf(name) === 0) {
-          return c.substring(name.length, c.length);
+        if (c.indexOf(nameEq) === 0) {
+          return c.substring(nameEq.length, c.length);
         }
     }
     return null;
   };
 
   /**
+   * Get the id-token from the cookie.
+   *
+   * @returns {String}
+   */
+  var getIDTokenCookie = function() {
+    return getCookie('id-token');
+  };
+
+  /**
+   * Get remember-me from the cookie.
+   *
+   * @returns {Boolean}
+   */
+  var getRememberMeCookie = function() {
+    return !!getCookie('remember-me');
+  };
+
+  /**
    * Save the id-token into a cookie.
    *
    * @param {String} value - The id token
+   * @param {Boolean} [rememberMe=false] - if true, remember the current user and auto log them in
    */
-  var setIDTokenCookie = function(value) {
+  var setIDTokenCookie = function(value, rememberMe) {
     if (value === null || value === undefined || value === '') {
       return;
     }
     document.cookie = 'id-token=' + value + ';path=/';
+    if (rememberMe) {
+      document.cookie = 'remember-me=' + rememberMe + ';path=/';
+    }
   };
 
   /**
@@ -74,7 +97,7 @@
   var loadIDToken = function() {
     var param = getQueryParameter('id-token');
     if (param) {
-      setIDTokenCookie(param);
+      setIDTokenCookie(param, false);
       return param;
     } else {
       return getIDTokenCookie();
@@ -112,8 +135,8 @@
     pageError: false,
 
     signedInUser: null,
-
-    signinBackUrl: null
+    signinBackUrl: null,
+    rememberMe: getRememberMeCookie()
   };
 
   /**
@@ -131,7 +154,7 @@
         });
 
       case 'SET_ID_TOKEN':
-        setIDTokenCookie(action.idToken);
+        setIDTokenCookie(action.idToken, state.rememberMe);
         return Object.assign({}, state, {
           idToken: action.idToken
         });
@@ -166,10 +189,11 @@
         });
 
       case 'SIGN_IN':
-        setIDTokenCookie(action.newIdToken);
+        setIDTokenCookie(action.newIdToken, action.rememberMe);
         return Object.assign({}, state, {
           signedInUser: Object.assign({}, action.user),
-          idToken: action.newIdToken
+          idToken: action.newIdToken,
+          rememberMe: action.rememberMe
         });
 
       case 'SIGN_OUT':

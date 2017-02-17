@@ -2,6 +2,7 @@
 <link rel="import" href="../../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../../../bower_components/iron-form/iron-form.html">
 <link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../../bower_components/iron-a11y-keys-behavior/iron-a11y-keys-behavior.html">
@@ -46,6 +47,10 @@
         margin: 8px 0px;
         padding: 8px 16px;
       }
+      #remember {
+        margin: 16px 0 0 0;
+        font-size: 10.5pt;
+      }
       #notice {
         text-align: center;
         padding-left: 8px;
@@ -75,6 +80,7 @@
           <paper-material id="error-message" hidden$="[[!isDefined(_formErrorMessage)]]">[[_formErrorMessage]]</paper-material>
           <paper-input id="email" class="field" name="Email" type="email" label="Email Address" auto-validate required autofocus></paper-input>
           <paper-input id="password" class="field" name="Password" type="password" label="Password" auto-validate required></paper-input>
+          <paper-checkbox id="remember">Remember Me?</paper-checkbox>
         </div>
         <div class="card-actions">
           <div id="notice">Don't have an account?<br><a on-tap="_showSignUpCard">Sign Up</a> now.</div>
@@ -146,6 +152,7 @@
        */
       _formSubmit: function() {
         this._signingIn = true;
+        this._rememberMe = this.$.remember.checked;
       },
 
       /**
@@ -160,6 +167,7 @@
           this.dispatch(
             'signIn',
             e.detail.response['new-id-token'],
+            this._rememberMe,
             e.detail.response['first-name'],
             e.detail.response['last-name']);
           this.$.password.value = '';
