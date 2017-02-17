@@ -87,14 +87,6 @@
         pageData: Object,
 
         /**
-         * The signed in user
-         */
-        _user: {
-          type: Object,
-          statePath: 'signedInUser'
-        },
-
-        /**
          * The card that should be shown.
          */
         _cardToShow: {
@@ -107,7 +99,7 @@
          */
         _visibleCard: {
           type: String,
-          computed: '_computeVisibleCard(_cardToShow, _user)'
+          computed: '_computeVisibleCard(_cardToShow, user)'
         },
 
         /**
