@@ -30,6 +30,14 @@
       pageTitle: {
         type: String,
         value: ''
+      },
+
+      /**
+       * If true, the user must be logged in to view this page.
+       */
+      requiresLogin: {
+        type: Boolean,
+        value: false
       }
     },
 
@@ -62,10 +70,32 @@
     },
 
     /**
+     * Check if the current user can view this page.
+     *
+     * @param {Boolean} [signinPrompt=true] - If true, the user will be prompted to signin if they are not
+     * @returns {Boolean}
+     */
+    canView: function(signinPrompt) {
+      if (signinPrompt === undefined) {
+        signinPrompt = true;
+      }
+
+      if (this.requiresLogin && this.user === null) {
+        if (signinPrompt) {
+          GT.app.signinPrompt(window.location.href);
+        }
+        return false;
+      }
+      return true;
+    },
+
+    /**
      * Called when the page is switched back to.
      */
     onSwitchBackTo: function() {
-      this.displayPageTitle();
+      if (this.canView()) {
+        this.displayPageTitle();
+      }
     },
 
     /**

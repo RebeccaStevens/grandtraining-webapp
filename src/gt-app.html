@@ -796,6 +796,15 @@
       },
 
       /**
+       * Prompt the user to sign in.
+       */
+      signinPrompt: function(backUrl) {
+        window.history.pushState({}, null, GT.app.appConfig.pages.signin.url);
+        window.dispatchEvent(new CustomEvent('location-changed'));
+        this.dispatch('setSigninBackUrl', backUrl);
+      },
+
+      /**
        * Scroll to the top.
        * The scroll can be animatied by passing in a duration.
        *

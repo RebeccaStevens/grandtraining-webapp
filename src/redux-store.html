@@ -111,7 +111,9 @@
     shellError: false,
     pageError: false,
 
-    signedInUser: null
+    signedInUser: null,
+
+    signinBackUrl: null
   };
 
   /**
@@ -180,8 +182,23 @@
 
       case 'SIGN_OUT':
         unsetIDTokenCookie();
+        if (GT.app.getPageElement().requiresLogin) {
+          setTimeout(function() {
+            GT.app.signinPrompt(window.location.href);
+          }, 0);
+        }
         return Object.assign({}, state, {
           signedInUser: null
+        });
+
+      case 'SET_SIGNIN_BACK_URL':
+        return Object.assign({}, state, {
+          signinBackUrl: action.url
+        });
+
+      case 'CLEAR_SIGNIN_BACK_URL':
+        return Object.assign({}, state, {
+          signinBackUrl: null
         });
     }
   };

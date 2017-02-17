@@ -110,6 +110,14 @@
         page: Object,
 
         /**
+         * The back url.
+         */
+        backUrl: {
+          type: String,
+          statePath: 'signinBackUrl'
+        },
+
+        /**
          * True if waiting for the signin request response.
          */
         _signingIn: {
@@ -154,6 +162,11 @@
             e.detail.response['new-id-token'],
             this._createUser(e.detail.response['first-name'], e.detail.response['last-name']));
           this.$.password.value = '';
+          if (this.backUrl !== null) {
+            window.history.pushState({}, null, this.backUrl);
+            window.dispatchEvent(new CustomEvent('location-changed'));
+            this.dispatch('clearSigninBackUrl');
+          }
         }
       },
 

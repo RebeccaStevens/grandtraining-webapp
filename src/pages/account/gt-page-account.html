@@ -24,10 +24,32 @@
         GT.PageBehavior
       ],
 
+      properties: {
+
+        /**
+         * The user must be logged in to view this page.
+         */
+        requiresLogin: {
+          type: Boolean,
+          value: true
+        }
+      },
+
+      /**
+       * Called when the page is switched back to.
+       */
+      onSwitchBackTo: function() {
+        if (this.canView()) {
+          this.displayPageTitle();
+        }
+      },
+
       init: function() {
-        this.pageTitle = this.appConfig.pages.account.title;
-        this.displayPageTitle();
-        this.pageReady();
+        if (this.canView()) {
+          this.pageTitle = this.appConfig.pages.account.title;
+          this.displayPageTitle();
+          this.pageReady();
+        }
       },
 
       ready: function() {

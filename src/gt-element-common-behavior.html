@@ -47,6 +47,19 @@
         return {
           type: 'SIGN_OUT'
         };
+      },
+
+      setSigninBackUrl: function(url) {
+        return {
+          type: 'SET_SIGNIN_BACK_URL',
+          url: url
+        }
+      },
+
+      clearSigninBackUrl: function() {
+        return {
+          type: 'CLEAR_SIGNIN_BACK_URL'
+        }
       }
     },
 
