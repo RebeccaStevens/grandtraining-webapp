@@ -160,7 +160,8 @@
           this.dispatch(
             'signIn',
             e.detail.response['new-id-token'],
-            this._createUser(e.detail.response['first-name'], e.detail.response['last-name']));
+            e.detail.response['first-name'],
+            e.detail.response['last-name']);
           this.$.password.value = '';
           if (this.backUrl !== null) {
             window.history.pushState({}, null, this.backUrl);
@@ -200,28 +201,6 @@
        */
       _showSignUpCard: function() {
         this.page.showSignUpCard();
-      },
-
-      /**
-       * Create the user object.
-       */
-      _createUser: function(firstName, lastName) {
-        var fullName = null;
-        if (firstName && lastName) {
-          fullName = firstName + ' ' + lastName;
-        }
-        else if (firstName) {
-          fullName = firstName;
-        }
-        else if (lastName) {
-          fullName = lastName;
-        }
-
-        return {
-          firstName: firstName,
-          lastName: lastName,
-          fullName: fullName
-        };
       },
 
       _onEnter: function() {

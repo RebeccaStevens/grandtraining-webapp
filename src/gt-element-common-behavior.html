@@ -35,7 +35,24 @@
         };
       },
 
-      signIn: function(newIdToken, user) {
+      signIn: function(newIdToken, firstName, lastName) {
+        var fullName = null;
+        if (firstName && lastName) {
+          fullName = firstName + ' ' + lastName;
+        }
+        else if (firstName) {
+          fullName = firstName;
+        }
+        else if (lastName) {
+          fullName = lastName;
+        }
+
+        var user = {
+          firstName: firstName,
+          lastName: lastName,
+          fullName: fullName
+        };
+
         return {
           type: 'SIGN_IN',
           newIdToken: newIdToken,
