@@ -1196,7 +1196,15 @@
             'pages':          response['pages'],
             'regions':        response['regions']
           });
-          this.dispatch('setIDToken', response['id-token']);
+          if (response.user) {
+            this.dispatch(
+              'signIn',
+              response['new-id-token'],
+              response.user['first-name'],
+              response.user['last-name']);
+          } else {
+            this.dispatch('setIDToken', response['id-token']);
+          }
           this.dispatch('setShellError', false);
           this.dispatch('setShellLoading', false);
           this._readVenueID();
