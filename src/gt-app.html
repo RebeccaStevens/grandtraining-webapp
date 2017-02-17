@@ -927,28 +927,24 @@
        */
       _reinitPage: function() {
         var pageEl = this.getPageElement(true);
+        this.dispatch('setPageLoading', true);  // turn the loading overlay on
 
         if (this._shellError) {
-          this.dispatch('setShellLoading', true);  // turn the loading overlay on
           this.init();
         }
 
-        if (this._pageError) {
-          this.dispatch('setPageLoading', true);  // turn the loading overlay on
-
-          // if the page has an init function, call it.
-          if (pageEl !== null && pageEl.init instanceof Function) {
-            // add a small delay so the load screen can be seen
-            this.async(function() {
-              pageEl.init();
-            }, 250);
-          }
-          // otherwise, wait a bit and turn the loading overlay off
-          else {
-            this.async(function() {
-              this.dispatch('setPageLoading', false);
-            }, 500);
-          }
+        // if the page has an init function, call it.
+        if (pageEl !== null && pageEl.init instanceof Function) {
+          // add a small delay so the load screen can be seen
+          this.async(function() {
+            pageEl.init();
+          }, 250);
+        }
+        // otherwise, wait a bit and turn the loading overlay off
+        else {
+          this.async(function() {
+            this.dispatch('setPageLoading', false);
+          }, 500);
         }
       },
 
