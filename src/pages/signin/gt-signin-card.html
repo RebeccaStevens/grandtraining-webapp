@@ -5,6 +5,7 @@
 <link rel="import" href="../../../bower_components/iron-form/iron-form.html">
 <link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../../bower_components/iron-a11y-keys-behavior/iron-a11y-keys-behavior.html">
+<link rel="import" href="../../../bower_components/paper-material/paper-material.html">
 
 <link rel="import" href="../../../styles/gt-styles.html">
 <link rel="import" href="../../../imports/gt.html">
@@ -37,6 +38,14 @@
         @apply(--layout-horizontal);
         @apply(--layout-justified);
       }
+      #error-message {
+        background: #f2dede;
+        border: solid 1px #ebccd1;
+        border-radius: 4px;
+        color: #d8000c;
+        margin: 8px 0px;
+        padding: 8px 16px;
+      }
       #notice {
         text-align: center;
         padding-left: 8px;
@@ -63,6 +72,7 @@
       on-iron-form-response="_formResponse">
       <paper-card id="card" heading="[[appConfig.pages.signin.title]]">
         <div class="card-content">
+          <paper-material id="error-message" hidden$="[[!isDefined(_formErrorMessage)]]">[[_formErrorMessage]]</paper-material>
           <paper-input id="email" class="field" name="Email" type="email" label="Email Address" auto-validate required autofocus></paper-input>
           <paper-input id="password" class="field" name="Password" type="password" label="Password" auto-validate required></paper-input>
         </div>
@@ -105,6 +115,14 @@
         _signingIn: {
           type: Boolean,
           value: false
+        },
+
+        /**
+         * The error message to display.
+         */
+        _formErrorMessage: {
+          type: String,
+          value: null
         }
       },
 
@@ -130,6 +148,7 @@
           this._formError(e);
         } else {
           this._signingIn = false;
+          this.clearErrorMessage();
           this.dispatch(
             'signIn',
             e.detail.response['new-id-token'],
@@ -141,9 +160,26 @@
       /**
        * Called when an error occurs trying to submit the signin form.
        */
-      _formError: function() {
+      _formError: function(e) {
         this._signingIn = false;
-        // this.$['signin-error-dialog'].open();
+        switch (e.detail.response.errorCode) {
+          // UNKNOWN
+          default:
+          case 1:
+            this._formErrorMessage = 'Unfortunately, an unknown error has occured.';
+            break;
+
+          // INVALID FORM
+          case 2:
+            this._formErrorMessage = 'Invalid form.';
+            break;
+
+          // BAD CREDENTIALS
+          case 3:
+          this._formErrorMessage = 'Bad Credentials: Invalid email/password.';
+            break;
+        }
+        this.focus();
       },
 
       /**
@@ -177,6 +213,13 @@
 
       _onEnter: function() {
         this._submitForm();
+      },
+
+      /**
+       * Clear the error message.
+       */
+      clearErrorMessage: function() {
+        this._formErrorMessage = null;
       },
 
       focus: function() {
