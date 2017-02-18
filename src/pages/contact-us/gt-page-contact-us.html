@@ -157,9 +157,9 @@
             on-selected-item-changed="_dropdownItemChanged"
             on-paper-dropdown-open="_overlayOpened"
             on-paper-dropdown-close="_overlayClosed">
-            <paper-listbox class="dropdown-content">
+            <paper-listbox class="dropdown-content" attr-for-selected="name" attr-for-item-title="name">
               <template is="dom-repeat" items="[[pageData.locations]]" as="location">
-                <paper-item>[[location.fullname]]</paper-item>
+                <paper-item name="[[location.fullname]]">[[location.fullname]]</paper-item>
               </template>
             </paper-listbox>
           </paper-dropdown-menu>
