@@ -35,7 +35,7 @@
         };
       },
 
-      signIn: function(newIdToken, rememberMe, firstName, lastName) {
+      signIn: function(newIdToken, rememberMe, firstName, lastName, email, phone, venue) {
         // if not set, use the current
         if (!(rememberMe === true || rememberMe === false)) {
           rememberMe = GT.ReduxBehavior.getState().rememberMe;
@@ -55,7 +55,10 @@
         var user = {
           firstName: firstName,
           lastName: lastName,
-          fullName: fullName
+          fullName: fullName,
+          email: email,
+          phone: phone,
+          venue: venue
         };
 
         return {

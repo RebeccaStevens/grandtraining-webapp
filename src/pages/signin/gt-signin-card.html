@@ -169,7 +169,10 @@
             e.detail.response['new-id-token'],
             this._rememberMe,
             e.detail.response['first-name'],
-            e.detail.response['last-name']);
+            e.detail.response['last-name'],
+            e.detail.response['email'],
+            e.detail.response['phone'],
+            e.detail.response['venue']);
           this.$.password.value = '';
           if (this.backUrl !== null) {
             window.history.pushState({}, null, this.backUrl);

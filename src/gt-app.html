@@ -1193,7 +1193,10 @@
               response['new-id-token'],
               undefined,
               response.user['first-name'],
-              response.user['last-name']);
+              response.user['last-name'],
+              response.user['email'],
+              response.user['phone'],
+              response.user['venue']);
           } else {
             this.dispatch('setIDToken', response['id-token']);
           }
