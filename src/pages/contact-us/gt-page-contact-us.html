@@ -315,6 +315,10 @@
           this._sendingMessage = false;
           this.$['message-sent-dialog'].open();
           this.$.form.reset();
+          // form reset appears to be async so delay the populate until after it is done.
+          this.async(function() {
+            this._populateFieldsForSignedInUser();
+          }, 1);
           grecaptcha.reset(this._grecaptchaId);
         }
       },
@@ -419,6 +423,28 @@
       },
 
       /**
+       * Populate the fields with data for the current user if we already know things about them.
+       */
+      _populateFieldsForSignedInUser: function() {
+        if (!this.signedIn) {
+          return;
+        }
+        var form = Polymer.dom(this.$.form);
+        if (this.user.fullName) {
+          form.querySelector('[name="name"]').value = this.user.fullName;
+        }
+        if (this.user.phone) {
+          form.querySelector('[name="phone"]').value = this.user.phone;
+        }
+        if (this.user.email) {
+          form.querySelector('[name="email"]').value = this.user.email;
+        }
+        if (this.user.venue && this.user.venue.region) {
+          form.querySelector('[name="location"]').contentElement.select(this.user.venue.region);
+        }
+      },
+
+      /**
        * Initialise the page.
        */
       init: function() {
@@ -474,6 +500,7 @@
           }, GT.animation.entryDuration);
 
           this.playAnimation('entry');
+          this._populateFieldsForSignedInUser();
           this.pageReady();
         } else {
           this._handleAjaxError();
