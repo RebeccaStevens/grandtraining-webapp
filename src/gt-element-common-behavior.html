@@ -109,6 +109,14 @@
         statePath: 'signedInUser'
       },
 
+      /**
+       * True if the user is signed in.
+       */
+      signedIn: {
+        type: Boolean,
+        computed: '_computeSignedIn(user)'
+      },
+
       cmsPreview: {
         type: Object,
         statePath: 'cmsPreview'
@@ -153,6 +161,13 @@
      */
     cloneObject: function(obj) {
       return JSON.parse(JSON.stringify(obj));
+    },
+
+    /**
+     * Compute the value of `user`
+     */
+    _computeSignedIn: function(user) {
+      return !!user;
     }
   };
 
