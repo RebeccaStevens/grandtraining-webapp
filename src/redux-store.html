@@ -4,6 +4,9 @@
 
 <script>
 
+  // How long until the signed in cookie expires
+  var signedInExpiryTime = 14 * 24 * 60 * 60 * 1000;  // 14 days
+
   /**
    * Get a query string parameter.
    *
@@ -76,9 +79,20 @@
     if (value === null || value === undefined || value === '') {
       return;
     }
-    document.cookie = 'id-token=' + value + ';path=/';
+
+    var tokenCookieString = 'id-token=' + value + ';path=/';
+
+    if (rememberMe && signedInExpiryTime > 0) {
+      var d = new Date();
+      d.setTime(d.getTime() + signedInExpiryTime);
+      var expiresString = d.toUTCString();
+
+      tokenCookieString += ';expires=' + expiresString;
+    }
+
+    document.cookie = tokenCookieString;
     if (rememberMe) {
-      document.cookie = 'remember-me=' + rememberMe + ';path=/';
+      document.cookie = 'remember-me=true;path=/;expires=' + expiresString;
     }
   };
 
