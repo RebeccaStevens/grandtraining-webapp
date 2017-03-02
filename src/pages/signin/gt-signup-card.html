@@ -81,6 +81,10 @@
         if (!(this.$['email'].invalid ||
         this.$['password'].invalid)) {
           console.log('todo: signup');
+
+          // redirect to account page after successful sign up
+          window.history.pushState({}, null, GT.app.appConfig.pages.account.url);
+          window.dispatchEvent(new CustomEvent('location-changed'));
         }
       },
 
