@@ -2,6 +2,8 @@
 <link rel="import" href="../../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../../../bower_components/iron-a11y-keys-behavior/iron-a11y-keys-behavior.html">
 
 <link rel="import" href="../../../styles/gt-styles.html">
 <link rel="import" href="../../../imports/gt.html">
@@ -33,20 +35,56 @@
         text-align: center;
         padding-left: 8px;
       }
+      #submit-container {
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        overflow: hidden;
+      }
+      #submit-container .messgae {
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        margin-right: 16px;
+      }
+      @media (min-width: 640px) {
+        #first-name,
+        #last-name {
+          width: calc(50% - 6px);
+          display: inline-block;
+        }
+        #name-spacer {
+          display: inline-block;
+          width: 12px;
+        }
+      }
     </style>
 
     <!-- Layout -->
-    <paper-card id="card"heading="Sign Up">
-      <div class="card-content">
-        <paper-input id="email" class="field" name="email" type="email" label="Email Address" auto-validate required></paper-input>
-        <paper-input id="password" class="field" name="password" type="password" label="Password" auto-validate required></paper-input>
-        <paper-input id="password2" class="field" type="password" label="Password Confirm" auto-validate required></paper-input>
-      </div>
-      <div class="card-actions">
-        <div id="notice">Already have an account?<br><a on-tap="_showSignInCard">[[appConfig.pages.signin.title]]</a> now.</div>
-        <paper-button raised on-tap="_signup">Sign Up</paper-button>
-      </div>
-    </paper-card>
+    <form is="iron-form"
+      id="form"
+      method="post"
+      action="[[getApiUrl(appConfig.form-handlers.signup)]]"
+      on-iron-form-submit="_formSubmit"
+      on-iron-form-error="_formError"
+      on-iron-form-response="_formResponse">
+      <paper-card id="card"heading="Sign Up">
+        <div class="card-content">
+          <paper-input id="first-name" class="field" name="FirstName" type="text" label="First Name" auto-validate required></paper-input><span id="name-spacer"
+          ></span><paper-input id="last-name" class="field" name="Surname" type="text" label="Last Name" auto-validate required></paper-input>
+          <paper-input id="email" class="field" name="Email" type="email" label="Email Address" auto-validate required></paper-input>
+          <paper-input id="password" class="field" name="Password" type="password" label="Password" auto-validate required></paper-input>
+          <paper-input id="password2" class="field" type="password" label="Password Confirm" auto-validate required></paper-input>
+        </div>
+        <div class="card-actions">
+          <div id="notice">Already have an account?<br><a on-tap="_showSignInCard">[[appConfig.pages.signin.title]]</a> now.</div>
+          <div id="submit-container">
+            <div class="messgae" hidden$="[[!_signingUp]]">
+              <paper-spinner id="spinner" active="[[_signingUp]]"></paper-spinner>
+            </div>
+            <paper-button id="signin" raised disabled="[[_signingUp]]" on-tap="_submitForm">Sign Up</paper-button>
+          </div>
+        </div>
+      </paper-card>
+    </form>
   </template>
 
   <script>
@@ -54,38 +92,124 @@
       is: 'gt-signup-card',
 
       behaviors: [
-        GT.ElementCommonBehavior
+        GT.ElementCommonBehavior,
+        Polymer.IronA11yKeysBehavior
       ],
+
+      keyBindings: {
+        'enter': '_onEnter'
+      },
 
       properties: {
 
         /**
          * The page this card is on.
          */
-        page: Object
+        page: Object,
+
+        /**
+         * True if waiting for the sign up request response.
+         */
+        _signingUp: {
+          type: Boolean,
+          value: false
+        },
+
+        /**
+         * The error message to display.
+         */
+        _formErrorMessage: {
+          type: String,
+          value: null
+        }
       },
 
       /**
-       * Called when the signup button is clicked.
+       * Submit the signin form.
        */
-      _signup: function() {
-        this.$['email'].validate();
-        this.$['password'].validate();
-
+      _submitForm: function() {
         // make sure the passwords match
         if (this.$['password'].value !== this.$['password2'].value) {
           this.$['password'].invalid = true;
           this.$['password2'].invalid = true;
+        } else {
+          this.$.form.submit();
         }
+      },
 
-        if (!(this.$['email'].invalid ||
-        this.$['password'].invalid)) {
-          console.log('todo: signup');
+      /**
+       * Called when the signin form is submitted.
+       */
+      _formSubmit: function() {
+        this._signingUp = true;
+      },
+
+      /**
+       * Called when the server responds positively to signin form submition.
+       */
+      _formResponse: function(e) {
+        if (!e.detail.response.successful) {
+          this._formError(e);
+        } else {
+          this._signingUp = false;
+          this.clearErrorMessage();
+          this.dispatch(
+            'signIn',
+            e.detail.response['new-id-token'],
+            false,
+            e.detail.response['first-name'],
+            e.detail.response['last-name'],
+            e.detail.response['email'],
+            e.detail.response['phone'],
+            e.detail.response['venue']);
+
+          this.$.form.reset();
 
           // redirect to account page after successful sign up
           window.history.pushState({}, null, GT.app.appConfig.pages.account.url);
           window.dispatchEvent(new CustomEvent('location-changed'));
         }
+      },
+
+      /**
+       * Called when an error occurs trying to submit the signin form.
+       */
+      _formError: function(e) {
+        this._signingUp = false;
+        switch (e.detail.response.errorCode) {
+          // UNKNOWN
+          default:
+          case 1:
+            this._formErrorMessage = 'Unfortunately, an unknown error has occured.';
+            break;
+
+          // INVALID FORM
+          case 2:
+            this._formErrorMessage = 'Invalid form.';
+            break;
+
+          // ALREADY SIGNED IN
+          case 4:
+          this._formErrorMessage = 'Already Signed In: Please sign out then try again.';
+            break;
+
+          // USER ALREADY EXIST
+          case 5:
+          this._formErrorMessage = 'There is already a user with that email address.';
+            break;
+        }
+        this.focus();
+      },
+
+      _onEnter: function() {
+        this._submitForm();
+      },
+
+      /**
+       * Clear the error message.
+       */
+      clearErrorMessage: function() {
+        this._formErrorMessage = null;
       },
 
       /**
@@ -96,7 +220,7 @@
       },
 
       focus: function() {
-        this.$.email.focus();
+        this.$['first-name'].focus();
       },
 
       ready: function() {
