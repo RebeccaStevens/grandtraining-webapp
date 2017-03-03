@@ -393,6 +393,12 @@
         neon-animated-pages > .iron-selected {
           min-height: calc(100vh - 150px);
         }
+        :host([has-social-media-links]) neon-animated-pages {
+          min-height: calc(100vh - 56px - 2em - 36px - 2px - 1.5em);
+        }
+        :host([has-social-media-links]) neon-animated-pages > .iron-selected {
+          min-height: calc(100vh - 56px - 2em - 36px - 2px - 1.5em);
+        }
         #main-header-layout app-header {
           height: 56px;
         }
