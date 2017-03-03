@@ -4,46 +4,18 @@
 <link rel="import" href="../../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../../bower_components/iron-form/iron-form.html">
 <link rel="import" href="../../../bower_components/iron-a11y-keys-behavior/iron-a11y-keys-behavior.html">
+<link rel="import" href="../../../bower_components/paper-material/paper-material.html">
 
 <link rel="import" href="../../../styles/gt-styles.html">
 <link rel="import" href="../../../imports/gt.html">
 <link rel="import" href="../../gt-element-common-behavior.html">
+<link rel="import" href="gt-signin-cards-styles.html">
 
 <dom-module id="gt-signup-card">
   <template>
-    <style include="gt-styles">
-      :host {
-        display: block;
-      }
-      a {
-        cursor: pointer;
-      }
-      paper-button {
-        margin: 0;
-      }
-      #card {
-        width: 100%;
-      }
+    <style include="gt-styles gt-signin-cards-styles">
       #card .card-content {
         padding: 0 16px 16px 16px;
-      }
-      #card .card-actions {
-        @apply(--layout-horizontal);
-        @apply(--layout-justified);
-      }
-      #notice {
-        text-align: center;
-        padding-left: 8px;
-      }
-      #submit-container {
-        @apply(--layout-horizontal);
-        @apply(--layout-center);
-        overflow: hidden;
-      }
-      #submit-container .messgae {
-        @apply(--layout-horizontal);
-        @apply(--layout-center);
-        margin-right: 16px;
       }
       @media (min-width: 640px) {
         #first-name,
@@ -68,6 +40,7 @@
       on-iron-form-response="_formResponse">
       <paper-card id="card"heading="Sign Up">
         <div class="card-content">
+          <paper-material id="error-message" hidden$="[[!isDefined(_formErrorMessage)]]">[[_formErrorMessage]]</paper-material>
           <paper-input id="first-name" class="field" name="FirstName" type="text" label="First Name" auto-validate required></paper-input><span id="name-spacer"
           ></span><paper-input id="last-name" class="field" name="Surname" type="text" label="Last Name" auto-validate required></paper-input>
           <paper-input id="email" class="field" name="Email" type="email" label="Email Address" auto-validate required></paper-input>

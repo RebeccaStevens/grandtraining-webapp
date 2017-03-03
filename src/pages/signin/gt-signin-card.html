@@ -11,59 +11,13 @@
 <link rel="import" href="../../../styles/gt-styles.html">
 <link rel="import" href="../../../imports/gt.html">
 <link rel="import" href="../../gt-element-common-behavior.html">
+<link rel="import" href="gt-signin-cards-styles.html">
 
 <dom-module id="gt-signin-card">
   <template>
-    <style include="gt-styles">
-      :host {
-        display: block;
-      }
-      form {
-        width: 100%;
-        @apply(--layout-horizontal);
-        @apply(--layout-center-center);
-      }
-      a {
-        cursor: pointer;
-      }
-      paper-button {
-        margin: 0;
-      }
-      #card {
-        width: 100%;
-      }
+    <style include="gt-styles gt-signin-cards-styles">
       #card .card-content {
         padding: 0 16px 16px 16px;
-      }
-      #card .card-actions {
-        @apply(--layout-horizontal);
-        @apply(--layout-justified);
-      }
-      #error-message {
-        background: #f2dede;
-        border: solid 1px #ebccd1;
-        border-radius: 4px;
-        color: #d8000c;
-        margin: 8px 0px;
-        padding: 8px 16px;
-      }
-      #remember {
-        margin: 16px 0 0 0;
-        font-size: 10.5pt;
-      }
-      #notice {
-        text-align: center;
-        padding-left: 8px;
-      }
-      #submit-container {
-        @apply(--layout-horizontal);
-        @apply(--layout-center);
-        overflow: hidden;
-      }
-      #submit-container .messgae {
-        @apply(--layout-horizontal);
-        @apply(--layout-center);
-        margin-right: 16px;
       }
     </style>
 

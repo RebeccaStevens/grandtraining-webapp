@@ -1,0 +1,54 @@
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+
+<dom-module id="gt-signin-cards-styles"><template><style>
+
+:host {
+  display: block;
+}
+form {
+  width: 100%;
+  @apply(--layout-horizontal);
+  @apply(--layout-center-center);
+}
+a {
+  cursor: pointer;
+}
+paper-button {
+  margin: 0;
+}
+#card {
+  width: 100%;
+}
+#card .card-actions {
+  @apply(--layout-horizontal);
+  @apply(--layout-justified);
+}
+#error-message {
+  background: #f2dede;
+  border: solid 1px #ebccd1;
+  border-radius: 4px;
+  color: #d8000c;
+  margin: 8px 0px;
+  padding: 8px 16px;
+}
+#remember {
+  margin: 16px 0 0 0;
+  font-size: 10.5pt;
+}
+#notice {
+  text-align: center;
+  padding-left: 8px;
+}
+#submit-container {
+  @apply(--layout-horizontal);
+  @apply(--layout-center);
+  overflow: hidden;
+}
+#submit-container .messgae {
+  @apply(--layout-horizontal);
+  @apply(--layout-center);
+  margin-right: 16px;
+}
+
+</style>
+</template></dom-module>

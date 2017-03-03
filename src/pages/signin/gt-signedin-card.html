@@ -5,27 +5,11 @@
 <link rel="import" href="../../../styles/gt-styles.html">
 <link rel="import" href="../../../imports/gt.html">
 <link rel="import" href="../../gt-element-common-behavior.html">
+<link rel="import" href="gt-signin-cards-styles.html">
 
 <dom-module id="gt-signedin-card">
   <template>
-    <style include="gt-styles">
-      :host {
-        display: block;
-      }
-      paper-button {
-        margin: 0;
-      }
-      #card {
-        width: 100%;
-      }
-      #card .card-content {
-        padding: 16px;
-      }
-      #card .card-actions {
-        @apply(--layout-horizontal);
-        @apply(--layout-justified);
-      }
-    </style>
+    <style include="gt-styles gt-signin-cards-styles"></style>
 
     <!-- Layout -->
     <paper-card id="card" heading="You are now signed in">
