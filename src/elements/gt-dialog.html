@@ -1,0 +1,51 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+
+<link rel="import" href="../gt-element-common-behavior.html">
+
+<dom-module id="gt-dialog">
+  <template>
+    <style>
+      :host {
+        display: none;
+      }
+    </style>
+
+    <slot id="content"></slot>
+  </template>
+</dom-module>
+
+<script>
+  Polymer({
+    is: 'gt-dialog',
+
+    behaviors: [
+      GT.ElementCommonBehavior
+    ],
+
+    properties: {
+    },
+
+    open: function() {
+      GT.app.$['global-dialog'].innerHTML = '';
+      var children = Polymer.dom(this).children;
+      for (var i in children) {
+        var clone = children[i].cloneNode(true);
+        var clonedHtmlEchos = clone.querySelectorAll('html-echo');
+        if (clonedHtmlEchos.length > 0) {
+          var originalHtmlEchos = children[i].querySelectorAll('html-echo');
+          for (var j in clonedHtmlEchos) {
+            clonedHtmlEchos[j].html = originalHtmlEchos[j].html;
+          }
+        }
+
+        GT.app.$['global-dialog'].appendChild(clone);
+      }
+      GT.app.$['global-dialog'].open();
+    },
+
+    close: function() {
+      GT.app.$['global-dialog'].close();
+    }
+  });
+</script>

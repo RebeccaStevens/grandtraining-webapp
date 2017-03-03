@@ -331,6 +331,28 @@
         };
       }
 
+      @media (min-height: 768px) {
+        #global-dialog {
+          top: calc(45vh - 200px);
+        }
+      }
+
+      @media (min-height: 1080px) {
+        #global-dialog {
+          top: calc(40vh - 200px);
+        }
+      }
+
+      #global-dialog paper-dialog-scrollable {
+        width: calc(100vw - 2em);
+        height: calc(100vh - 2em);
+        max-width: 600px;
+        max-height: 150px;
+        --paper-dialog-scrollable: {
+          max-height: inherit !important;
+        };
+      }
+
       @media (min-width: 640px) {
         .bottom-rule {
           margin: 1em 1.5em 0.5em 1.5em;
@@ -582,6 +604,8 @@
       </app-header-layout>
 
     </app-drawer-layout>
+
+    <paper-dialog id="global-dialog" with-backdrop><span></span><paper-dialog>
 
   </template>
 
