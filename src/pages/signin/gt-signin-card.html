@@ -127,10 +127,15 @@
             e.detail.response['email'],
             e.detail.response['phone'],
             e.detail.response['venue']);
+
           this.$.password.value = '';
+
+          // after a successful sign in, redirect to the back url if it is set, otherwise to the account page
+          var redirectTo = this.backUrl === null ? GT.app.appConfig.pages.account.url : this.backUrl;
+          window.history.pushState({}, null, redirectTo);
+          window.dispatchEvent(new CustomEvent('location-changed'));
+
           if (this.backUrl !== null) {
-            window.history.pushState({}, null, this.backUrl);
-            window.dispatchEvent(new CustomEvent('location-changed'));
             this.dispatch('clearSigninBackUrl');
           }
         }
