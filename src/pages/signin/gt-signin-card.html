@@ -146,22 +146,28 @@
        */
       _formError: function(e) {
         this._signingIn = false;
-        switch (e.detail.response.errorCode) {
-          // UNKNOWN
-          default:
-          case 1:
-            this._formErrorMessage = 'Unfortunately, an unknown error has occured.';
-            break;
 
-          // INVALID FORM
-          case 2:
-            this._formErrorMessage = 'Invalid form.';
-            break;
+        var unknownErrorMessage = 'Unfortunately, an unknown error has occured.';
+        if (e.detail.response) {
+          switch (e.detail.response.errorCode) {
+            // UNKNOWN
+            default:
+            case 1:
+              this._formErrorMessage = unknownErrorMessage;
+              break;
 
-          // BAD CREDENTIALS
-          case 3:
-          this._formErrorMessage = 'Bad Credentials: Invalid email/password.';
-            break;
+            // INVALID FORM
+            case 2:
+              this._formErrorMessage = 'Invalid form.';
+              break;
+
+            // BAD CREDENTIALS
+            case 3:
+            this._formErrorMessage = 'Bad Credentials: Invalid email/password.';
+              break;
+          }
+        } else {
+          this._formErrorMessage = unknownErrorMessage;
         }
         this.focus();
       },

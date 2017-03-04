@@ -149,27 +149,33 @@
        */
       _formError: function(e) {
         this._signingUp = false;
-        switch (e.detail.response.errorCode) {
-          // UNKNOWN
-          default:
-          case 1:
-            this._formErrorMessage = 'Unfortunately, an unknown error has occured.';
-            break;
 
-          // INVALID FORM
-          case 2:
-            this._formErrorMessage = 'Invalid form.';
-            break;
+        var unknownErrorMessage = 'Unfortunately, an unknown error has occured.';
+        if (e.detail.response) {
+          switch (e.detail.response.errorCode) {
+            // UNKNOWN
+            default:
+            case 1:
+              this._formErrorMessage = unknownErrorMessage;
+              break;
 
-          // ALREADY SIGNED IN
-          case 4:
-          this._formErrorMessage = 'Already Signed In: Please sign out then try again.';
-            break;
+            // INVALID FORM
+            case 2:
+              this._formErrorMessage = 'Invalid form.';
+              break;
 
-          // USER ALREADY EXIST
-          case 5:
-          this._formErrorMessage = 'There is already a user with that email address.';
-            break;
+            // ALREADY SIGNED IN
+            case 4:
+            this._formErrorMessage = 'Already Signed In: Please sign out then try again.';
+              break;
+
+            // USER ALREADY EXIST
+            case 5:
+            this._formErrorMessage = 'There is already a user with that email address.';
+              break;
+          }
+        } else {
+          this._formErrorMessage = unknownErrorMessage;
         }
         this.focus();
       },
