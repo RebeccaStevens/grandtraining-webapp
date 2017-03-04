@@ -26,9 +26,9 @@
       id="form"
       method="post"
       action="[[getApiUrl(appConfig.form-handlers.signin)]]"
-      on-iron-form-submit="_formSubmit"
-      on-iron-form-error="_formError"
-      on-iron-form-response="_formResponse">
+      on-iron-form-submit="_onFormSubmit"
+      on-iron-form-error="_onFormError"
+      on-iron-form-response="_onFormResponse">
       <paper-card id="card" heading="[[appConfig.pages.signin.title]]">
         <div class="card-content">
           <paper-material id="error-message" hidden$="[[!isDefined(_formErrorMessage)]]">[[_formErrorMessage]]</paper-material>
@@ -104,7 +104,7 @@
       /**
        * Called when the signin form is submitted.
        */
-      _formSubmit: function() {
+      _onFormSubmit: function() {
         this._signingIn = true;
         this._rememberMe = this.$.remember.checked;
       },
@@ -112,9 +112,9 @@
       /**
        * Called when the server responds positively to signin form submition.
        */
-      _formResponse: function(e) {
+      _onFormResponse: function(e) {
         if (!e.detail.response.successful) {
-          this._formError(e);
+          this._onFormError(e);
         } else {
           this._signingIn = false;
           this.clearErrorMessage();
@@ -144,7 +144,7 @@
       /**
        * Called when an error occurs trying to submit the signin form.
        */
-      _formError: function(e) {
+      _onFormError: function(e) {
         this._signingIn = false;
 
         var unknownErrorMessage = 'Unfortunately, an unknown error has occured.';
