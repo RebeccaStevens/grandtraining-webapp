@@ -5,9 +5,13 @@
 <link rel="import" href="../../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../../bower_components/paper-item/paper-item.html">
 
 <link rel="import" href="../../../styles/gt-styles.html">
 <link rel="import" href="../../../imports/gt.html">
+<link rel="import" href="../../elements/gt-venue-selector.html">
 <link rel="import" href="../../gt-element-common-behavior.html">
 <link rel="import" href="../gt-page-behavior.html">
 
@@ -29,12 +33,67 @@
         width: calc(100% - 0.5em);
         box-sizing: border-box;
       }
+      fieldset {
+        border: none;
+        margin: 0;
+        padding: 0 4px;
+      }
       #card {
         width: 100%;
+      }
+      #card .card-content {
+        padding: 0 24px 16px 24px;
+      }
+      #submit-container {
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        overflow: hidden;
+      }
+      #submit-container .messgae {
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        margin-right: 16px;
+      }
+      #card h4 {
+        margin-top: 1.25em;
+        margin-bottom: 0;
+      }
+      #card h4:first-of-type {
+        margin-top: 0.25em;
+      }
+      #regionSelector,
+      #venueSelector {
+        width: 100%;
+      }
+      .field-spacer {
+        display: none;
+      }
+      @media (min-width: 640px) {
+        .field-spacer {
+          display: inline-block;
+          width: 12px;
+        }
+        #first-name,
+        #last-name {
+          width: calc(50% - 6px);
+          display: inline-block;
+        }
+        #phone,
+        #email {
+          width: calc(50% - 6px);
+          display: inline-block;
+        }
+        #regionSelector,
+        #venueSelector {
+          width: calc(50% - 6px);
+          display: inline-block;
+        }
       }
     </style>
 
     <!-- Layout -->
+    <gt-venue-selector id="venue-selector" hidden regions="{{_regions}}" venues="{{_venues}}"></gt-venue-selector>
+
     <form is="iron-form"
       id="form"
       method="post"
@@ -46,14 +105,41 @@
         <div class="card-content">
           <paper-material class="error-message" hidden$="[[!isDefined(_formErrorMessage)]]">[[_formErrorMessage]]</paper-material>
 
+          <h4>Personal Details</h4>
+          <fieldset>
+            <paper-input id="first-name" class="field" name="FirstName" type="text" label="First Name" auto-validate></paper-input><span class="field-spacer"
+            ></span><paper-input id="last-name" class="field" name="Surname" type="text" label="Last Name" auto-validate></paper-input>
+            <paper-input id="phone" class="field" name="Phone" type="tel" label="Phone Number" auto-validate></paper-input><span class="field-spacer"
+            ></span><paper-input id="email" class="field" name="Email" type="email" label="Email Address" auto-validate></paper-input>
+          </fieldset>
+
+          <h4>Venue</h4>
+          <fieldset>
+            <paper-dropdown-menu id="regionSelector" label="Region">
+              <paper-listbox class="dropdown-content" attr-for-selected="regionName" attr-for-item-title="regionName" on-iron-select="_onRegionSelected">
+                <template is="dom-repeat" items="[[_regions]]" as="region">
+                  <paper-item region-name="[[region.name]]">[[region.name]]</paper-item>
+                </template>
+              </paper-listbox>
+            </paper-dropdown-menu><span class="field-spacer"
+            ></span><paper-dropdown-menu id="venueSelector" label="Venue" disabled$="[[_disableVenueSelector]]">
+              <paper-listbox class="dropdown-content" attr-for-selected="venueId" attr-for-item-title="venueId" on-iron-select="_onVenueSelected">
+                <template is="dom-repeat" items="[[_venues]]" as="venue">
+                  <paper-item venue-id="[[venue.id]]">[[venue.name]]</paper-item>
+                </template>
+              </paper-listbox>
+            </paper-dropdown-menu>
+            <input type="hidden" id="venue" name="VenueId">
+          </fieldset>
         </div>
         <div class="card-actions">
           <div id="submit-container">
+            <span class="flex"></span>
             <div class="messgae" hidden$="[[!_saving]]">
               <paper-spinner id="spinner" active="[[_saving]]"></paper-spinner>
             </div>
-            <paper-button id="cancel" raised disabled="[[_saving]]" on-tap="_restForm">Cancel</paper-button>
             <paper-button id="save" raised disabled="[[_saving]]" on-tap="_submitForm">Save</paper-button>
+            <paper-button id="cancel" raised disabled="[[_saving]]" on-tap="_restForm">Cancel</paper-button>
           </div>
         </div>
       </paper-card>
@@ -99,6 +185,29 @@
         _formErrorMessage: {
           type: String,
           value: null
+        },
+
+        /**
+         * The venue.
+         */
+        _venue: {
+          type: Object,
+          statePath: 'venue'
+        },
+
+        /**
+         * A list of the regions the user can choose from.
+         */
+        _regions: {
+          type: Array,
+          observer: '_populateVenueSelector'
+        },
+
+        /**
+         * A list of the venues in the selected region the user can choose from.
+         */
+        _venues: {
+          type: Array
         }
       },
 
@@ -166,7 +275,55 @@
       },
 
       focus: function() {
-        this.$.email.focus();
+        this.$['first-name'].focus();
+      },
+
+      /**
+       * Populate the fields with data for the current user.
+       */
+      _populateFieldsForSignedInUser: function() {
+        if (this.user.firstName) {
+          this.$['first-name'].value = this.user.firstName;
+        }
+        if (this.user.lastName) {
+          this.$['last-name'].value = this.user.lastName;
+        }
+        if (this.user.phone) {
+          this.$['phone'].value = this.user.phone;
+        }
+        if (this.user.email) {
+          this.$['email'].value = this.user.email;
+        }
+        this._populateVenueSelector();
+      },
+
+      /**
+       * Populate the regionSelector and the venueSelector.
+       */
+      _populateVenueSelector: function() {
+        setTimeout(function() {
+          if (this.user.venue && this.user.venue.region && this.user.venue.id) {
+            this.$.regionSelector.contentElement.select(this.user.venue.region);
+            this.$.venueSelector.contentElement.select(this.user.venue.id);
+          } else if (this._venue && this._venue.region && this._venue.id) {
+            this.$.regionSelector.contentElement.select(this._venue.region);
+            this.$.venueSelector.contentElement.select(this._venue.id);
+          }
+        }.bind(this), 0);
+      },
+
+      _onRegionSelected: function(e) {
+        this.$['venue-selector'].selectRegion(e.detail.item.regionName);
+        setTimeout(function() {
+          if (this.$['venue-selector'].selectedVenueId) {
+            this.$.venueSelector.contentElement.select(this.$['venue-selector'].selectedVenueId);
+          }
+        }.bind(this), 0);
+      },
+
+      _onVenueSelected: function(e) {
+        this.$['venue-selector'].selectVenue(e.detail.item.venueId);
+        this.$.venue.value = e.detail.item.venueId;
       },
 
       /**
@@ -176,6 +333,7 @@
         if (this.canView()) {
           this.displayPageTitle();
           this.clearErrorMessage();
+          this._populateFieldsForSignedInUser();
         }
       },
 
@@ -183,6 +341,7 @@
         if (this.canView()) {
           this.pageTitle = this.appConfig.pages.account.title;
           this.displayPageTitle();
+          this._populateFieldsForSignedInUser();
           this.pageReady();
         }
       },
