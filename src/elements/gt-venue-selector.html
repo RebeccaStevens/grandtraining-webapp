@@ -43,16 +43,16 @@
     <paper-card id="card" heading="Venue Selector">
       <div class="card-content">
         <paper-dropdown-menu id="regionSelector" label="Region">
-          <paper-listbox class="dropdown-content" on-iron-select="_regionSelected">
-            <template is="dom-repeat" items="[[_regions]]" as="region">
+          <paper-listbox class="dropdown-content" attr-for-selected="regionName" attr-for-item-title="regionName" on-iron-select="_regionSelected">
+            <template is="dom-repeat" items="[[regions]]" as="region">
               <paper-item region-name="[[region.name]]">[[region.name]]</paper-item>
             </template>
           </paper-listbox>
         </paper-dropdown-menu>
 
         <paper-dropdown-menu id="venueSelector" label="Venue" disabled$="[[_disableVenueSelector]]">
-          <paper-listbox class="dropdown-content" on-iron-select="_venueSelected">
-            <template is="dom-repeat" items="[[_venues]]" as="venue">
+          <paper-listbox class="dropdown-content" attr-for-selected="venueId" attr-for-item-title="venueId" on-iron-select="_venueSelected">
+            <template is="dom-repeat" items="[[venues]]" as="venue">
               <paper-item venue-id="[[venue.id]]">[[venue.name]]</paper-item>
             </template>
           </paper-listbox>
@@ -101,21 +101,23 @@
         /**
          * A list of the regions the user can choose from.
          */
-        _regions: {
+        regions: {
           type: Array,
           value: function() {
             return [];
-          }
+          },
+          notify: true
         },
 
         /**
          * A list of the venues in the selected region the user can choose from.
          */
-        _venues: {
+        venues: {
           type: Array,
           value: function() {
             return [];
-          }
+          },
+          notify: true
         },
 
         /**
@@ -168,6 +170,30 @@
       },
 
       /**
+       * Get the region name of the selected region.
+       *
+       * @return {String}
+       */
+      get selectedRegionName() {
+        if (this.$.regionSelector.contentElement.selected) {
+          return this.$.regionSelector.contentElement.selected;
+        }
+        return null;
+      },
+
+      /**
+       * Get the venue id of the selected venue.
+       *
+       * @return {String}
+       */
+      get selectedVenueId() {
+        if (this.$.venueSelector.contentElement.selected) {
+          return this.$.venueSelector.contentElement.selected;
+        }
+        return null;
+      },
+
+      /**
        * Show this element.
        */
       show: function() {
@@ -208,21 +234,21 @@
 
           regionArray.push(region);
         }
-        this.set('_regions', regionArray);
+        this.set('regions', regionArray);
       },
 
       /**
        * Called when `_region` changes.
        */
       _regionChanged: function(region) {
-        this._venues = region.venues;
+        this.venues = region.venues;
 
-        Polymer.dom(this.$.venueSelector).querySelector('paper-listbox').selected = -1;
+        this.$.venueSelector.contentElement.select(-1);
 
         if (region.venues.length === 1) {
-          this.async(function() {
-            Polymer.dom(this.$.venueSelector).querySelector('paper-listbox').selected = 0;
-          }, 0);
+          setTimeout(function() {
+            this.$.venueSelector.contentElement.select(this.$.venueSelector.contentElement.items[0].venueId);
+          }.bind(this), 0);
         }
       },
 
@@ -234,16 +260,16 @@
           return;
         }
 
-        if (this._regions.length === 0) {
+        if (this.regions.length === 0) {
           return;
         }
 
-        var regions = this._regions;
+        var regions = this.regions;
         var region;
         var i = 0;
         for (region in regions) {
           if (regions[region].name === venue.region) {
-            Polymer.dom(this.$.regionSelector).querySelector('paper-listbox').selected = i;
+            this.$.regionSelector.contentElement.select(venue.region);
             break;
           }
           i++;
@@ -255,7 +281,7 @@
           var j = 0;
           for (var v in venues) {
             if (venues[v].id === venue.id) {
-              Polymer.dom(this.$.venueSelector).querySelector('paper-listbox').selected = j;
+              this.$.venueSelector.contentElement.select(venue.id);
               break;
             }
             j++;
@@ -290,6 +316,24 @@
           this.dispatch('setVenue', newLocation);
           this.fire('venue-changed');
         }
+      },
+
+      /**
+       * Select a region.
+       *
+       * @param {String} region
+       */
+      selectRegion: function(region) {
+        this.$.regionSelector.contentElement.select(region);
+      },
+
+      /**
+       * Select a venue.
+       *
+       * @param {String} venueId
+       */
+      selectVenue: function(venueId) {
+        this.$.venueSelector.contentElement.select(venueId);
       },
 
       ready: function() {
