@@ -40,7 +40,7 @@
       on-iron-form-response="_onFormResponse">
       <paper-card id="card"heading="Sign Up">
         <div class="card-content">
-          <paper-material id="error-message" hidden$="[[!isDefined(_formErrorMessage)]]">[[_formErrorMessage]]</paper-material>
+          <paper-material class="error-message" hidden$="[[!isDefined(_formErrorMessage)]]">[[_formErrorMessage]]</paper-material>
           <paper-input id="first-name" class="field" name="FirstName" type="text" label="First Name" auto-validate required></paper-input><span id="name-spacer"
           ></span><paper-input id="last-name" class="field" name="Surname" type="text" label="Last Name" auto-validate required></paper-input>
           <paper-input id="email" class="field" name="Email" type="email" label="Email Address" auto-validate required></paper-input>

@@ -31,7 +31,7 @@
       on-iron-form-response="_onFormResponse">
       <paper-card id="card" heading="[[appConfig.pages.signin.title]]">
         <div class="card-content">
-          <paper-material id="error-message" hidden$="[[!isDefined(_formErrorMessage)]]">[[_formErrorMessage]]</paper-material>
+          <paper-material class="error-message" hidden$="[[!isDefined(_formErrorMessage)]]">[[_formErrorMessage]]</paper-material>
           <paper-input id="email" class="field" name="Email" type="email" label="Email Address" auto-validate required autofocus></paper-input>
           <paper-input id="password" class="field" name="Password" type="password" label="Password" auto-validate required></paper-input>
           <paper-checkbox id="remember">Remember Me?</paper-checkbox>
