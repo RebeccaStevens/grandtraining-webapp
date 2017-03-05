@@ -1,4 +1,10 @@
 <link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/iron-a11y-keys-behavior/iron-a11y-keys-behavior.html">
+<link rel="import" href="../../../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../../bower_components/iron-form/iron-form.html">
 
 <link rel="import" href="../../../styles/gt-styles.html">
 <link rel="import" href="../../../imports/gt.html">
@@ -10,8 +16,48 @@
     <style include="gt-styles">
       :host {
         display: block;
+        @apply(--layout-horizontal);
+        @apply(--layout-start);
+        @apply(--layout-center-justified);
+      }
+      form {
+        width: 100%;
+        @apply(--layout-horizontal);
+        @apply(--layout-center-center);
+        max-width: 1140px;
+        margin: 0.75em 0.25em 0 0.25em;
+        width: calc(100% - 0.5em);
+        box-sizing: border-box;
+      }
+      #card {
+        width: 100%;
       }
     </style>
+
+    <!-- Layout -->
+    <form is="iron-form"
+      id="form"
+      method="post"
+      action="[[getApiUrl(appConfig.form-handlers.update-account-details)]]"
+      on-iron-form-submit="_onFormSubmit"
+      on-iron-form-error="_onFormError"
+      on-iron-form-response="_onFormResponse">
+      <paper-card id="card" heading="Account Details">
+        <div class="card-content">
+          <paper-material class="error-message" hidden$="[[!isDefined(_formErrorMessage)]]">[[_formErrorMessage]]</paper-material>
+
+        </div>
+        <div class="card-actions">
+          <div id="submit-container">
+            <div class="messgae" hidden$="[[!_saving]]">
+              <paper-spinner id="spinner" active="[[_saving]]"></paper-spinner>
+            </div>
+            <paper-button id="cancel" raised disabled="[[_saving]]" on-tap="_restForm">Cancel</paper-button>
+            <paper-button id="save" raised disabled="[[_saving]]" on-tap="_submitForm">Save</paper-button>
+          </div>
+        </div>
+      </paper-card>
+    </form>
 
   </template>
 
@@ -21,8 +67,13 @@
 
       behaviors: [
         GT.ElementCommonBehavior,
-        GT.PageBehavior
+        GT.PageBehavior,
+        Polymer.IronA11yKeysBehavior
       ],
+
+      keyBindings: {
+        'enter': '_onEnter'
+      },
 
       properties: {
 
@@ -32,7 +83,90 @@
         requiresLogin: {
           type: Boolean,
           value: true
+        },
+
+        /**
+         * True if waiting for the form request response.
+         */
+        _saving: {
+          type: Boolean,
+          value: false
+        },
+
+        /**
+         * The error message to display.
+         */
+        _formErrorMessage: {
+          type: String,
+          value: null
         }
+      },
+
+      /**
+       * Submit the signin form.
+       */
+      _submitForm: function() {
+        this.$.form.submit();
+      },
+
+      /**
+       * Called when the signin form is submitted.
+       */
+      _onFormSubmit: function() {
+        this._saving = true;
+      },
+
+      /**
+       * Called when the server responds positively to signin form submition.
+       */
+      _onFormResponse: function(e) {
+        if (!e.detail.response.successful) {
+          this._onFormError(e);
+        } else {
+          this._saving = false;
+          this.clearErrorMessage();
+        }
+      },
+
+      /**
+       * Called when an error occurs trying to submit the signin form.
+       */
+      _onFormError: function(e) {
+        this._saving = false;
+
+        var unknownErrorMessage = 'Unfortunately, an unknown error has occured.';
+        if (e.detail.response) {
+          switch (e.detail.response.errorCode) {
+            // UNKNOWN
+            default:
+            case 1:
+              this._formErrorMessage = unknownErrorMessage;
+              break;
+
+            // INVALID FORM
+            case 2:
+              this._formErrorMessage = 'Invalid form.';
+              break;
+          }
+        } else {
+          this._formErrorMessage = unknownErrorMessage;
+        }
+        this.focus();
+      },
+
+      _onEnter: function() {
+        this._submitForm();
+      },
+
+      /**
+       * Clear the error message.
+       */
+      clearErrorMessage: function() {
+        this._formErrorMessage = null;
+      },
+
+      focus: function() {
+        this.$.email.focus();
       },
 
       /**
@@ -41,6 +175,7 @@
       onSwitchBackTo: function() {
         if (this.canView()) {
           this.displayPageTitle();
+          this.clearErrorMessage();
         }
       },
 
