@@ -59,6 +59,32 @@ if (window.GT === undefined) {
   ];
 
   /**
+   * Get the ordinal of a number.
+   *
+   * @param {Number} number
+   * @returns {Object}
+   */
+  window.GT.getOrdinalOfNumber = function(number) {
+    var nOrds=['th', 'st', 'nd', 'rd'];
+    var sOrds=['\u1D57\u02B0', '\u02E2\u1D57', '\u207F\u1D48', '\u02B3\u1D48'];
+    var v = number % 100;
+
+    var i = ((v - 20) % 10);
+    if (i < 0 || i >= 4) {
+     if (v >= 0 && v <= 3) {
+        i = v;
+      } else {
+        i = 0;
+      }
+    }
+
+    return {
+      normal: number + nOrds[i],
+      super:  number + sOrds[i]
+    };
+  };
+
+  /**
    * Compute the css font on the given element.
    *
    * @param {HTMLElement} el - The element to compute the font of

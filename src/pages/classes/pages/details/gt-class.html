@@ -305,7 +305,7 @@
 
         if (start.getTime() !== end.getTime()) {
           dateString += GT.dayLookUp[start.getDay()].short;
-          dateString += ' ' + this._getOrdinalOfNumber(start.getDate()).super;
+          dateString += ' ' + GT.getOrdinalOfNumber(start.getDate()).super;
           if (start.getMonth() !== end.getMonth()) {
             dateString += ' ' + GT.monthLookUp[start.getMonth()].long;
           }
@@ -317,7 +317,7 @@
         }
 
         dateString += GT.dayLookUp[end.getDay()].short;
-        dateString += ' ' + this._getOrdinalOfNumber(end.getDate()).super;
+        dateString += ' ' + GT.getOrdinalOfNumber(end.getDate()).super;
         dateString += ' ' + GT.monthLookUp[end.getMonth()].long;
         dateString += ' ' + end.getFullYear();
 
@@ -336,7 +336,7 @@
         for (var i in excludes) {
           i = Number.parseInt(i, 10);
           var date = new Date(excludes[i]);
-          excludesString += this._getOrdinalOfNumber(date.getDate()).super;
+          excludesString += GT.getOrdinalOfNumber(date.getDate()).super;
 
           if (i + 1 < excludes.length) {
             if (date.getMonth() === new Date(excludes[i + 1]).getMonth()) {
@@ -436,32 +436,6 @@
           return 'This is an ' + lvl + ' class';
         }
         return 'This is a ' + lvl + ' class';
-      },
-
-      /**
-       * Get the ordinal of a number.
-       *
-       * @param {Number} number
-       * @returns {Object}
-       */
-      _getOrdinalOfNumber: function(number) {
-        var nOrds=['th', 'st', 'nd', 'rd'];
-        var sOrds=['\u1D57\u02B0', '\u02E2\u1D57', '\u207F\u1D48', '\u02B3\u1D48'];
-        var v = number % 100;
-
-        var i = ((v - 20) % 10);
-        if (i < 0 || i >= 4) {
-         if (v >= 0 && v <= 3) {
-            i = v;
-          } else {
-            i = 0;
-          }
-        }
-
-        return {
-          normal: number + nOrds[i],
-          super:  number + sOrds[i]
-        };
       },
 
       /**
