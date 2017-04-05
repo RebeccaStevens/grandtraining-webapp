@@ -86,6 +86,37 @@
         return {
           type: 'CLEAR_SIGNIN_BACK_URL'
         }
+      },
+
+      addChild: function(child) {
+        if (child === null || child === undefined) {
+          child = {
+            'id': undefined,
+            'first-name': undefined,
+            'last-name': undefined,
+            'gender': undefined,
+            'birthday': undefined
+          };
+        }
+        return {
+          type: 'ADD_CHILD',
+          child: child
+        };
+      },
+
+      removeChild: function(index) {
+        return {
+          type: 'REMOVE_CHILD',
+          index: index
+        };
+      },
+
+      setChildBirthday: function(index, birthday) {
+        return {
+          type: 'SET_CHILD_BIRTHDAY',
+          index: index,
+          birthday: birthday
+        };
       }
     },
 

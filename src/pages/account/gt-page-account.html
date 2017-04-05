@@ -2,17 +2,24 @@
 <link rel="import" href="../../../bower_components/iron-a11y-keys-behavior/iron-a11y-keys-behavior.html">
 <link rel="import" href="../../../bower_components/paper-material/paper-material.html">
 <link rel="import" href="../../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../../bower_components/iron-form/iron-form.html">
 <link rel="import" href="../../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../../bower_components/vaadin-combo-box/vaadin-combo-box.html">
 <link rel="import" href="../../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../../bower_components/vaadin-grid/vaadin-grid.html">
+<link rel="import" href="../../../bower_components/vaadin-grid/vaadin-grid-column.html">
+<link rel="import" href="../../../bower_components/vaadin-grid/vaadin-grid-sorter.html">
+<link rel="import" href="../../../bower_components/paper-date-picker/paper-date-picker.html">
 
 <link rel="import" href="../../../styles/gt-styles.html">
 <link rel="import" href="../../../imports/gt.html">
 <link rel="import" href="../../elements/gt-venue-selector.html">
 <link rel="import" href="../../gt-element-common-behavior.html">
+<link rel="import" href="../../elements/gt-dialog.html">
 <link rel="import" href="../gt-page-behavior.html">
 
 <dom-module id="gt-page-account">
@@ -67,6 +74,42 @@
       }
       .field-spacer {
         display: none;
+      }
+      vaadin-grid {
+        height: auto;
+        margin-top: 8px;
+        --vaadin-grid-header-cell: {
+          font-weight: bold;
+        };
+        --vaadin-grid-body-cell: {
+          padding: 0 8px;
+        };
+      }
+      vaadin-grid paper-input,
+      vaadin-grid vaadin-combo-box,
+      vaadin-grid vaadin-date-picker {
+        --paper-input-container: {
+          margin-top: 4px;
+          padding: 0;
+        };
+        --paper-input-container-underline: {
+          display: none;
+        };
+        --paper-input-container-input: {
+          padding-right: 28px !important;
+          margin-right: 0 !important;
+        };
+      }
+      #add-child-btn {
+        float: right;
+        margin: 16px 0 0 0;
+        height: 38px;
+        border: 1px solid #dbdbdb;
+        background: #f0f0f0;
+        --paper-button-ink-color: #ffffff;
+      }
+      #add-child-btn[no-children] {
+        margin: 0;
       }
       @media (min-width: 640px) {
         .field-spacer {
@@ -131,6 +174,50 @@
             </paper-dropdown-menu>
             <input type="hidden" id="venue" name="VenueId">
           </fieldset>
+
+          <h4>Children</h4>
+          <fieldset>
+            <dom-if><template is="dom-if" if="[[doesArrayHaveValues(user.children)]]">
+              <vaadin-grid items="{{user.children}}">
+                <vaadin-grid-column width="auto">
+                  <template class="header"><vaadin-grid-sorter path="first-name">First Name</vaadin-grid-sorter></template>
+                  <template><paper-input class="field" no-label-float value="{{item.first-name}}" required></paper-input></template>
+                </vaadin-grid-column>
+
+                <vaadin-grid-column width="auto">
+                  <template class="header"><vaadin-grid-sorter path="last-name">Last Name</vaadin-grid-sorter></template>
+                  <template><paper-input class="field" no-label-float value="{{item.last-name}}" required></paper-input></template>
+                </vaadin-grid-column>
+
+                <vaadin-grid-column width="auto">
+                  <template class="header"><vaadin-grid-sorter path="gender">Gender</vaadin-grid-sorter></template>
+                  <template>
+                    <vaadin-combo-box class="field" no-label-float items="[[genders]]" value="{{item.gender}}" required>
+                      <div style="display: none;" class="clear-button"></div>
+                    </vaadin-combo-box>
+                  </template>
+                </vaadin-grid-column>
+
+                <vaadin-grid-column width="auto">
+                  <template class="header"><vaadin-grid-sorter path="birthday">Birthday</vaadin-grid-sorter></template>
+                  <template>
+                    <paper-input class="field" no-label-float value="[[_formatBirthdayDate(item.birthday)]]" readonly required item-index="[[index]]" on-tap="_openBirthdayPopUp"></paper-input>
+                  </template>
+                </vaadin-grid-column>
+
+                <vaadin-grid-column width="56px" flex-grow="0">
+                  <template class="header"><div></div></template>
+                  <template><paper-icon-button icon="delete" on-tap="_removeChild"></paper-icon></template>
+                </vaadin-grid-column>
+    					</vaadin-grid>
+            </template></dom-if>
+
+            <dom-if><template is="dom-if" if="[[!doesArrayHaveValues(user.children)]]">
+              <div>No children on record.</div>
+            </template></dom-if>
+
+            <paper-button raised id="add-child-btn" no-children$="[[!doesArrayHaveValues(user.children)]]" on-tap="_addChild">Add Child</paper-button>
+          </fieldset>
         </div>
         <div class="card-actions">
           <div id="submit-container">
@@ -144,6 +231,10 @@
         </div>
       </paper-card>
     </form>
+
+    <gt-dialog id="birthday-dialog" with-backdrop>
+      <paper-date-picker id="birthday-picker" style="margin:8px;padding:0;"></paper-datepicker>
+    </gt-dialog>
 
   </template>
 
@@ -324,6 +415,42 @@
       _onVenueSelected: function(e) {
         this.$['venue-selector'].selectVenue(e.detail.item.venueId);
         this.$.venue.value = e.detail.item.venueId;
+      },
+
+      _formatBirthdayDate: function(date) {
+        if (date instanceof Date) {
+          return GT.getOrdinalOfNumber(date.getDate()).super + ' ' +
+                 GT.monthLookUp[date.getMonth()].long + ' ' +
+                 date.getFullYear();
+         }
+         return '';
+      },
+
+      _addChild: function() {
+        this.dispatch('addChild');
+        var cells = this.$.children.querySelectorAll('vaadin-grid-cell-content');
+        var firstCellInLastRow = this.$.children.querySelector('#vaadin-grid-cell-content-' + (cells.length - 5));
+        var field = firstCellInLastRow.querySelector('.field');
+        field.focus();
+      },
+
+      _removeChild: function(e) {
+        var index = this.user.children.indexOf(e.model.item);
+        this.dispatch('removeChild', index);
+        // this.$.children.clearCache();
+      },
+
+      _openBirthdayPopUp: function(e) {
+        var index = e.target.itemIndex;
+        var dialog = this.$['birthday-dialog'];
+        dialog.open();
+        var picker = dialog.dialogElement.querySelector('#birthday-picker');
+        picker.date = e.model.item.birthday;
+        picker.addEventListener('date-changed', function() {
+          if (picker.date.getTime() !== e.model.item.birthday.getTime()) {
+            this.dispatch('setChildBirthday', index, picker.date);
+          }
+        }.bind(this));
       },
 
       /**

@@ -231,6 +231,38 @@
         return Object.assign({}, state, {
           signinBackUrl: null
         });
+
+      case 'ADD_CHILD':
+        var childrenWithNew = state.signedInUser.children.slice(0);
+        childrenWithNew.push(action.child);
+
+        return Object.assign({}, state, {
+          signedInUser: Object.assign({}, state.signedInUser, {
+            children: childrenWithNew
+          }),
+        });
+
+      case 'REMOVE_CHILD':
+        var childrenWithoutRemoved = state.signedInUser.children.slice(0);
+        childrenWithoutRemoved.splice(action.index, 1);
+
+        return Object.assign({}, state, {
+          signedInUser: Object.assign({}, state.signedInUser, {
+            children: childrenWithoutRemoved
+          }),
+        });
+
+      case 'SET_CHILD_BIRTHDAY':
+        var childrenWithUpdatedBirthday = state.signedInUser.children.slice(0);
+        childrenWithUpdatedBirthday[action.index] = Object.assign({}, childrenWithUpdatedBirthday[action.index], {
+          birthday: new Date(action.birthday)
+        });
+
+        return Object.assign({}, state, {
+          signedInUser: Object.assign({}, state.signedInUser, {
+            children: childrenWithUpdatedBirthday
+          }),
+        });
     }
   };
 

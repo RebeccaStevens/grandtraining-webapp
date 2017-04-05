@@ -15,7 +15,11 @@
     "polymer-cookie": "^1.1.1",
     "google-web-components": "GoogleWebComponents/google-web-components#^1.1.1",
     "paper-card": "RebeccaStevens/paper-card#master",
-    "polymer-redux": "^0.3.0"
+    "polymer-redux": "^0.3.0",
+    "vaadin-grid": "vaadin/vaadin-grid#^v2.0.0-beta3",
+    "vaadin-combo-box": "^1.3.3",
+    "vaadin-date-picker": "^1.2.1",
+    "paper-date-picker": "polymer-paper-date-picker#^1.2.0"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"
