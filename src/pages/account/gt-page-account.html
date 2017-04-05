@@ -6,8 +6,6 @@
 <link rel="import" href="../../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../../bower_components/iron-form/iron-form.html">
-<link rel="import" href="../../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
-<link rel="import" href="../../../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../../../bower_components/vaadin-combo-box/vaadin-combo-box.html">
 <link rel="import" href="../../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../../bower_components/vaadin-grid/vaadin-grid.html">
@@ -158,20 +156,8 @@
 
           <h4>Venue</h4>
           <fieldset>
-            <paper-dropdown-menu id="regionSelector" label="Region">
-              <paper-listbox class="dropdown-content" attr-for-selected="regionName" attr-for-item-title="regionName" on-iron-select="_onRegionSelected">
-                <template is="dom-repeat" items="[[_regions]]" as="region">
-                  <paper-item region-name="[[region.name]]">[[region.name]]</paper-item>
-                </template>
-              </paper-listbox>
-            </paper-dropdown-menu><span class="field-spacer"
-            ></span><paper-dropdown-menu id="venueSelector" label="Venue" disabled$="[[_disableVenueSelector]]">
-              <paper-listbox class="dropdown-content" attr-for-selected="venueId" attr-for-item-title="venueId" on-iron-select="_onVenueSelected">
-                <template is="dom-repeat" items="[[_venues]]" as="venue">
-                  <paper-item venue-id="[[venue.id]]">[[venue.name]]</paper-item>
-                </template>
-              </paper-listbox>
-            </paper-dropdown-menu>
+            <vaadin-combo-box id="regionSelector" label="Region" class="field" items="[[_regions]]" item-label-path="name" item-value-path="name" on-selected-item-changed="_onRegionSelected"></vaadin-combo-box><span class="field-spacer"
+            ></span><vaadin-combo-box id="venueSelector" label="Venue" class="field" disabled$="[[_disableVenueSelector]]" items="[[_venues]]" item-label-path="name" item-value-path="id" on-selected-item-changed="_onVenueSelected"></vaadin-combo-box>
             <input type="hidden" id="venue" name="VenueId">
           </fieldset>
 
@@ -394,27 +380,36 @@
       _populateVenueSelector: function() {
         setTimeout(function() {
           if (this.user.venue && this.user.venue.region && this.user.venue.id) {
-            this.$.regionSelector.contentElement.select(this.user.venue.region);
-            this.$.venueSelector.contentElement.select(this.user.venue.id);
+            this.$.regionSelector.value = this.user.venue.region;
+            this.$.venueSelector.value = this.user.venue.id;
           } else if (this._venue && this._venue.region && this._venue.id) {
-            this.$.regionSelector.contentElement.select(this._venue.region);
-            this.$.venueSelector.contentElement.select(this._venue.id);
+            this.$.regionSelector.value = this._venue.region;
+            this.$.venueSelector.value = this._venue.id;
           }
         }.bind(this), 0);
       },
 
       _onRegionSelected: function(e) {
-        this.$['venue-selector'].selectRegion(e.detail.item.regionName);
-        setTimeout(function() {
-          if (this.$['venue-selector'].selectedVenueId) {
-            this.$.venueSelector.contentElement.select(this.$['venue-selector'].selectedVenueId);
-          }
-        }.bind(this), 0);
+        if (e.detail.value) {
+          this.$['venue-selector'].selectRegion(e.detail.value.name);
+          setTimeout(function() {
+            if (this.$['venue-selector'].selectedVenueId) {
+              this.$.venueSelector.value = this.$['venue-selector'].selectedVenueId;
+            }
+          }.bind(this), 0);
+        } else {
+          this.$.venueSelector.value = -1;
+        }
       },
 
       _onVenueSelected: function(e) {
-        this.$['venue-selector'].selectVenue(e.detail.item.venueId);
-        this.$.venue.value = e.detail.item.venueId;
+        if (e.detail.value) {
+          this.$['venue-selector'].selectVenue(e.detail.value.id);
+          this.$.venue.value = e.detail.value.id;
+        } else {
+          this.$['venue-selector'].selectVenue(null);
+          this.$.venue.value = null;
+        }
       },
 
       _formatBirthdayDate: function(date) {
