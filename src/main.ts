@@ -8,5 +8,12 @@ if (environment.production) {
   enableProdMode();
 }
 
-platformBrowserDynamic().bootstrapModule(AppModule)
-  .catch(err => console.log(err));
+// tslint:disable-next-line:no-floating-promises
+(async () => {
+  try {
+    await platformBrowserDynamic()
+      .bootstrapModule(AppModule);
+  } catch (error) {
+    console.log(error);
+  }
+})();
